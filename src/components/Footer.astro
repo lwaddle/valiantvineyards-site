@@ -1,0 +1,113 @@
+---
+const currentYear = new Date().getFullYear();
+
+const footerLinks = {
+  visit: [
+    { name: "Tasting Room", href: "/tasting-room/" },
+    { name: "Bed & Breakfast", href: "/bed-and-breakfast/" },
+  ],
+  wineSpirits: [
+    { name: "Wines", href: "/wines/" },
+    { name: "Distillery", href: "/distillery/" },
+  ],
+  events: [
+    { name: "Private Events", href: "/private-events/" },
+    { name: "Weddings", href: "/private-events/weddings/" },
+  ],
+  about: [
+    { name: "Our Story", href: "/about/" },
+    { name: "Our Team", href: "/our-team/" },
+    { name: "Contact", href: "/contact/" },
+  ],
+  legal: [
+    { name: "Privacy Policy", href: "/privacy-policy/" },
+    { name: "Cookie Policy", href: "/cookie-policy/" },
+  ],
+};
+---
+
+<footer class="border-t border-border bg-secondary text-secondary-foreground">
+  <div class="container mx-auto px-4 py-12 lg:px-8">
+    <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
+      <!-- Visit -->
+      <div>
+        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Visit</h3>
+        <ul class="space-y-2">
+          {footerLinks.visit.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Wine & Spirits -->
+      <div>
+        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Wine & Spirits</h3>
+        <ul class="space-y-2">
+          {footerLinks.wineSpirits.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Events -->
+      <div>
+        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Events</h3>
+        <ul class="space-y-2">
+          {footerLinks.events.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- About -->
+      <div>
+        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">About</h3>
+        <ul class="space-y-2">
+          {footerLinks.about.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Legal</h3>
+        <ul class="space-y-2">
+          {footerLinks.legal.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-12 border-t border-secondary-foreground/10 pt-8">
+      <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <p class="font-serif text-lg font-semibold">Valiant Vineyards</p>
+        <p class="text-sm text-secondary-foreground/70">
+          &copy; {currentYear} Valiant Vineyards Winery & Distillery. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

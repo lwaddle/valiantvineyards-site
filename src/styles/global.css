@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/* Valiant Vineyards Design Tokens */
+@theme {
+  /* Colors - Elegant winery palette */
+  --color-gold: #987018;
+  --color-gold-light: #b8922e;
+  --color-gold-dark: #785a12;
+  --color-burgundy: #722f37;
+  --color-burgundy-light: #8b3a44;
+  --color-burgundy-dark: #5a252c;
+  --color-cream: #faf8f5;
+  --color-charcoal: #2d2d2d;
+  --color-slate: #4a4a4a;
+
+  /* Semantic colors */
+  --color-primary: var(--color-gold);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-charcoal);
+  --color-secondary-foreground: #ffffff;
+  --color-background: var(--color-cream);
+  --color-foreground: var(--color-charcoal);
+  --color-muted: #f1ede8;
+  --color-muted-foreground: var(--color-slate);
+  --color-accent: var(--color-burgundy);
+  --color-accent-foreground: #ffffff;
+  --color-border: #e5e0d8;
+  --color-input: #e5e0d8;
+  --color-ring: var(--color-gold);
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+
+  /* Typography */
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* Spacing */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+}
+
+/* Base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    @apply font-semibold tracking-tight;
+  }
+}
+
+/* Animation keyframes for shadcn components */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--bits-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--bits-accordion-content-height); }
+  to { height: 0; }
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

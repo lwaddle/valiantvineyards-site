@@ -9,6 +9,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.16.2"
+    "@astrojs/svelte": "^7.2.2",
+    "@tailwindcss/vite": "^4.1.17",
+    "astro": "^5.16.2",
+    "bits-ui": "^2.14.4",
+    "clsx": "^2.1.1",
+    "svelte": "^5.45.2",
+    "tailwind-merge": "^3.4.0",
+    "tailwind-variants": "^3.2.2",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.9.3"
   }
 }

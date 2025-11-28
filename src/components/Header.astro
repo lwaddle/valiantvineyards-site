@@ -1,0 +1,93 @@
+---
+import MobileNav from "./MobileNav.svelte";
+
+const navigation = [
+  { name: "Home", href: "/" },
+  {
+    name: "Visit",
+    items: [
+      { name: "Tasting Room", href: "/tasting-room/" },
+      { name: "Bed & Breakfast", href: "/bed-and-breakfast/" },
+    ],
+  },
+  {
+    name: "Wine & Spirits",
+    items: [
+      { name: "Wines", href: "/wines/" },
+      { name: "Distillery", href: "/distillery/" },
+    ],
+  },
+  {
+    name: "Private Events",
+    items: [
+      { name: "Overview", href: "/private-events/" },
+      { name: "Weddings", href: "/private-events/weddings/" },
+    ],
+  },
+  {
+    name: "About",
+    items: [
+      { name: "Our Story", href: "/about/" },
+      { name: "Our Team", href: "/our-team/" },
+    ],
+  },
+  { name: "Contact", href: "/contact/" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+  <div class="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
+    <!-- Logo -->
+    <a href="/" class="flex items-center space-x-2">
+      <span class="font-serif text-xl font-semibold text-foreground">Valiant Vineyards</span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden lg:flex lg:items-center lg:space-x-1">
+      {navigation.map((item) => (
+        item.items ? (
+          <div class="group relative">
+            <button
+              class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {item.name}
+              <svg class="h-4 w-4 transition-transform group-hover:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <div class="invisible absolute left-0 top-full min-w-[180px] rounded-md border border-border bg-background p-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
+              {item.items.map((subItem) => (
+                <a
+                  href={subItem.href}
+                  class:list={[
+                    "block rounded-sm px-4 py-2 text-sm transition-colors hover:bg-muted",
+                    currentPath === subItem.href ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+                  ]}
+                >
+                  {subItem.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class:list={[
+              "px-4 py-2 text-sm font-medium transition-colors hover:text-foreground",
+              currentPath === item.href ? "text-primary" : "text-muted-foreground"
+            ]}
+          >
+            {item.name}
+          </a>
+        )
+      ))}
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="lg:hidden">
+      <MobileNav client:load navigation={navigation} currentPath={currentPath} />
+    </div>
+  </div>
+</header>

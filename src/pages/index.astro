@@ -1,16 +1,53 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Home" description="Valiant Vineyards Winery & Distillery - Experience award-winning wines, craft spirits, and warm hospitality in the heart of South Dakota.">
+  <section class="relative">
+    <!-- Hero placeholder -->
+    <div class="bg-secondary py-24 lg:py-32">
+      <div class="container mx-auto px-4 text-center lg:px-8">
+        <h1 class="font-serif text-4xl font-bold tracking-tight text-secondary-foreground sm:text-5xl lg:text-6xl">
+          Sip. Celebrate. Stay.
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-secondary-foreground/80">
+          Welcome to Valiant Vineyards Winery & Distillery
+        </p>
+        <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a
+            href="/tasting-room/"
+            class="inline-flex h-11 items-center justify-center rounded-md bg-gold px-8 text-sm font-medium text-white transition-colors hover:bg-gold-dark"
+          >
+            Visit the Tasting Room
+          </a>
+          <a
+            href="/about/"
+            class="inline-flex h-11 items-center justify-center rounded-md border border-secondary-foreground/20 bg-transparent px-8 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary-foreground/10"
+          >
+            Our Story
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features section placeholder -->
+  <section class="py-16 lg:py-24">
+    <div class="container mx-auto px-4 lg:px-8">
+      <div class="grid gap-8 md:grid-cols-3">
+        <div class="rounded-lg border border-border bg-background p-8 text-center">
+          <h3 class="font-serif text-xl font-semibold">Wines</h3>
+          <p class="mt-2 text-muted-foreground">Coming Soon</p>
+        </div>
+        <div class="rounded-lg border border-border bg-background p-8 text-center">
+          <h3 class="font-serif text-xl font-semibold">Spirits</h3>
+          <p class="mt-2 text-muted-foreground">Coming Soon</p>
+        </div>
+        <div class="rounded-lg border border-border bg-background p-8 text-center">
+          <h3 class="font-serif text-xl font-semibold">Stay</h3>
+          <p class="mt-2 text-muted-foreground">Coming Soon</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,5 @@
+# Valiant Vineyards URL Redirects
+# Format: /old-path  /new-path  status-code
+
+# URL changes
+/about/people/  /our-team/  301
