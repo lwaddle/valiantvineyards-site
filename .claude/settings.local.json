@@ -6,7 +6,9 @@
       "Bash(npx shadcn-svelte@latest init:*)",
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npx shadcn-svelte@latest add:*)",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []

@@ -19,5 +19,8 @@
     "tailwind-variants": "^3.2.2",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@internationalized/date": "^3.10.0"
   }
 }

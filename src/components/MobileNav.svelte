@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { mount, unmount } from "svelte";
-  import MobileNavDrawer from "./MobileNavDrawer.svelte";
+  import * as Collapsible from "$lib/components/ui/collapsible";
 
   type NavItem = {
     name: string;
@@ -15,42 +14,22 @@
 
   let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
-  let drawerInstance: ReturnType<typeof mount> | null = null;
 
   function toggleMenu() {
     isOpen = !isOpen;
   }
 
-  $effect(() => {
-    if (isOpen) {
-      drawerInstance = mount(MobileNavDrawer, {
-        target: document.body,
-        props: {
-          navigation,
-          currentPath,
-          onClose: () => {
-            isOpen = false;
-          },
-        },
-      });
-    } else if (drawerInstance) {
-      unmount(drawerInstance);
-      drawerInstance = null;
-    }
-
-    return () => {
-      if (drawerInstance) {
-        unmount(drawerInstance);
-        drawerInstance = null;
-      }
-    };
-  });
+  function closeMenu() {
+    isOpen = false;
+  }
 </script>
 
+<!-- Toggle Button -->
 <button
   onclick={toggleMenu}
   class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-  aria-label="Toggle menu"
+  aria-label={isOpen ? "Close menu" : "Open menu"}
+  aria-expanded={isOpen}
 >
   {#if isOpen}
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -65,3 +44,68 @@
     </svg>
   {/if}
 </button>
+
+{#if isOpen}
+  <!-- Backdrop -->
+  <button
+    class="fixed inset-0 z-40 bg-black/50"
+    onclick={closeMenu}
+    aria-label="Close menu"
+  ></button>
+
+  <!-- Dropdown Menu -->
+  <div
+    class="absolute left-0 right-0 top-full z-50 max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-border bg-background shadow-lg"
+  >
+    <nav class="p-4">
+      <ul class="space-y-1">
+        {#each navigation as item}
+          {#if item.items}
+            <li>
+              <Collapsible.Root>
+                <Collapsible.Trigger
+                  class="flex w-full items-center justify-between rounded-md px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&[data-state=open]>svg]:rotate-180"
+                >
+                  {item.name}
+                  <svg
+                    class="h-4 w-4 transition-transform"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </Collapsible.Trigger>
+                <Collapsible.Content>
+                  <ul class="ml-4 mt-1 space-y-1 border-l border-border pl-4">
+                    {#each item.items as subItem}
+                      <li>
+                        <a
+                          href={subItem.href}
+                          onclick={closeMenu}
+                          class="block rounded-md px-3 py-2 text-sm transition-colors {currentPath === subItem.href ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}"
+                        >
+                          {subItem.name}
+                        </a>
+                      </li>
+                    {/each}
+                  </ul>
+                </Collapsible.Content>
+              </Collapsible.Root>
+            </li>
+          {:else}
+            <li>
+              <a
+                href={item.href}
+                onclick={closeMenu}
+                class="block rounded-md px-3 py-3 text-base font-medium transition-colors {currentPath === item.href ? 'text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}"
+              >
+                {item.name}
+              </a>
+            </li>
+          {/if}
+        {/each}
+      </ul>
+    </nav>
+  </div>
+{/if}
