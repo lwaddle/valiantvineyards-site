@@ -1,31 +1,48 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import heroImage from "../assets/images/hero-winery-entrance.webp";
 ---
 
 <BaseLayout title="Home" description="Valiant Vineyards Winery & Distillery - Experience award-winning wines, craft spirits, and warm hospitality in the heart of South Dakota.">
   <section class="relative">
-    <!-- Hero placeholder -->
-    <div class="bg-secondary py-24 lg:py-32">
-      <div class="container mx-auto px-4 text-center lg:px-8">
-        <h1 class="font-serif text-4xl font-semi-bold tracking-tight text-secondary-foreground sm:text-5xl lg:text-6xl">
-          Sip. Celebrate. Stay.
-        </h1>
-        <p class="mx-auto mt-6 max-w-2xl text-lg text-secondary-foreground/80">
-          Since 1996, the Nygaard family has welcomed guests to sip award-winning wines, sample small-batch spirits, and unwind above the Missouri River in Vermillion, South Dakota.
-        </p>
-        <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href="/tasting-room/"
-            class="inline-flex h-11 items-center justify-center rounded-md bg-gold px-8 text-sm font-medium text-white transition-colors hover:bg-gold-dark"
-          >
-            Visit the Tasting Room
-          </a>
-          <a
-            href="/about/"
-            class="inline-flex h-11 items-center justify-center rounded-md border border-secondary-foreground/20 bg-transparent px-8 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary-foreground/10"
-          >
-            Our Story
-          </a>
+    <!-- Hero with background image -->
+    <div class="relative min-h-[70vh] flex items-center justify-center py-24 lg:py-32">
+      <!-- Background image -->
+      <Image
+        src={heroImage}
+        alt="Welcome to Valiant Vineyards - view of the winery entrance with rustic welcome sign and wine barrels"
+        class="absolute inset-0 h-full w-full object-cover"
+        widths={[640, 1024, 1536, 2048]}
+        sizes="100vw"
+        quality={80}
+      />
+      <!-- Dark overlay for better contrast -->
+      <div class="absolute inset-0 bg-black/40"></div>
+
+      <!-- Content card -->
+      <div class="container relative mx-auto px-4 lg:px-8">
+        <div class="mx-auto max-w-2xl rounded-xl bg-secondary/65 p-8 text-center backdrop-blur-sm lg:p-12">
+          <h1 class="font-serif text-4xl font-semibold tracking-tight text-secondary-foreground sm:text-5xl lg:text-6xl">
+            Sip. Celebrate. Stay.
+          </h1>
+          <p class="mx-auto mt-6 max-w-2xl text-lg text-secondary-foreground/90">
+            Since 1996, the Nygaard family has welcomed guests to sip award-winning wines, sample small-batch spirits, and unwind above the Missouri River in Vermillion, South Dakota.
+          </p>
+          <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href="/tasting-room/"
+              class="inline-flex h-11 items-center justify-center rounded-md bg-gold px-8 text-sm font-medium text-white transition-colors hover:bg-gold-dark"
+            >
+              Visit the Tasting Room
+            </a>
+            <a
+              href="/about/"
+              class="inline-flex h-11 items-center justify-center rounded-md border border-secondary-foreground/30 bg-white/10 px-8 text-sm font-medium text-secondary-foreground transition-colors hover:bg-white/20"
+            >
+              Our Story
+            </a>
+          </div>
         </div>
       </div>
     </div>
