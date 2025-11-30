@@ -1,8 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PagePlaceholder from "../components/PagePlaceholder.astro";
+// import PagePlaceholder from "../components/PagePlaceholder.astro";
+import PageHero from "src/components/PageHero.astro";
+import heroImage from "../assets/images/hero-wine-glass-bottle-pouring.webp";
 ---
 
 <BaseLayout title="Tasting Room" description="Visit our tasting room to sample wines, spirits, and craft cocktails at Valiant Vineyards.">
-  <PagePlaceholder title="Tasting Room" subtitle="Experience our wines and spirits" />
+  <!-- <PagePlaceholder title="Tasting Room" subtitle="Experience our wines and spirits" /> -->
+
+  <PageHero image={heroImage} alt="" height="md" />
+
 </BaseLayout>

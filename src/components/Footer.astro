@@ -1,4 +1,6 @@
 ---
+import logoDark from "../assets/logos/logo-dark.svg";
+
 const currentYear = new Date().getFullYear();
 
 const footerLinks = {
@@ -27,7 +29,7 @@ const footerLinks = {
 ---
 
 <footer class="border-t border-border bg-secondary text-secondary-foreground">
-  <div class="container mx-auto px-4 py-12 lg:px-8">
+  <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
     <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
       <!-- Visit -->
       <div>
@@ -103,7 +105,7 @@ const footerLinks = {
     <!-- Bottom bar -->
     <div class="mt-12 border-t border-secondary-foreground/10 pt-8">
       <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <p class="font-serif text-lg font-semibold">Valiant Vineyards</p>
+        <img src={logoDark.src} alt="Valiant Vineyards" class="h-22 opacity-70" />
         <p class="text-sm text-secondary-foreground/70">
           &copy; {currentYear} Valiant Vineyards Winery & Distillery. All rights reserved.
         </p>
