@@ -65,6 +65,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Mulish";
+  src: url("/fonts/Mulish-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Valiant Vineyards Design Tokens */
 @theme {
   /* Colors - Elegant winery palette */
