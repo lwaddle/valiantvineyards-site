@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { slide } from "svelte/transition";
   import * as Collapsible from "$lib/components/ui/collapsible";
 
   type NavItem = {
@@ -46,15 +47,16 @@
 </button>
 
 {#if isOpen}
-  <!-- Backdrop -->
+  <!-- Backdrop (invisible, for closing menu on outside click) -->
   <button
-    class="fixed inset-0 z-40 bg-black/50"
+    class="fixed inset-0 z-40"
     onclick={closeMenu}
     aria-label="Close menu"
   ></button>
 
   <!-- Dropdown Menu -->
   <div
+    transition:slide={{ duration: 200 }}
     class="absolute left-0 right-0 top-full z-50 max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-border bg-background shadow-lg"
   >
     <nav class="p-4">
