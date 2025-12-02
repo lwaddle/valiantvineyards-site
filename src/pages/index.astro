@@ -3,6 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/Button.astro";
 import { Image } from "astro:assets";
 import heroImage from "../assets/images/hero-winery-entrance.webp";
+import wineImage from "../assets/images/wine-pouring-into-glass.jpg";
+import spiritsImage from "../assets/images/clay-turner-bottles-in-sunlight.jpg";
+import stayImage from "../assets/images/wine-glass-next-to-bed-with-lamp.jpg";
 import { hours, address, contact } from "../data/site-info";
 
 // Placeholder events - will be replaced with dynamic content collection later
@@ -94,48 +97,74 @@ const upcomingEvents = [
   <section class="bg-secondary py-16 lg:py-24">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="grid gap-8 md:grid-cols-3">
-        <div class="rounded-lg border border-border bg-background p-8 text-center">
-          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold/10">
-            <svg class="h-6 w-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+        <!-- Wines Card -->
+        <a href="/wines/" class="group overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
+          <div class="aspect-3/2 overflow-hidden">
+            <Image
+              src={wineImage}
+              alt="Wine being poured into a glass"
+              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              widths={[400, 600, 800]}
+              sizes="(max-width: 768px) 100vw, 33vw"
+              quality={80}
+            />
           </div>
-          <h3 class="font-serif text-xl font-semibold">Wines</h3>
-          <p class="mt-2 text-muted-foreground">
-            From bold reds to crisp whites, our award-winning wines showcase the best of South Dakota terroir.
-          </p>
-          <a href="/wines/" class="mt-4 inline-block text-sm font-medium text-gold hover:underline">
-            Explore Wines
-          </a>
-        </div>
-        <div class="rounded-lg border border-border bg-background p-8 text-center">
-          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold/10">
-            <svg class="h-6 w-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-            </svg>
+          <div class="p-6 text-center">
+            <h3 class="font-serif text-xl font-semibold group-hover:text-gold">Wines</h3>
+            <p class="mt-2 text-muted-foreground">
+              From bold reds to crisp whites, our award-winning wines showcase the best of South Dakota terroir.
+            </p>
+            <span class="mt-4 inline-block text-sm font-medium text-gold">
+              Explore Wines
+            </span>
           </div>
-          <h3 class="font-serif text-xl font-semibold">Spirits</h3>
-          <p class="mt-2 text-muted-foreground">
-            Stone Faces Distillery crafts small-batch vodka, whiskey, bourbon, and more with local ingredients.
-          </p>
-          <a href="/distillery/" class="mt-4 inline-block text-sm font-medium text-gold hover:underline">
-            Discover Spirits
-          </a>
-        </div>
-        <div class="rounded-lg border border-border bg-background p-8 text-center">
-          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold/10">
-            <svg class="h-6 w-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
+        </a>
+
+        <!-- Spirits Card -->
+        <a href="/distillery/" class="group overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
+          <div class="aspect-3/2 overflow-hidden">
+            <Image
+              src={spiritsImage}
+              alt="Clay Turner spirit bottles in sunlight"
+              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              widths={[400, 600, 800]}
+              sizes="(max-width: 768px) 100vw, 33vw"
+              quality={80}
+            />
           </div>
-          <h3 class="font-serif text-xl font-semibold">Stay</h3>
-          <p class="mt-2 text-muted-foreground">
-            Extend your visit with an overnight stay at our cozy bed & breakfast overlooking the vineyard.
-          </p>
-          <a href="/bed-and-breakfast/" class="mt-4 inline-block text-sm font-medium text-gold hover:underline">
-            Book a Room
-          </a>
-        </div>
+          <div class="p-6 text-center">
+            <h3 class="font-serif text-xl font-semibold group-hover:text-gold">Spirits</h3>
+            <p class="mt-2 text-muted-foreground">
+              Stone Faces Distillery crafts small-batch vodka, whiskey, bourbon, and more with local ingredients.
+            </p>
+            <span class="mt-4 inline-block text-sm font-medium text-gold">
+              Discover Spirits
+            </span>
+          </div>
+        </a>
+
+        <!-- Stay Card -->
+        <a href="/bed-and-breakfast/" class="group overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
+          <div class="aspect-3/2 overflow-hidden">
+            <Image
+              src={stayImage}
+              alt="Wine glass next to a cozy bed with lamp"
+              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              widths={[400, 600, 800]}
+              sizes="(max-width: 768px) 100vw, 33vw"
+              quality={80}
+            />
+          </div>
+          <div class="p-6 text-center">
+            <h3 class="font-serif text-xl font-semibold group-hover:text-gold">Stay</h3>
+            <p class="mt-2 text-muted-foreground">
+              Extend your visit with an overnight stay at our cozy bed & breakfast overlooking the vineyard.
+            </p>
+            <span class="mt-4 inline-block text-sm font-medium text-gold">
+              Explore Rooms
+            </span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
