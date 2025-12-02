@@ -6,9 +6,9 @@
 export const hours = {
   // Regular tasting room hours
   tastingRoom: [
-    { days: "Monday – Wednesday", hours: "By Appointment" },
-    { days: "Thursday", hours: "12pm – 4pm" },
-    { days: "Friday", hours: "12pm – 6pm" },
+    { days: "Monday - Wednesday", hours: "By Appointment" },
+    { days: "Thursday", hours: "12pm - 4pm" },
+    { days: "Friday", hours: "12pm - 6pm" },
     { days: "Saturday", hours: "11am - 6pm" },
     { days: "Sunday", hours: "11am - 4pm" },
   ],
