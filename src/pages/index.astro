@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
 import { Image } from "astro:assets";
 import heroImage from "../assets/images/hero-winery-entrance.webp";
 import { hours, address, contact } from "../data/site-info";
@@ -47,18 +48,12 @@ const upcomingEvents = [
             Since 1996, the Nygaard family has welcomed guests to sip award-winning wines, sample small-batch spirits, and unwind above the Missouri River in Vermillion, South Dakota.
           </p>
           <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="/tasting-room/"
-              class="inline-flex h-11 items-center justify-center rounded-md bg-gold px-8 text-sm font-medium text-white transition-colors hover:bg-gold-dark"
-            >
+            <Button href="/tasting-room/" variant="gold" size="lg">
               Visit the Tasting Room
-            </a>
-            <a
-              href="/about/"
-              class="inline-flex h-11 items-center justify-center rounded-md border border-secondary-foreground/30 bg-white/10 px-8 text-sm font-medium text-secondary-foreground transition-colors hover:bg-white/20"
-            >
+            </Button>
+            <Button href="/about/" variant="gold-outline" size="lg">
               Our Story
-            </a>
+            </Button>
           </div>
         </div>
       </div>
@@ -155,12 +150,9 @@ const upcomingEvents = [
           Today, his family continues the tradition — with son Leif, a sixth-generation American winemaker, now leading Stone Faces Distillery.
           What began with a mulberry wine on a Turner County farm has grown into a 15,000-square-foot destination where visitors can taste, celebrate, and stay.
         </p>
-        <a
-          href="/about/"
-          class="mt-8 inline-flex h-11 items-center justify-center rounded-md bg-gold px-8 text-sm font-medium text-white transition-colors hover:bg-gold-dark"
-        >
+        <Button href="/about/" variant="gold" size="lg" class="mt-8">
           Read Our Full Story
-        </a>
+        </Button>
       </div>
     </div>
   </section>
@@ -217,12 +209,9 @@ const upcomingEvents = [
           </p>
 
           <div class="mt-8">
-            <a
-              href="/tasting-room/"
-              class="inline-flex h-11 items-center justify-center rounded-md bg-gold px-8 text-sm font-medium text-white transition-colors hover:bg-gold-dark"
-            >
+            <Button href="/tasting-room/" variant="gold" size="lg">
               Tasting Room Details
-            </a>
+            </Button>
           </div>
         </div>
       </div>

@@ -11,6 +11,8 @@ export const buttonVariants = tv({
       secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
       ghost: "hover:bg-accent hover:text-accent-foreground",
       link: "text-primary underline-offset-4 hover:underline",
+      gold: "bg-gold text-white shadow hover:bg-gold-dark",
+      "gold-outline": "border border-secondary-foreground/30 bg-white/10 text-secondary-foreground hover:bg-white/20",
     },
     size: {
       default: "h-9 px-4 py-2",
