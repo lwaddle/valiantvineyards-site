@@ -6,17 +6,19 @@
 export const hours = {
   // Regular tasting room hours
   tastingRoom: [
-    { days: "Monday – Thursday", hours: "11am – 6pm" },
-    { days: "Friday – Saturday", hours: "11am – 7pm" },
-    { days: "Sunday", hours: "12pm – 5pm" },
+    { days: "Monday – Wednesday", hours: "By Appointment" },
+    { days: "Thursday", hours: "12pm – 4pm" },
+    { days: "Friday", hours: "12pm – 6pm" },
+    { days: "Saturday", hours: "11am - 6pm" },
+    { days: "Sunday", hours: "11am - 4pm" },
   ],
   // Optional: Add seasonal notes or closures
-  note: "", // e.g., "Closed Thanksgiving & Christmas"
+  note: "The tasting room will be open by appointment only in January. The Bed & Breakfast will remain open.", // e.g., "Closed Thanksgiving & Christmas"
 };
 
 export const contact = {
   phone: "(605) 624-4500",
-  email: "info@valiantvineyards.com",
+  email: "wine@valiantvineyards.us",
 };
 
 export const address = {
