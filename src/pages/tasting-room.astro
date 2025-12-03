@@ -1,17 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/Button.astro";
 import { Image } from "astro:assets";
 import heroImage from "../assets/images/wine-pouring-into-glass.jpg";
 import tastingRoomBar from "../assets/images/tasting-room-bar.jpg";
-import clayTurnerAward from "../assets/images/clay-turner-with-award.jpg";
-import wineBottlesAwards from "../assets/images/wine-bottles-with-ribbons-and-medals.jpg";
+import { hours } from "../data/site-info";
 ---
 
 <BaseLayout title="Tasting Room" description="Visit our tasting room to sample wines, spirits, and craft cocktails at Valiant Vineyards.">
   <!-- Hero Section -->
   <section class="relative">
-    <div class="relative min-h-[60vh] flex items-center justify-center py-24">
+    <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24">
       <Image
         src={heroImage}
         alt="Wine being poured into glasses at Valiant Vineyards tasting room"
@@ -34,106 +32,94 @@ import wineBottlesAwards from "../assets/images/wine-bottles-with-ribbons-and-me
   </section>
 
   <!-- Main Content -->
-  <section class="py-16 lg:py-24">
+  <section class="pt-16 pb-12 lg:pt-24 lg:pb-16">
     <div class="container mx-auto px-4 lg:px-8">
-      <div class="mx-auto max-w-5xl">
+      <div class="mx-auto max-w-3xl">
         <h2 class="font-serif text-3xl font-semibold tracking-tight text-center sm:text-4xl mb-4">
           Award-Winning Wines & Spirits
         </h2>
-        <p class="text-lg text-muted-foreground text-center mb-12">
+        <p class="text-lg text-muted-foreground text-center mb-12 italic">
           Located in Vermillion, South Dakota, our tasting room has been welcoming visitors from across the state for over 20 years.
         </p>
 
-        <div class="grid lg:grid-cols-3 gap-8 items-start">
-          <!-- Award Image -->
-          <div class="lg:col-span-1">
-            <div class="rounded-lg overflow-hidden shadow-md">
-              <!-- old image was here - delete  -->
-            </div>
-          </div>
+        <div class="space-y-6">
+          <p class="text-lg leading-relaxed text-foreground">
+            Our experienced staff is available to guide you through the experience, providing background on the wines, spirits, our history, and our winemaking/distilling techniques.
+          </p>
 
-          <!-- Text Content -->
-          <div class="lg:col-span-2 space-y-6">
-            <p class="text-lg leading-relaxed text-foreground">
-              Our experienced staff is available to guide you through the experience, providing background on the wines, spirits, our history, and our winemaking/distilling techniques.
-            </p>
+          <p class="text-lg leading-relaxed text-foreground">
+            We invite you to join us for a flight or glass of our featured wines and distilled spirits, or indulge in bottle service for a truly elevated experience.
+          </p>
+        </div>
 
-            <p class="text-lg leading-relaxed text-foreground">
-              We invite you to join us for a flight or glass of our featured wines and distilled spirits, or indulge in bottle service for a truly elevated experience.
-            </p>
+        <h3 class="font-serif text-2xl font-semibold text-gold mt-12 mb-6 text-center">
+          Stone Faces Distillery
+        </h3>
 
-            <h3 class="font-serif text-2xl font-semibold text-gold mt-8 mb-4">
-              Stone Faces Distillery
-            </h3>
+        <div class="space-y-6">
+          <p class="text-lg leading-relaxed text-foreground">
+            Discover our premium lineup of spirits, from the smooth, crisp notes of our artisan vodka to the bold, complex flavors of our straight bourbon. Savor a taste of our meticulously crafted rye whiskey, indulge in the warm sweetness of our apple brandy, or experience the rich, full-bodied character of our handcrafted rum.
+          </p>
 
-            <p class="text-lg leading-relaxed text-foreground">
-              Discover our premium lineup of spirits, from the smooth, crisp notes of our artisan vodka to the bold, complex flavors of our straight bourbon. Savor a taste of our meticulously crafted rye whiskey, indulge in the warm sweetness of our apple brandy, or experience the rich, full-bodied character of our handcrafted rum.
-            </p>
-
-            <p class="text-lg leading-relaxed text-foreground">
-              Enjoy a tasting flight or purchase a bottle to bring home a piece of our distillery's heritage. Whether you're a seasoned connoisseur or new to craft spirits, our tasting room offers a welcoming atmosphere to explore and enjoy the best of our small-batch creations.
-            </p>
-          </div>
+          <p class="text-lg leading-relaxed text-foreground">
+            Enjoy a tasting flight or purchase a bottle to bring home a piece of our distillery's heritage. Whether you're a seasoned connoisseur or new to craft spirits, our tasting room offers a welcoming atmosphere to explore and enjoy the best of our small-batch creations.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Hours -->
+  <!-- Plan Your Visit -->
   <section class="bg-neutral-50 py-16 lg:py-24">
     <div class="container mx-auto px-4 lg:px-8">
-      <div class="mx-auto max-w-2xl">
-        <h2 class="font-serif text-3xl font-semibold tracking-tight text-center sm:text-4xl mb-12">
-          Tasting Room Hours
-        </h2>
-
-        <div class="bg-white rounded-lg shadow-sm p-8 lg:p-12">
-          <div class="space-y-4 text-lg">
-            <div class="flex justify-between items-center border-b border-neutral-200 pb-4">
-              <span class="font-medium">Monday - Wednesday</span>
-              <span class="text-muted-foreground">By Appointment</span>
-            </div>
-            <div class="flex justify-between items-center border-b border-neutral-200 pb-4">
-              <span class="font-medium">Thursday</span>
-              <span class="text-muted-foreground">12:00 PM - 4:00 PM</span>
-            </div>
-            <div class="flex justify-between items-center border-b border-neutral-200 pb-4">
-              <span class="font-medium">Friday</span>
-              <span class="text-muted-foreground">12:00 PM - 6:00 PM</span>
-            </div>
-            <div class="flex justify-between items-center border-b border-neutral-200 pb-4">
-              <span class="font-medium">Saturday</span>
-              <span class="text-muted-foreground">11:00 AM - 6:00 PM</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="font-medium">Sunday</span>
-              <span class="text-muted-foreground">11:00 AM - 4:00 PM</span>
-            </div>
+      <div class="mx-auto max-w-7xl">
+        <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-24 items-center">
+          <!-- Image -->
+          <div class="overflow-hidden rounded-lg shadow-lg">
+            <Image
+              src={tastingRoomBar}
+              alt="Valiant Vineyards tasting room bar"
+              class="w-full h-auto"
+              widths={[640, 1024]}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={85}
+            />
           </div>
 
-          <p class="mt-8 text-center text-sm text-muted-foreground italic">
-            January: By appointment only
-          </p>
+          <!-- Hours Content -->
+          <div>
+            <h2 class="font-serif text-3xl font-semibold tracking-tight sm:text-4xl mb-8">
+              Hours
+            </h2>
 
-          <div class="mt-12 pt-8 border-t border-neutral-200 text-center">
-            <p class="text-lg text-muted-foreground mb-2">
-              1500 W Main St<br />
-              Vermillion, SD 57069
-            </p>
-            <p class="text-lg">
-              <a href="tel:605-624-4500" class="text-gold hover:text-gold/80 font-medium">
-                605-624-4500
-              </a>
-            </p>
-          </div>
+            <div class="space-y-3 text-base">
+              <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+                <span class="font-medium">Monday - Wednesday</span>
+                <span class="text-muted-foreground">By Appointment</span>
+              </div>
+              <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+                <span class="font-medium">Thursday</span>
+                <span class="text-muted-foreground">12:00 PM - 4:00 PM</span>
+              </div>
+              <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+                <span class="font-medium">Friday</span>
+                <span class="text-muted-foreground">12:00 PM - 6:00 PM</span>
+              </div>
+              <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
+                <span class="font-medium">Saturday</span>
+                <span class="text-muted-foreground">11:00 AM - 6:00 PM</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="font-medium">Sunday</span>
+                <span class="text-muted-foreground">11:00 AM - 4:00 PM</span>
+              </div>
+            </div>
 
-          <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button href="/contact/" variant="gold" size="lg">
-              Make a Reservation
-            </Button>
-            <Button href="/wines/" variant="gold-outline" size="lg">
-              View Wine List
-            </Button>
+            {hours.note && (
+              <p class="mt-6 text-sm text-muted-foreground italic">
+                {hours.note}
+              </p>
+            )}
           </div>
         </div>
       </div>
