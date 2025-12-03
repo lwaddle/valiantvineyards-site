@@ -9,7 +9,9 @@
       "Bash(curl:*)",
       "Bash(npx shadcn-svelte@latest add:*)",
       "Bash(pkill:*)",
-      "Bash(unzip:*)"
+      "Bash(unzip:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
