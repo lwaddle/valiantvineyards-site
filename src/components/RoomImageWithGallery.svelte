@@ -2,7 +2,11 @@
   export let heroSrc: string;
   export let heroAlt: string;
   export let images: { src: string; alt: string }[] = [];
+  export let thumbnails: { src: string; alt: string }[] = [];
   export let roomName: string = '';
+
+  // Use thumbnails if provided, otherwise fall back to full images
+  $: thumbImages = thumbnails.length > 0 ? thumbnails : images;
 
   let isOpen = false;
   let currentIndex = 0;
@@ -121,7 +125,7 @@
 
     <!-- Thumbnail Strip -->
     <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto py-2 px-4">
-      {#each images as image, i}
+      {#each thumbImages as image, i}
         <button
           on:click={() => currentIndex = i}
           class="flex-shrink-0 h-16 w-16 rounded overflow-hidden transition-all {i === currentIndex ? 'ring-2 ring-white ring-offset-2 ring-offset-black/90' : 'opacity-50 hover:opacity-75'}"

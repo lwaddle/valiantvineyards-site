@@ -50,17 +50,77 @@ import nativeAmerican2 from "../assets/images/rooms/native-american-room/native-
 import nativeAmerican3 from "../assets/images/rooms/native-american-room/native-american-room-3.jpg";
 import nativeAmerican4 from "../assets/images/rooms/native-american-room/native-american-room-4.jpg";
 
-// Helper to optimize images for gallery
-async function optimizeImages(images: { src: ImageMetadata; alt: string }[]) {
-  return Promise.all(
+// Helper to optimize images at different sizes
+async function optimizeImagesMultiSize(images: { src: ImageMetadata; alt: string }[]) {
+  const results = await Promise.all(
     images.map(async (img) => {
-      const optimized = await getImage({ src: img.src, width: 1200, format: 'webp' });
-      return { src: optimized.src, alt: img.alt };
+      const [full, thumb] = await Promise.all([
+        getImage({ src: img.src, width: 1200, format: 'webp' }),
+        getImage({ src: img.src, width: 600, format: 'webp' }),
+      ]);
+      return {
+        full: { src: full.src, alt: img.alt },
+        thumb: { src: thumb.src, alt: img.alt },
+      };
     })
   );
+  return {
+    images: results.map(r => r.full),
+    thumbnails: results.map(r => r.thumb),
+  };
 }
 
 // Room data with optimized images
+const honeymoonImages = await optimizeImagesMultiSize([
+  { src: honeymoon1, alt: "Honeymoon Suite" },
+  { src: honeymoon3, alt: "Honeymoon Suite" },
+  { src: honeymoon5, alt: "Honeymoon Suite" },
+  { src: honeymoon6, alt: "Honeymoon Suite" },
+  { src: honeymoon7, alt: "Honeymoon Suite" },
+  { src: honeymoon8, alt: "Honeymoon Suite" },
+  { src: honeymoon9, alt: "Honeymoon Suite" },
+  { src: honeymoon11, alt: "Honeymoon Suite" },
+]);
+
+const frontierImages = await optimizeImagesMultiSize([
+  { src: frontier1, alt: "Frontier Room" },
+  { src: frontier2, alt: "Frontier Room" },
+  { src: frontier3, alt: "Frontier Room" },
+]);
+
+const queenAnneImages = await optimizeImagesMultiSize([
+  { src: queenAnne1, alt: "Queen Anne Room" },
+  { src: queenAnne2, alt: "Queen Anne Room" },
+  { src: queenAnne3, alt: "Queen Anne Room" },
+]);
+
+const usdImages = await optimizeImagesMultiSize([
+  { src: usd0, alt: "USD Room" },
+  { src: usd1, alt: "USD Room" },
+  { src: usd2, alt: "USD Room" },
+  { src: usd3, alt: "USD Room" },
+  { src: usd4, alt: "USD Room" },
+  { src: usd5, alt: "USD Room" },
+  { src: usd6, alt: "USD Room" },
+  { src: usd8, alt: "USD Room" },
+  { src: usd9, alt: "USD Room" },
+  { src: usd10, alt: "USD Room" },
+]);
+
+const johnCraneImages = await optimizeImagesMultiSize([
+  { src: johnCrane1, alt: "John Crane Room" },
+  { src: johnCrane2, alt: "John Crane Room" },
+  { src: johnCrane3, alt: "John Crane Room" },
+  { src: johnCrane4, alt: "John Crane Room" },
+]);
+
+const nativeAmericanImages = await optimizeImagesMultiSize([
+  { src: nativeAmerican1, alt: "Native American Room" },
+  { src: nativeAmerican2, alt: "Native American Room" },
+  { src: nativeAmerican3, alt: "Native American Room" },
+  { src: nativeAmerican4, alt: "Native American Room" },
+]);
+
 const rooms = [
   {
     name: "Honeymoon Suite",
@@ -68,17 +128,7 @@ const rooms = [
     specialPrice: "$195",
     description: "The Honeymoon Suite offers a luxurious King-size bed, a private bath with shower, and an indulgent in-room Jacuzzi tub—ideal for romantic getaways.",
     features: ["King Bed", "In-Room Jacuzzi", "Private Bath"],
-    heroImage: honeymoon1,
-    images: await optimizeImages([
-      { src: honeymoon1, alt: "Honeymoon Suite" },
-      { src: honeymoon3, alt: "Honeymoon Suite" },
-      { src: honeymoon5, alt: "Honeymoon Suite" },
-      { src: honeymoon6, alt: "Honeymoon Suite" },
-      { src: honeymoon7, alt: "Honeymoon Suite" },
-      { src: honeymoon8, alt: "Honeymoon Suite" },
-      { src: honeymoon9, alt: "Honeymoon Suite" },
-      { src: honeymoon11, alt: "Honeymoon Suite" },
-    ]),
+    ...honeymoonImages,
   },
   {
     name: "Frontier Room",
@@ -86,12 +136,7 @@ const rooms = [
     specialPrice: "$175",
     description: "The Frontier Room features two comfortable Queen beds and a private bath with a relaxing Jacuzzi tub and shower—blending rustic charm with modern amenities.",
     features: ["2 Queen Beds", "Jacuzzi Tub", "Private Bath"],
-    heroImage: frontier1,
-    images: await optimizeImages([
-      { src: frontier1, alt: "Frontier Room" },
-      { src: frontier2, alt: "Frontier Room" },
-      { src: frontier3, alt: "Frontier Room" },
-    ]),
+    ...frontierImages,
   },
   {
     name: "Queen Anne Room",
@@ -99,12 +144,7 @@ const rooms = [
     specialPrice: "$175",
     description: "The Queen Anne Room features two comfortable Queen beds and a private bath with a relaxing Jacuzzi tub and shower—perfect for unwinding.",
     features: ["2 Queen Beds", "Jacuzzi Tub", "Private Bath"],
-    heroImage: queenAnne1,
-    images: await optimizeImages([
-      { src: queenAnne1, alt: "Queen Anne Room" },
-      { src: queenAnne2, alt: "Queen Anne Room" },
-      { src: queenAnne3, alt: "Queen Anne Room" },
-    ]),
+    ...queenAnneImages,
   },
   {
     name: "USD Room",
@@ -112,19 +152,7 @@ const rooms = [
     specialPrice: "$175",
     description: "The University of South Dakota Room offers two inviting Queen beds and a private bath with a soothing Jacuzzi tub and shower.",
     features: ["2 Queen Beds", "USD Theme", "Private Bath"],
-    heroImage: usd0,
-    images: await optimizeImages([
-      { src: usd0, alt: "USD Room" },
-      { src: usd1, alt: "USD Room" },
-      { src: usd2, alt: "USD Room" },
-      { src: usd3, alt: "USD Room" },
-      { src: usd4, alt: "USD Room" },
-      { src: usd5, alt: "USD Room" },
-      { src: usd6, alt: "USD Room" },
-      { src: usd8, alt: "USD Room" },
-      { src: usd9, alt: "USD Room" },
-      { src: usd10, alt: "USD Room" },
-    ]),
+    ...usdImages,
   },
   {
     name: "John Crane Room",
@@ -132,13 +160,7 @@ const rooms = [
     specialPrice: "$175",
     description: "The newly renovated John Crane Room offers a luxurious King-size bed and all the comforts of a classic bed-and-breakfast retreat, featuring European reading furnishings.",
     features: ["King Bed", "Reading Nook", "Private Bath"],
-    heroImage: johnCrane1,
-    images: await optimizeImages([
-      { src: johnCrane1, alt: "John Crane Room" },
-      { src: johnCrane2, alt: "John Crane Room" },
-      { src: johnCrane3, alt: "John Crane Room" },
-      { src: johnCrane4, alt: "John Crane Room" },
-    ]),
+    ...johnCraneImages,
   },
   {
     name: "Native American Room",
@@ -146,13 +168,7 @@ const rooms = [
     specialPrice: "$160",
     description: "Designed for comfort and accessibility, the Native American Room features two Queen-size beds and a spacious private bath. This handicap-accessible suite offers beautiful Native American decor.",
     features: ["2 Queen Beds", "Accessible", "Private Bath"],
-    heroImage: nativeAmerican1,
-    images: await optimizeImages([
-      { src: nativeAmerican1, alt: "Native American Room" },
-      { src: nativeAmerican2, alt: "Native American Room" },
-      { src: nativeAmerican3, alt: "Native American Room" },
-      { src: nativeAmerican4, alt: "Native American Room" },
-    ]),
+    ...nativeAmericanImages,
   },
 ];
 
@@ -194,13 +210,13 @@ const amenities = [
     <div class="container mx-auto px-4 lg:px-8">
       <div class="mx-auto max-w-3xl text-center">
         <h2 class="font-serif text-3xl font-semibold tracking-tight sm:text-4xl mb-6">
-          South Dakota's Premier Vineyard Retreat
+          A Signature Winery & Distillery Stay
         </h2>
         <p class="text-lg leading-relaxed text-muted-foreground mb-4">
-          Experience the charm of our Bed & Breakfast nestled in the heart of Valiant Vineyards. Each of our six uniquely themed rooms offers a peaceful escape with modern comforts and authentic South Dakota hospitality.
+          Relax in one of our six thoughtfully appointed rooms and enjoy a memorable retreat surrounded by handcrafted wines, spirits, and warm South Dakota hospitality.
         </p>
         <p class="text-lg leading-relaxed text-muted-foreground">
-          Your stay includes complimentary wine tasting and a delicious homemade breakfast served each morning.
+          Your stay includes complimentary wine and spirit tasting and a delicious homemade breakfast served each morning.
         </p>
       </div>
     </div>
@@ -254,28 +270,29 @@ const amenities = [
         </p>
       </div>
 
-      <div class="space-y-24 lg:space-y-32">
+      <div class="space-y-24 lg:space-y-40">
         {rooms.map((room, index) => (
           <div class:list={[
-            "grid gap-8 lg:gap-12 items-center",
-            "lg:grid-cols-2"
+            "grid gap-8 lg:gap-12 items-center max-w-5xl mx-auto",
+            "md:grid-cols-5"
           ]}>
             <!-- Clickable Hero Image with Gallery -->
             <div class:list={[
-              "overflow-hidden rounded-lg shadow-lg",
-              index % 2 === 1 ? "lg:order-last" : ""
+              "overflow-hidden rounded-lg shadow-lg md:col-span-2",
+              index % 2 === 1 ? "md:order-last" : ""
             ]}>
               <RoomImageWithGallery
                 client:visible
-                heroSrc={room.images[0].src}
+                heroSrc={room.thumbnails[0].src}
                 heroAlt={room.name}
                 images={room.images}
+                thumbnails={room.thumbnails}
                 roomName={room.name}
               />
             </div>
 
             <!-- Room Info -->
-            <div class={index % 2 === 1 ? "lg:pr-8" : "lg:pl-8"}>
+            <div class="md:col-span-3">
               <div class="flex items-baseline gap-3 mb-3">
                 <h3 class="font-serif text-2xl font-semibold sm:text-3xl">
                   {room.name}
