@@ -66,7 +66,7 @@ const rooms = [
     name: "Honeymoon Suite",
     price: "$150+",
     specialPrice: "$195",
-    description: "Luxurious King-size bed with an in-room Jacuzzi tub for the ultimate romantic getaway.",
+    description: "The Honeymoon Suite offers a luxurious King-size bed, a private bath with shower, and an indulgent in-room Jacuzzi tub—ideal for romantic getaways.",
     features: ["King Bed", "In-Room Jacuzzi", "Private Bath"],
     heroImage: honeymoon1,
     images: await optimizeImages([
@@ -84,7 +84,7 @@ const rooms = [
     name: "Frontier Room",
     price: "$140+",
     specialPrice: "$175",
-    description: "Two comfortable Queen beds with a private bath featuring a relaxing Jacuzzi tub and shower.",
+    description: "The Frontier Room features two comfortable Queen beds and a private bath with a relaxing Jacuzzi tub and shower—blending rustic charm with modern amenities.",
     features: ["2 Queen Beds", "Jacuzzi Tub", "Private Bath"],
     heroImage: frontier1,
     images: await optimizeImages([
@@ -97,7 +97,7 @@ const rooms = [
     name: "Queen Anne Room",
     price: "$135+",
     specialPrice: "$175",
-    description: "Two comfortable Queen beds and a private bath with a relaxing Jacuzzi tub and shower.",
+    description: "The Queen Anne Room features two comfortable Queen beds and a private bath with a relaxing Jacuzzi tub and shower—perfect for unwinding.",
     features: ["2 Queen Beds", "Jacuzzi Tub", "Private Bath"],
     heroImage: queenAnne1,
     images: await optimizeImages([
@@ -110,7 +110,7 @@ const rooms = [
     name: "USD Room",
     price: "$135+",
     specialPrice: "$175",
-    description: "Two inviting Queen beds decorated with school spirit for University of South Dakota fans.",
+    description: "The University of South Dakota Room offers two inviting Queen beds and a private bath with a soothing Jacuzzi tub and shower.",
     features: ["2 Queen Beds", "USD Theme", "Private Bath"],
     heroImage: usd0,
     images: await optimizeImages([
@@ -130,7 +130,7 @@ const rooms = [
     name: "John Crane Room",
     price: "$130+",
     specialPrice: "$175",
-    description: "Luxurious King-size bed with a European reading chair and lamp, perfect for a peaceful retreat.",
+    description: "The newly renovated John Crane Room offers a luxurious King-size bed and all the comforts of a classic bed-and-breakfast retreat, featuring European reading furnishings.",
     features: ["King Bed", "Reading Nook", "Private Bath"],
     heroImage: johnCrane1,
     images: await optimizeImages([
@@ -144,7 +144,7 @@ const rooms = [
     name: "Native American Room",
     price: "$125+",
     specialPrice: "$160",
-    description: "Two Queen-size beds in our handicap-accessible suite, featuring beautiful Native American decor.",
+    description: "Designed for comfort and accessibility, the Native American Room features two Queen-size beds and a spacious private bath. This handicap-accessible suite offers beautiful Native American decor.",
     features: ["2 Queen Beds", "Accessible", "Private Bath"],
     heroImage: nativeAmerican1,
     images: await optimizeImages([
@@ -183,7 +183,7 @@ const amenities = [
           Stay With Us
         </h1>
         <p class="mt-4 text-xl text-white font-semibold max-w-2xl mx-auto [text-shadow:0_1px_4px_rgb(0_0_0/60%)]">
-          Where a good night's rest meets great wine & spirits
+          Relax, unwind, and savor the charm of South Dakota's oldest winery.
         </p>
       </div>
     </div>
@@ -214,24 +214,23 @@ const amenities = [
           <div class="text-center">
             <div class="mb-3 flex justify-center">
               {amenity.id === "tasting" && (
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-auto text-gold" fill="currentColor" viewBox="0 0 320 560">
+                  <path d="M48.6 11.8C50.5 4.8 56.8 0 64 0L256 0c7.2 0 13.5 4.8 15.4 11.8l43 157.8c3.7 13.5 5.5 27.4 5.5 41.3 0 82.4-63.4 149.9-144 156.6l0 144.5 80 0c8.8 0 16 7.2 16 16s-7.2 16-16 16L64 544c-8.8 0-16-7.2-16-16s7.2-16 16-16l80 0 0-144.5c-80.6-6.7-144-74.2-144-156.6 0-14 1.9-27.9 5.5-41.3l43-157.8zM41.3 160l-4.9 18C33.5 188.7 32 199.8 32 210.9 32 280 88 336 157.1 336l5.8 0c69.1 0 125.1-56 125.1-125.1 0-11.1-1.5-22.2-4.4-32.9l-4.9-18-237.4 0zM50 128L270 128 243.8 32 76.2 32 50 128z"/>
                 </svg>
               )}
               {amenity.id === "breakfast" && (
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gold" fill="currentColor" viewBox="0 0 512 512">
+                  <path d="M0 32l480 0c-2.3 7.2-18.1 56.8-47.3 148.6 48 34.9 79.3 91.5 79.3 155.4l0 8c0 80-72 136-72 136l-304 0S64 424 64 344l0-8c0-63.2 30.6-119.3 77.8-154.3L96 64 32 64 32 224 0 224 0 32zM173.9 176l226.7 0 35.6-112-305.9 0 43.6 112zM96.8 320c-.5 5.3-.8 10.6-.8 16l0 8c0 30.4 13.8 57.7 29.6 78.8 7.8 10.3 15.5 18.6 21.3 24.2l1.1 1 279.9 0 1.1-1c5.8-5.6 13.6-13.8 21.3-24.2 15.8-21.1 29.6-48.4 29.6-78.8l0-8c0-5.4-.3-10.7-.8-16L96.8 320zm6.5-32l369.4 0c-10.1-32.3-30.2-60.1-56.7-80l-256 0c-26.4 19.9-46.5 47.7-56.7 80z"/>
                 </svg>
               )}
               {amenity.id === "location" && (
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-auto text-gold" fill="currentColor" viewBox="0 0 384 512">
+                  <path d="M384 188.6C384 307.5 264.6 450 214.1 504.9 200.6 519.6 192 528 192 528s-8.6-8.4-22.1-23.1C119.4 450 0 307.5 0 188.6 0 84.4 86 0 192 0S384 84.4 384 188.6zm-352 0c0 31.3 10.1 66.6 27 103.2 16.8 36.4 39.6 72.3 62.8 104.2 26.1 35.8 52.2 66 70.1 85.6 17.9-19.5 44.1-49.8 70.1-85.6 23.2-32 46-67.8 62.8-104.2 17-36.7 27-71.9 27-103.2 0-85.9-71.1-156.6-160-156.6S32 102.6 32 188.6zM144 192a48 48 0 1 0 96 0 48 48 0 1 0 -96 0zm48 80a80 80 0 1 1 0-160 80 80 0 1 1 0 160z"/>
                 </svg>
               )}
               {amenity.id === "bath" && (
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gold" fill="currentColor" viewBox="0 0 512 512">
+                  <path d="M64 61.3c0-16.2 13.1-29.3 29.3-29.3 7.8 0 15.2 3.1 20.7 8.6L139 65.7c-7 11.1-11 24.2-11 38.3 0 20.2 8.3 38.5 21.8 51.6l-1.1 1.1c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l104-104c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-1.1 1.1c-13.1-13.4-31.4-21.8-51.6-21.8-14.1 0-27.2 4-38.3 11L136.6 17.9C125.1 6.5 109.5 0 93.3 0 59.4 0 32 27.4 32 61.3l0 194.7-16 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l16 0 0 80c0 30.5 12.2 58.2 32 78.4L64 496c0 8.8 7.2 16 16 16s16-7.2 16-16l0-26.8c14.5 6.9 30.8 10.8 48 10.8l224 0c17.2 0 33.5-3.9 48-10.8l0 26.8c0 8.8 7.2 16 16 16s16-7.2 16-16l0-49.6c19.8-20.2 32-47.9 32-78.4l0-80 16 0c8.8 0 16-7.2 16-16s-7.2-16-16-16L64 256 64 61.3zM229 76.4L172.4 133c-7.6-7.3-12.4-17.6-12.4-29 0-22.1 17.9-40 40-40 11.4 0 21.7 4.8 29 12.4zM64 288l384 0 0 80c0 44.2-35.8 80-80 80l-224 0c-44.2 0-80-35.8-80-80l0-80z"/>
                 </svg>
               )}
             </div>
@@ -289,13 +288,9 @@ const amenities = [
               </p>
 
               <!-- Features -->
-              <div class="flex flex-wrap gap-2 mb-6">
-                {room.features.map((feature) => (
-                  <span class="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
-                    {feature}
-                  </span>
-                ))}
-              </div>
+              <p class="text-sm text-muted-foreground mb-6">
+                {room.features.join(' · ')}
+              </p>
 
               <!-- Reserve Button -->
               <Button
@@ -309,9 +304,6 @@ const amenities = [
                 </svg>
                 Call to Reserve
               </Button>
-              <p class="mt-2 text-sm text-muted-foreground">
-                (605) 624-4500
-              </p>
             </div>
           </div>
         ))}
@@ -320,21 +312,21 @@ const amenities = [
   </section>
 
   <!-- Special Rates Notice -->
-  <section class="bg-burgundy text-white py-12 lg:py-16">
+  <section class="bg-muted py-12 lg:py-16">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="mx-auto max-w-3xl text-center">
-        <h2 class="font-serif text-2xl font-semibold sm:text-3xl mb-4">
+        <h2 class="font-serif text-2xl font-semibold sm:text-3xl mb-4 text-gold">
           Special Event Rates
         </h2>
-        <p class="text-white/90 mb-4">
+        <p class="text-muted-foreground mb-4">
           During Dakota Days, USD Graduation, and other special weekends, our rates are adjusted:
         </p>
         <div class="flex flex-wrap justify-center gap-4 text-sm">
-          <span class="bg-white/10 px-4 py-2 rounded-full">Honeymoon Suite: $195</span>
-          <span class="bg-white/10 px-4 py-2 rounded-full">Premium Rooms: $175</span>
-          <span class="bg-white/10 px-4 py-2 rounded-full">Native American: $160</span>
+          <span class="bg-background px-4 py-2 rounded-full border border-border">Honeymoon Suite: $195</span>
+          <span class="bg-background px-4 py-2 rounded-full border border-border">Premium Rooms: $175</span>
+          <span class="bg-background px-4 py-2 rounded-full border border-border">Native American: $160</span>
         </div>
-        <p class="mt-4 text-white/70 text-sm">
+        <p class="mt-4 text-muted-foreground/70 text-sm">
           3-night minimum stay required for special event weekends
         </p>
       </div>
