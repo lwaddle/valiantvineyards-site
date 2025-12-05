@@ -7,7 +7,7 @@ import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const POSTS_PER_PAGE = 9;
-  const allPosts = await getCollection("news");
+  const allPosts = await getCollection("news", ({ data }) => !data.draft);
   const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
 
   // Generate pages 2 through totalPages (page 1 is handled by index.astro)
@@ -21,7 +21,7 @@ const POSTS_PER_PAGE = 9;
 const { page } = Astro.params;
 const currentPage = parseInt(page);
 
-const allPosts = await getCollection("news");
+const allPosts = await getCollection("news", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );

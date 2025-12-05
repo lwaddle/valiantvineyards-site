@@ -4,7 +4,7 @@ import NewsPostLayout from "../../../layouts/NewsPostLayout.astro";
 import type { GetStaticPaths } from "astro";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getCollection("news");
+  const posts = await getCollection("news", ({ data }) => !data.draft);
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },

@@ -11,7 +11,7 @@ import defaultNewsImage from "../assets/images/wine-bottles-with-medals-landscap
 import { hours, address, contact } from "../data/site-info";
 
 // Fetch news posts: pinned first, then by date, limited to 3
-const allPosts = await getCollection("news");
+const allPosts = await getCollection("news", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort((a, b) => {
   if (a.data.pinned && !b.data.pinned) return -1;
   if (!a.data.pinned && b.data.pinned) return 1;

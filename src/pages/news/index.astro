@@ -6,7 +6,7 @@ import defaultImage from "../../assets/images/wine-bottles-with-medals-landscape
 
 const POSTS_PER_PAGE = 9;
 
-const allPosts = await getCollection("news");
+const allPosts = await getCollection("news", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
