@@ -19,7 +19,8 @@
     "tailwind-merge": "^3.4.0",
     "tailwind-variants": "^3.2.2",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@internationalized/date": "^3.10.0"

@@ -10,6 +10,7 @@ const news = defineCollection({
       date: z.coerce.date(),
       featuredImage: image().optional(),
       featuredImageAlt: z.string().optional(),
+      pinned: z.boolean().optional().default(false),
     }),
 });
 
