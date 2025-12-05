@@ -30,6 +30,41 @@ const footerLinks = {
 
 <footer class="border-t border-secondary-foreground/10 bg-secondary text-secondary-foreground">
   <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+    <!-- Newsletter Signup -->
+    <div class="mb-12 border-b border-secondary-foreground/10 pb-12">
+      <div class="flex flex-col gap-6 text-center md:flex-row md:items-center md:gap-12 md:justify-between md:text-left">
+        <div class="md:max-w-xl">
+          <h3 class="mb-2 font-serif text-xl font-semibold text-gold">Stay Connected</h3>
+          <p class="text-sm text-secondary-foreground/70">
+            Stay up to date on the latest offers, products, and news at Valiant Winery & Distillery.
+          </p>
+        </div>
+        <div class="w-full md:w-auto">
+          <form
+            id="newsletter-form"
+            action="https://valiantvineyards.us21.list-manage.com/subscribe/post?u=b8ceeae30d01efc23353fa0ae&id=b25550092c&f_id=0064b0e6f0"
+            method="POST"
+            class="flex flex-col gap-3 sm:flex-row"
+          >
+            <input
+              type="email"
+              name="EMAIL"
+              placeholder="Enter your email"
+              required
+              class="flex-1 rounded-md border border-secondary-foreground/20 bg-secondary-foreground/5 px-4 py-3 text-sm text-secondary-foreground placeholder:text-secondary-foreground/50 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 sm:min-w-64 lg:min-w-80"
+            />
+            <button
+              type="submit"
+              class="rounded-md bg-gold px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-light"
+            >
+              Subscribe
+            </button>
+          </form>
+          <p id="newsletter-message" class="mt-4 text-sm hidden"></p>
+        </div>
+      </div>
+    </div>
+
     <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
       <!-- Visit -->
       <div>
@@ -113,3 +148,77 @@ const footerLinks = {
     </div>
   </div>
 </footer>
+
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement;
+  const message = document.getElementById('newsletter-message') as HTMLElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = (form.querySelector('input[name="EMAIL"]') as HTMLInputElement).value;
+    const button = form.querySelector('button') as HTMLButtonElement;
+    const originalText = button.textContent;
+
+    // Disable button during submission
+    button.disabled = true;
+    button.textContent = 'Subscribing...';
+
+    // Convert URL to JSONP endpoint
+    const url = form.action.replace('/post?', '/post-json?') + `&EMAIL=${encodeURIComponent(email)}`;
+
+    // Create unique callback name
+    const callbackName = 'mc_callback_' + Date.now();
+
+    // Create promise for JSONP response
+    const response = await new Promise<{result: string; msg: string}>((resolve) => {
+      // Set up callback
+      (window as any)[callbackName] = (data: {result: string; msg: string}) => {
+        resolve(data);
+        delete (window as any)[callbackName];
+        document.body.removeChild(script);
+      };
+
+      // Create script tag for JSONP
+      const script = document.createElement('script');
+      script.src = url + `&c=${callbackName}`;
+      document.body.appendChild(script);
+
+      // Timeout after 10 seconds
+      setTimeout(() => {
+        if ((window as any)[callbackName]) {
+          resolve({ result: 'error', msg: 'Request timed out. Please try again.' });
+          delete (window as any)[callbackName];
+        }
+      }, 10000);
+    });
+
+    // Show message
+    message.classList.remove('hidden', 'text-green-400', 'text-red-400');
+
+    if (response.result === 'success') {
+      message.classList.add('text-green-400');
+      message.textContent = 'Thanks for subscribing! Please check your email to confirm.';
+      form.reset();
+    } else {
+      message.classList.add('text-red-400');
+      // Clean up Mailchimp's error messages (they often include HTML)
+      let errorMsg = response.msg || 'Something went wrong. Please try again.';
+      if (errorMsg.includes('already subscribed')) {
+        errorMsg = 'This email is already subscribed to our list.';
+      } else if (errorMsg.includes('<')) {
+        errorMsg = errorMsg.split('<')[0].trim() || 'Something went wrong. Please try again.';
+      }
+      message.textContent = errorMsg;
+    }
+
+    // Re-enable button
+    button.disabled = false;
+    button.textContent = originalText;
+
+    // Auto-hide message after 5 seconds
+    setTimeout(() => {
+      message.classList.add('hidden');
+    }, 5000);
+  });
+</script>
