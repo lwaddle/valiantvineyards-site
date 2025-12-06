@@ -90,7 +90,7 @@ const currentPath = Astro.url.pathname;
 
     <!-- Mobile Navigation -->
     <div class="lg:hidden">
-      <MobileNav client:load navigation={navigation} currentPath={currentPath} />
+      <MobileNav client:idle navigation={navigation} currentPath={currentPath} />
     </div>
   </div>
 </header>

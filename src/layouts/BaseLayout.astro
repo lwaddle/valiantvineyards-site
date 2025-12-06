@@ -28,8 +28,12 @@ const fullTitle = title === "Home" ? "Valiant Vineyards Winery & Distillery" : `
     <link rel="preload" href="/fonts/Mulish-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <title>{fullTitle}</title>
 
+    <!-- Preconnect to third-party domains -->
+    <link rel="preconnect" href="https://cdn-cookieyes.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+
     <!-- CookieYes Banner -->
-    <script is:inline id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/6ba0fbf3ca0655582cd3cb4e/script.js"></script>
+    <script is:inline async id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/6ba0fbf3ca0655582cd3cb4e/script.js"></script>
 
     <!-- Google Analytics - blocked until consent -->
     <script
