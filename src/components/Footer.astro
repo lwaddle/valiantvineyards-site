@@ -1,9 +1,13 @@
 ---
+import logoDark from "../assets/logos/logo-dark.svg";
+import { social } from "../data/site-info";
+
 const currentYear = new Date().getFullYear();
 
 const footerLinks = {
   visit: [
     { name: "Tasting Room", href: "/tasting-room/" },
+    { name: "Email Sign Up", href: "/tasting-room-sign-up/" },
     { name: "Bed & Breakfast", href: "/bed-and-breakfast/" },
   ],
   wineSpirits: [
@@ -12,22 +16,59 @@ const footerLinks = {
   ],
   events: [
     { name: "Private Events", href: "/private-events/" },
-    { name: "Weddings", href: "/private-events/weddings/" },
+    { name: "Weddings", href: "/weddings/" },
   ],
   about: [
     { name: "Our Story", href: "/about/" },
     { name: "Our Team", href: "/our-team/" },
+    { name: "News", href: "/news/" },
     { name: "Contact", href: "/contact/" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy-policy/" },
     { name: "Cookie Policy", href: "/cookie-policy/" },
+    { name: "Shareholders", href: "https://valiantvineyardsinc-my.sharepoint.com/:f:/g/personal/sherry_valiantvineyards_us/EkDHsWqcSPBHoZDQ7X93J0MBu2uIZEnpDMqnfievGcNOIw?e=Uauahg", external: true },
   ],
 };
 ---
 
-<footer class="border-t border-border bg-secondary text-secondary-foreground">
-  <div class="container mx-auto px-4 py-12 lg:px-8">
+<footer class="border-t border-secondary-foreground/10 bg-secondary text-secondary-foreground">
+  <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+    <!-- Newsletter Signup -->
+    <div class="mb-12 border-b border-secondary-foreground/10 pb-12">
+      <div class="flex flex-col gap-6 text-center md:flex-row md:items-center md:gap-12 md:justify-between md:text-left">
+        <div class="md:max-w-xl">
+          <h3 class="mb-2 font-serif text-xl font-semibold text-gold">Stay Connected</h3>
+          <p class="text-sm text-secondary-foreground/70">
+            Stay up to date on the latest offers, products, and news at Valiant Winery & Distillery.
+          </p>
+        </div>
+        <div class="w-full md:w-auto">
+          <form
+            id="newsletter-form"
+            action="https://valiantvineyards.us21.list-manage.com/subscribe/post?u=b8ceeae30d01efc23353fa0ae&id=b25550092c&f_id=0064b0e6f0"
+            method="POST"
+            class="flex flex-col gap-3 sm:flex-row"
+          >
+            <input
+              type="email"
+              name="EMAIL"
+              placeholder="Enter your email"
+              required
+              class="flex-1 rounded-md border border-secondary-foreground/20 bg-secondary-foreground/5 px-4 py-3 text-sm text-secondary-foreground placeholder:text-secondary-foreground/50 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 sm:min-w-64 lg:min-w-80"
+            />
+            <button
+              type="submit"
+              class="rounded-md bg-gold px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-light"
+            >
+              Subscribe
+            </button>
+          </form>
+          <p id="newsletter-message" class="mt-4 text-sm hidden"></p>
+        </div>
+      </div>
+    </div>
+
     <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
       <!-- Visit -->
       <div>
@@ -35,7 +76,7 @@ const footerLinks = {
         <ul class="space-y-2">
           {footerLinks.visit.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+              <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
                 {link.name}
               </a>
             </li>
@@ -49,7 +90,7 @@ const footerLinks = {
         <ul class="space-y-2">
           {footerLinks.wineSpirits.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+              <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
                 {link.name}
               </a>
             </li>
@@ -63,7 +104,7 @@ const footerLinks = {
         <ul class="space-y-2">
           {footerLinks.events.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+              <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
                 {link.name}
               </a>
             </li>
@@ -77,7 +118,7 @@ const footerLinks = {
         <ul class="space-y-2">
           {footerLinks.about.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+              <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
                 {link.name}
               </a>
             </li>
@@ -91,7 +132,11 @@ const footerLinks = {
         <ul class="space-y-2">
           {footerLinks.legal.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-secondary-foreground/70 transition-colors hover:text-gold">
+              <a
+                href={link.href}
+                class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold"
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
                 {link.name}
               </a>
             </li>
@@ -102,8 +147,32 @@ const footerLinks = {
 
     <!-- Bottom bar -->
     <div class="mt-12 border-t border-secondary-foreground/10 pt-8">
-      <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <p class="font-serif text-lg font-semibold">Valiant Vineyards</p>
+      <div class="flex flex-col items-center gap-4">
+        <img src={logoDark.src} alt="Valiant Vineyards" class="h-16 opacity-70" />
+        <div class="flex gap-4">
+          <a
+            href={social.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Facebook"
+            class="text-secondary-foreground/70 transition-colors hover:text-gold"
+          >
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a
+            href={social.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Instagram"
+            class="text-secondary-foreground/70 transition-colors hover:text-gold"
+          >
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
         <p class="text-sm text-secondary-foreground/70">
           &copy; {currentYear} Valiant Vineyards Winery & Distillery. All rights reserved.
         </p>
@@ -111,3 +180,77 @@ const footerLinks = {
     </div>
   </div>
 </footer>
+
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement;
+  const message = document.getElementById('newsletter-message') as HTMLElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = (form.querySelector('input[name="EMAIL"]') as HTMLInputElement).value;
+    const button = form.querySelector('button') as HTMLButtonElement;
+    const originalText = button.textContent;
+
+    // Disable button during submission
+    button.disabled = true;
+    button.textContent = 'Subscribing...';
+
+    // Convert URL to JSONP endpoint
+    const url = form.action.replace('/post?', '/post-json?') + `&EMAIL=${encodeURIComponent(email)}`;
+
+    // Create unique callback name
+    const callbackName = 'mc_callback_' + Date.now();
+
+    // Create promise for JSONP response
+    const response = await new Promise<{result: string; msg: string}>((resolve) => {
+      // Set up callback
+      (window as any)[callbackName] = (data: {result: string; msg: string}) => {
+        resolve(data);
+        delete (window as any)[callbackName];
+        document.body.removeChild(script);
+      };
+
+      // Create script tag for JSONP
+      const script = document.createElement('script');
+      script.src = url + `&c=${callbackName}`;
+      document.body.appendChild(script);
+
+      // Timeout after 10 seconds
+      setTimeout(() => {
+        if ((window as any)[callbackName]) {
+          resolve({ result: 'error', msg: 'Request timed out. Please try again.' });
+          delete (window as any)[callbackName];
+        }
+      }, 10000);
+    });
+
+    // Show message
+    message.classList.remove('hidden', 'text-green-400', 'text-red-400');
+
+    if (response.result === 'success') {
+      message.classList.add('text-green-400');
+      message.textContent = 'Thanks for subscribing! Please check your email to confirm.';
+      form.reset();
+    } else {
+      message.classList.add('text-red-400');
+      // Clean up Mailchimp's error messages (they often include HTML)
+      let errorMsg = response.msg || 'Something went wrong. Please try again.';
+      if (errorMsg.includes('already subscribed')) {
+        errorMsg = 'This email is already subscribed to our list.';
+      } else if (errorMsg.includes('<')) {
+        errorMsg = errorMsg.split('<')[0].trim() || 'Something went wrong. Please try again.';
+      }
+      message.textContent = errorMsg;
+    }
+
+    // Re-enable button
+    button.disabled = false;
+    button.textContent = originalText;
+
+    // Auto-hide message after 5 seconds
+    setTimeout(() => {
+      message.classList.add('hidden');
+    }, 5000);
+  });
+</script>

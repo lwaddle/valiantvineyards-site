@@ -1,0 +1,162 @@
+---
+import "../styles/global.css";
+import logo from "../assets/logos/logo-dark.svg";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sign up for the Valiant Vineyards newsletter" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Newsletter Sign Up | Valiant Vineyards</title>
+
+    <!-- CookieYes Banner -->
+    <script is:inline id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/6ba0fbf3ca0655582cd3cb4e/script.js"></script>
+
+    <!-- Google Analytics - blocked until consent -->
+    <script
+      is:inline
+      type="text/plain"
+      data-cookiecategory="analytics"
+      src="https://www.googletagmanager.com/gtag/js?id=G-PVVXRK70TC"
+      async></script>
+    <script is:inline type="text/plain" data-cookiecategory="analytics">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-PVVXRK70TC');
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-secondary text-secondary-foreground">
+    <main class="flex-1 flex items-center justify-center p-6">
+      <div class="w-full max-w-md text-center">
+        <img src={logo.src} alt="Valiant Vineyards" class="mx-auto mb-8 h-24 opacity-80" />
+
+        <h1 class="font-serif text-2xl font-semibold text-gold mb-3">
+          Stay Connected
+        </h1>
+        <p class="text-secondary-foreground/70 mb-8">
+          Sign up to receive news, offers, and updates from Valiant Vineyards.
+        </p>
+
+        <form
+          id="signup-form"
+          action="https://valiantvineyards.us21.list-manage.com/subscribe/post?u=b8ceeae30d01efc23353fa0ae&id=b25550092c&f_id=006bb0e6f0"
+          method="POST"
+          class="space-y-4"
+        >
+          <input
+            type="email"
+            name="EMAIL"
+            placeholder="Enter your email address"
+            required
+            autocomplete="email"
+            class="w-full rounded-lg border border-secondary-foreground/20 bg-secondary-foreground/5 px-5 py-4 text-lg text-secondary-foreground placeholder:text-secondary-foreground/50 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+          />
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-gold px-6 py-4 text-lg font-semibold text-white transition-colors hover:bg-gold-light active:bg-gold-light"
+          >
+            Subscribe
+          </button>
+        </form>
+
+        <div id="message" class="mt-6 hidden">
+          <p id="message-text" class="text-lg"></p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-4 text-center">
+      <p class="text-xs text-secondary-foreground/50">
+        &copy; {new Date().getFullYear()} Valiant Vineyards Winery & Distillery
+      </p>
+    </footer>
+  </body>
+</html>
+
+<script>
+  const form = document.getElementById('signup-form') as HTMLFormElement;
+  const messageContainer = document.getElementById('message') as HTMLElement;
+  const messageText = document.getElementById('message-text') as HTMLElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const emailInput = form.querySelector('input[name="EMAIL"]') as HTMLInputElement;
+    const email = emailInput.value;
+    const button = form.querySelector('button') as HTMLButtonElement;
+    const originalText = button.textContent;
+
+    // Disable button during submission
+    button.disabled = true;
+    button.textContent = 'Subscribing...';
+
+    // Convert URL to JSONP endpoint
+    const url = form.action.replace('/post?', '/post-json?') + `&EMAIL=${encodeURIComponent(email)}`;
+
+    // Create unique callback name
+    const callbackName = 'mc_callback_' + Date.now();
+
+    // Create promise for JSONP response
+    const response = await new Promise<{result: string; msg: string}>((resolve) => {
+      // Set up callback
+      (window as any)[callbackName] = (data: {result: string; msg: string}) => {
+        resolve(data);
+        delete (window as any)[callbackName];
+        document.body.removeChild(script);
+      };
+
+      // Create script tag for JSONP
+      const script = document.createElement('script');
+      script.src = url + `&c=${callbackName}`;
+      document.body.appendChild(script);
+
+      // Timeout after 10 seconds
+      setTimeout(() => {
+        if ((window as any)[callbackName]) {
+          resolve({ result: 'error', msg: 'Request timed out. Please try again.' });
+          delete (window as any)[callbackName];
+        }
+      }, 10000);
+    });
+
+    // Show message
+    messageContainer.classList.remove('hidden');
+    messageText.classList.remove('text-green-400', 'text-red-400');
+
+    if (response.result === 'success') {
+      messageText.classList.add('text-green-400');
+      messageText.textContent = 'Thank you for subscribing!';
+      form.reset();
+
+      // Auto-reset page after 3 seconds for next person
+      setTimeout(() => {
+        messageContainer.classList.add('hidden');
+        emailInput.focus();
+      }, 3000);
+    } else {
+      messageText.classList.add('text-red-400');
+      // Clean up Mailchimp's error messages
+      let errorMsg = response.msg || 'Something went wrong. Please try again.';
+      if (errorMsg.includes('already subscribed')) {
+        errorMsg = 'This email is already subscribed.';
+      } else if (errorMsg.includes('<')) {
+        errorMsg = errorMsg.split('<')[0].trim() || 'Something went wrong. Please try again.';
+      }
+      messageText.textContent = errorMsg;
+
+      // Auto-hide error after 4 seconds
+      setTimeout(() => {
+        messageContainer.classList.add('hidden');
+      }, 4000);
+    }
+
+    // Re-enable button
+    button.disabled = false;
+    button.textContent = originalText;
+  });
+</script>

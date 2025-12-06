@@ -3,3 +3,9 @@
 
 # URL changes
 /about/people/  /our-team/  301
+/private-events/weddings/  /weddings/  301
+
+# Legacy QR code redirects
+/gold-rush/  /recipes/gold-rush/  301
+/cherry-bourbon-sour-cocktail/  /recipes/cherry-bourbon-sour-cocktail/  301
+/the-whiskey-trip-podcast/  /news/post/the-whiskey-trip-podcast/  301

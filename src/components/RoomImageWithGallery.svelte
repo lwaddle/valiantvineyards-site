@@ -1,0 +1,142 @@
+<script lang="ts">
+  export let heroSrc: string;
+  export let heroAlt: string;
+  export let images: { src: string; alt: string }[] = [];
+  export let thumbnails: { src: string; alt: string }[] = [];
+  export let roomName: string = '';
+
+  // Use thumbnails if provided, otherwise fall back to full images
+  $: thumbImages = thumbnails.length > 0 ? thumbnails : images;
+
+  let isOpen = false;
+  let currentIndex = 0;
+
+  function openGallery(index: number = 0) {
+    currentIndex = index;
+    isOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    isOpen = false;
+    document.body.style.overflow = '';
+  }
+
+  function next() {
+    currentIndex = (currentIndex + 1) % images.length;
+  }
+
+  function prev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+  }
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (!isOpen) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  }
+
+  function handleBackdropClick(e: MouseEvent) {
+    if (e.target === e.currentTarget) close();
+  }
+</script>
+
+<svelte:window on:keydown={handleKeydown} />
+
+<!-- Clickable Hero Image -->
+<button
+  on:click={() => openGallery(0)}
+  class="block w-full h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 rounded-lg overflow-hidden"
+  aria-label="View all photos of {roomName}"
+>
+  <div class="aspect-[4/3] relative group">
+    <img
+      src={heroSrc}
+      alt={heroAlt}
+      class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+    />
+    <!-- Hover overlay with icon -->
+    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+      <div class="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-charcoal" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</button>
+
+<!-- Modal/Lightbox -->
+{#if isOpen}
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+    on:click={handleBackdropClick}
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image gallery for {roomName}"
+  >
+    <!-- Close Button -->
+    <button
+      on:click={close}
+      class="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+      aria-label="Close gallery"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Image Counter -->
+    <div class="absolute top-4 left-4 text-white/80 text-sm">
+      {currentIndex + 1} / {images.length}
+    </div>
+
+    <!-- Main Image -->
+    <div class="relative max-h-[85vh] max-w-[90vw] flex items-center justify-center">
+      <img
+        src={images[currentIndex].src}
+        alt={images[currentIndex].alt}
+        class="max-h-[85vh] max-w-[90vw] object-contain"
+      />
+    </div>
+
+    <!-- Navigation Arrows -->
+    {#if images.length > 1}
+      <button
+        on:click={prev}
+        class="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+        aria-label="Previous image"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        on:click={next}
+        class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+        aria-label="Next image"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    {/if}
+
+    <!-- Thumbnail Strip -->
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto py-2 px-4">
+      {#each thumbImages as image, i}
+        <button
+          on:click={() => currentIndex = i}
+          class="flex-shrink-0 h-16 w-16 rounded overflow-hidden transition-all {i === currentIndex ? 'ring-2 ring-white ring-offset-2 ring-offset-black/90' : 'opacity-50 hover:opacity-75'}"
+        >
+          <img
+            src={image.src}
+            alt={image.alt}
+            class="h-full w-full object-cover"
+          />
+        </button>
+      {/each}
+    </div>
+  </div>
+{/if}
