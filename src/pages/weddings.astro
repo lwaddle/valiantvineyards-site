@@ -1,14 +1,14 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Button from "../../components/Button.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
 import { Image } from "astro:assets";
 
 // Import images
-import heroImage from "../../assets/images/wedding-dance-dip-kiss.jpg";
+import heroImage from "../assets/images/wedding-dance-dip-kiss.jpg";
 
 // Import gallery images
 const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
-  "../../assets/images/wedding-gallery/*.jpg",
+  "../assets/images/wedding-gallery/*.jpg",
   { eager: true }
 );
 
@@ -366,7 +366,7 @@ const includedServices = [
     <div class="container mx-auto px-4 lg:px-8 text-center">
       <p class="text-muted-foreground mb-4">Planning a different type of event?</p>
       <Button
-        href="/private-events"
+        href="/private-events/"
         variant="gold-outline"
       >
         View All Private Event Options
