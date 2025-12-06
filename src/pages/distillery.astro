@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import Button from "../components/Button.astro";
+import HeroImage from "../components/HeroImage.astro";
 import heroImage from "../assets/images/commercial-still.webp";
 
 // Spirit label images
@@ -56,13 +57,10 @@ const spirits = [
   <!-- Hero Section -->
   <section class="relative">
     <div class="relative min-h-[50vh] lg:min-h-[60vh] flex items-center justify-center py-24">
-      <Image
+      <HeroImage
         src={heroImage}
         alt="Copper pot stills at Stone Faces Distillery"
-        class="absolute inset-0 h-full w-full object-cover object-center"
-        widths={[640, 1024, 1536, 2048]}
-        sizes="100vw"
-        quality={90}
+        position="center"
       />
       <div class="absolute inset-0 bg-black/50"></div>
 

@@ -32,16 +32,24 @@ const placeholder = await getImage({
   format: "webp",
 });
 
-// Read the placeholder file and convert to base64
-// The placeholder.src is a URL path, we need to read the actual file
+// Convert placeholder to inline base64 data URL
+// This ensures the placeholder is embedded in the HTML and displays instantly
+// without requiring an additional network request
 let dataUrl: string;
 
 if (import.meta.env.DEV) {
-  // In dev mode, use the URL directly (it's served by Vite)
-  dataUrl = placeholder.src;
+  // In dev mode, fetch the placeholder from Vite's dev server and convert to base64
+  try {
+    const response = await fetch(new URL(placeholder.src, Astro.url.origin));
+    const buffer = await response.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString("base64");
+    dataUrl = `data:image/webp;base64,${base64}`;
+  } catch {
+    // Fallback to URL if fetch fails
+    dataUrl = placeholder.src;
+  }
 } else {
   // In build mode, read the file from disk and inline as base64
-  // The getImage output path is relative to the dist folder during build
   const filePath = fileURLToPath(new URL(`../../dist${placeholder.src}`, import.meta.url));
   try {
     const buffer = await readFile(filePath);
