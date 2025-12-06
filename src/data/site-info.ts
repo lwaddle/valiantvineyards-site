@@ -31,6 +31,6 @@ export const address = {
 };
 
 export const social = {
-  facebook: "https://www.facebook.com/ValiantVineyards",
-  instagram: "https://www.instagram.com/valiantvineyards",
+  facebook: "https://www.facebook.com/valiant.vineyards",
+  instagram: "https://www.instagram.com/valiant_vineyards/",
 };
