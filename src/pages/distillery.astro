@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import Button from "../components/Button.astro";
+import HeroImage from "../components/HeroImage.astro";
 import heroImage from "../assets/images/commercial-still.webp";
 
 // Spirit label images
@@ -56,18 +57,14 @@ const spirits = [
   <!-- Hero Section -->
   <section class="relative">
     <div class="relative min-h-[50vh] lg:min-h-[60vh] flex items-center justify-center py-24">
-      <Image
+      <HeroImage
         src={heroImage}
         alt="Copper pot stills at Stone Faces Distillery"
-        class="absolute inset-0 h-full w-full object-cover object-center"
-        widths={[640, 1024, 1536, 2048]}
-        sizes="100vw"
-        quality={90}
+        position="center"
       />
       <div class="absolute inset-0 bg-black/50"></div>
 
       <div class="container relative mx-auto px-4 lg:px-8 text-center">
-        <p class="text-gold font-semibold tracking-widest uppercase mb-3 [text-shadow:0_1px_3px_rgb(0_0_0/80%)]">Stone Faces Distillery</p>
         <h1 class="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
           Craft Spirits
         </h1>
@@ -82,6 +79,7 @@ const spirits = [
   <section class="py-12 lg:py-16">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="mx-auto max-w-3xl text-center">
+        <p class="text-gold font-semibold tracking-widest uppercase mb-4">Stone Faces Distillery</p>
         <p class="text-lg text-muted-foreground">
           At Stone Faces Distillery, we craft premium spirits using traditional methods and locally-sourced ingredients. From smooth vodka to aged whiskeys, each bottle represents our commitment to quality and the spirit of South Dakota.
         </p>
@@ -112,7 +110,7 @@ const spirits = [
               <h2 class="font-serif text-xl font-semibold text-foreground mb-3">
                 {spirit.name}
               </h2>
-              <p class="text-muted-foreground text-sm leading-relaxed">
+              <p class="text-muted-foreground text-base leading-relaxed">
                 {spirit.description}
               </p>
             </div>

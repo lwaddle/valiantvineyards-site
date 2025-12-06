@@ -2,7 +2,9 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import defaultImage from "../../assets/images/wine-bottles-with-medals-landscape.jpg";
+import HeroImage from "../../components/HeroImage.astro";
+import defaultImage from "../../assets/images/wine-bottles-with-medals-landscape.webp";
+import heroImage from "../../assets/images/casks-in-cellar.webp";
 
 const POSTS_PER_PAGE = 9;
 
@@ -20,17 +22,26 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
   title="News & Events"
   description="Stay up to date with the latest news, events, and happenings at Valiant Vineyards Winery & Distillery."
 >
-  <!-- Header -->
-  <section class="bg-neutral-100 py-16 lg:py-20">
-    <div class="container mx-auto px-4 lg:px-8 text-center">
-      <h1
-        class="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
-      >
-        News & Events
-      </h1>
-      <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-        Stay up to date with the latest happenings at Valiant Vineyards.
-      </p>
+  <!-- Hero Section -->
+  <section class="relative">
+    <div class="relative min-h-[50vh] flex items-center justify-center py-24">
+      <HeroImage
+        src={heroImage}
+        alt="Oak casks aging in the wine cellar at Valiant Vineyards"
+        widths={[640, 1024, 1536, 2048]}
+        sizes="100vw"
+        quality={90}
+      />
+      <div class="absolute inset-0 bg-black/50"></div>
+
+      <div class="container relative mx-auto px-4 lg:px-8 text-center">
+        <h1 class="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          News & Events
+        </h1>
+        <p class="mt-4 text-xl text-white font-semibold max-w-2xl mx-auto [text-shadow:0_1px_4px_rgb(0_0_0/60%)]">
+          Stay up to date with the latest happenings at Valiant Vineyards.
+        </p>
+      </div>
     </div>
   </section>
 

@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
-import heroImage from "../assets/images/winemakers-lucas-leif-rum-cropped.jpg";
+import HeroImage from "../components/HeroImage.astro";
+import heroImage from "../assets/images/winemakers-lucas-leif-rum-cropped.webp";
 
 // Team member images
 import eldon from "../assets/images/team/eldon-sipping-wine.webp";
@@ -55,13 +56,10 @@ const tastingRoom = [
   <!-- Hero Section -->
   <section class="relative">
     <div class="relative min-h-[50vh] lg:min-h-[60vh] flex items-center justify-center py-24">
-      <Image
+      <HeroImage
         src={heroImage}
         alt="Leif and Lucas, our winemaking team, with Clay Turner spirits"
-        class="absolute inset-0 h-full w-full object-cover object-top"
-        widths={[640, 1024, 1536, 2048]}
-        sizes="100vw"
-        quality={90}
+        position="top"
       />
       <div class="absolute inset-0 bg-black/50"></div>
 

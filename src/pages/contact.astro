@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/Button.astro";
-import { Image } from "astro:assets";
-import heroImage from "../assets/images/dogs-in-cellar.jpg";
+import HeroImage from "../components/HeroImage.astro";
+import heroImage from "../assets/images/dogs-in-cellar.webp";
 import { contact, address, hours } from "../data/site-info";
 
 const WEB3FORMS_ACCESS_KEY = "18309f94-8656-49f6-8b8a-0274b5758df4";
@@ -13,13 +13,10 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
   <!-- Hero Section -->
   <section class="relative">
     <div class="relative min-h-[40vh] md:min-h-[50vh] lg:min-h-[70vh] flex items-center justify-center py-24">
-      <Image
+      <HeroImage
         src={heroImage}
         alt="Luna and Rizzo, the official winery dogs of Valiant Vineyards, sitting in front of oak barrels"
-        class="absolute inset-0 h-full w-full object-cover object-center lg:object-top"
-        widths={[640, 1024, 1536, 2048]}
-        sizes="100vw"
-        quality={90}
+        position="center"
       />
       <div class="absolute inset-0 bg-black/40"></div>
 

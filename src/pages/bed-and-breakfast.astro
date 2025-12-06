@@ -3,7 +3,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/Button.astro";
 import RoomImageWithGallery from "../components/RoomImageWithGallery.svelte";
 import { Image, getImage } from "astro:assets";
-import heroImage from "../assets/images/wine-glass-next-to-bed-with-lamp.jpg";
+import HeroImage from "../components/HeroImage.astro";
+import heroImage from "../assets/images/wine-glass-next-to-bed-with-lamp.webp";
 
 // Import all room images
 // Honeymoon Suite
@@ -55,8 +56,8 @@ async function optimizeImagesMultiSize(images: { src: ImageMetadata; alt: string
   const results = await Promise.all(
     images.map(async (img) => {
       const [full, thumb] = await Promise.all([
-        getImage({ src: img.src, width: 1200, format: 'webp' }),
-        getImage({ src: img.src, width: 600, format: 'webp' }),
+        getImage({ src: img.src, width: 1200, format: 'webp', quality: 85 }),
+        getImage({ src: img.src, width: 600, format: 'webp', quality: 80 }),
       ]);
       return {
         full: { src: full.src, alt: img.alt },
@@ -184,10 +185,9 @@ const amenities = [
   <!-- Hero Section -->
   <section class="relative">
     <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24">
-      <Image
+      <HeroImage
         src={heroImage}
         alt="Cozy bed with wine glass at Valiant Vineyards Bed and Breakfast"
-        class="absolute inset-0 h-full w-full object-cover object-center"
         widths={[640, 1024, 1536, 2048]}
         sizes="100vw"
         quality={90}
@@ -251,7 +251,7 @@ const amenities = [
               )}
             </div>
             <h3 class="font-serif text-lg font-semibold mb-1">{amenity.title}</h3>
-            <p class="text-sm text-muted-foreground">{amenity.description}</p>
+            <p class="text-base text-muted-foreground">{amenity.description}</p>
           </div>
         ))}
       </div>
@@ -381,7 +381,7 @@ const amenities = [
           <!-- Policies -->
           <div class="rounded-lg border border-border bg-background p-6">
             <h3 class="font-serif text-xl font-semibold mb-4 text-gold">Policies</h3>
-            <ul class="space-y-2 text-muted-foreground text-sm">
+            <ul class="space-y-2 text-muted-foreground text-base">
               <li>7-day cancellation policy</li>
               <li>30-day notice for groups & special events</li>
               <li>No pets allowed</li>

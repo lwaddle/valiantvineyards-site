@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { slide } from "svelte/transition";
+  import { slide, fade } from "svelte/transition";
   import * as Collapsible from "$lib/components/ui/collapsible";
 
   type NavItem = {
@@ -15,6 +15,7 @@
 
   let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
+  let headerHeight = $state(0);
 
   function toggleMenu() {
     isOpen = !isOpen;
@@ -23,6 +24,16 @@
   function closeMenu() {
     isOpen = false;
   }
+
+  // Update header height on mount and when menu opens
+  $effect(() => {
+    if (isOpen) {
+      const header = document.querySelector('header');
+      if (header) {
+        headerHeight = header.getBoundingClientRect().height;
+      }
+    }
+  });
 </script>
 
 <!-- Toggle Button -->
@@ -47,9 +58,11 @@
 </button>
 
 {#if isOpen}
-  <!-- Backdrop (invisible, for closing menu on outside click) -->
+  <!-- Backdrop overlay (dims content below header) -->
   <button
-    class="fixed inset-0 z-40"
+    transition:fade={{ duration: 200 }}
+    class="fixed inset-0 z-40 bg-black/50"
+    style="top: {headerHeight}px"
     onclick={closeMenu}
     aria-label="Close menu"
   ></button>
@@ -66,7 +79,7 @@
             <li>
               <Collapsible.Root>
                 <Collapsible.Trigger
-                  class="flex w-full items-center justify-between rounded-md px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&[data-state=open]>svg]:rotate-180"
+                  class="flex w-full items-center justify-between rounded-md px-3 py-3 text-lg font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&[data-state=open]>svg]:rotate-180"
                 >
                   {item.name}
                   <svg
@@ -85,7 +98,7 @@
                         <a
                           href={subItem.href}
                           onclick={closeMenu}
-                          class="block rounded-md px-3 py-2 text-sm transition-colors {currentPath === subItem.href ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}"
+                          class="block rounded-md px-3 py-2 text-base font-medium transition-colors {currentPath === subItem.href ? 'text-primary font-semibold' : 'text-muted-foreground hover:text-foreground'}"
                         >
                           {subItem.name}
                         </a>
@@ -100,7 +113,7 @@
               <a
                 href={item.href}
                 onclick={closeMenu}
-                class="block rounded-md px-3 py-3 text-base font-medium transition-colors {currentPath === item.href ? 'text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}"
+                class="block rounded-md px-3 py-3 text-lg font-semibold transition-colors {currentPath === item.href ? 'text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}"
               >
                 {item.name}
               </a>
