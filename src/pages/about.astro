@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/Button.astro";
 import { Image } from "astro:assets";
+import HeroImage from "../components/HeroImage.astro";
 import paintingImage from "../assets/images/painting-of-winery.jpg";
 import eldonImage from "../assets/images/eldon-green-background.jpg";
 ---
@@ -10,10 +11,9 @@ import eldonImage from "../assets/images/eldon-green-background.jpg";
   <!-- Hero Section -->
   <section class="relative">
     <div class="relative min-h-[60vh] flex items-center justify-center py-24">
-      <Image
+      <HeroImage
         src={paintingImage}
         alt="Watercolor painting of Valiant Vineyards winery overlooking the vineyard and Missouri River valley"
-        class="absolute inset-0 h-full w-full object-cover object-center"
         widths={[640, 1024, 1536, 2048]}
         sizes="100vw"
         quality={90}

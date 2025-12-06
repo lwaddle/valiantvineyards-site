@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/Button.astro";
 import RoomImageWithGallery from "../components/RoomImageWithGallery.svelte";
 import { Image, getImage } from "astro:assets";
+import HeroImage from "../components/HeroImage.astro";
 import heroImage from "../assets/images/wine-glass-next-to-bed-with-lamp.jpg";
 
 // Import all room images
@@ -184,10 +185,9 @@ const amenities = [
   <!-- Hero Section -->
   <section class="relative">
     <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24">
-      <Image
+      <HeroImage
         src={heroImage}
         alt="Cozy bed with wine glass at Valiant Vineyards Bed and Breakfast"
-        class="absolute inset-0 h-full w-full object-cover object-center"
         widths={[640, 1024, 1536, 2048]}
         sizes="100vw"
         quality={90}
