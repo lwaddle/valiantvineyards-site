@@ -25,6 +25,7 @@ const footerLinks = {
   legal: [
     { name: "Privacy Policy", href: "/privacy-policy/" },
     { name: "Cookie Policy", href: "/cookie-policy/" },
+    { name: "Shareholders", href: "https://valiantvineyardsinc-my.sharepoint.com/:f:/g/personal/sherry_valiantvineyards_us/EkDHsWqcSPBHoZDQ7X93J0MBu2uIZEnpDMqnfievGcNOIw?e=Uauahg", external: true },
   ],
 };
 ---
@@ -129,7 +130,11 @@ const footerLinks = {
         <ul class="space-y-2">
           {footerLinks.legal.map((link) => (
             <li>
-              <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
+              <a
+                href={link.href}
+                class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold"
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
                 {link.name}
               </a>
             </li>
