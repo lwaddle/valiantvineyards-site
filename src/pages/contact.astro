@@ -12,11 +12,11 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
 <BaseLayout title="Contact" description="Get in touch with Valiant Vineyards. We'd love to hear from you about visits, events, or any questions.">
   <!-- Hero Section -->
   <section class="relative">
-    <div class="relative min-h-[40vh] md:min-h-[50vh] lg:min-h-[70vh] flex items-center justify-center py-24">
+    <div class="relative min-h-[40vh] md:min-h-[50vh] lg:min-h-[80vh] flex items-center justify-center py-24">
       <HeroImage
         src={heroImage}
         alt="Luna and Rizzo, the official winery dogs of Valiant Vineyards, sitting in front of oak barrels"
-        position="center"
+        position="top"
       />
       <div class="absolute inset-0 bg-black/40"></div>
 
@@ -121,6 +121,20 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 resize-y"
                   placeholder="How can we help you?"
                 ></textarea>
+              </div>
+
+              <!-- Newsletter Signup -->
+              <div class="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="subscribe"
+                  name="subscribe"
+                  value="yes"
+                  class="mt-0.5 h-5 w-5 rounded border-neutral-300 accent-gold focus:ring-gold/20"
+                />
+                <label for="subscribe" class="text-sm text-muted-foreground">
+                  Sign me up for news and updates from Valiant Vineyards
+                </label>
               </div>
 
               <!-- Cloudflare Turnstile -->
