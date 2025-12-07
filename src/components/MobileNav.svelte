@@ -71,12 +71,12 @@
 </button>
 
 {#if isOpen}
-  <!-- Backdrop overlay with blur -->
+  <!-- Backdrop overlay -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     transition:fade={{ duration: 250 }}
-    class="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
-    style="-webkit-tap-highlight-color: transparent;"
+    class="fixed inset-0 z-40 bg-black/50"
+    style="-webkit-tap-highlight-color: transparent; -webkit-backface-visibility: hidden; backface-visibility: hidden;"
     onclick={closeMenu}
     onkeydown={(e) => e.key === 'Escape' && closeMenu()}
     role="button"
