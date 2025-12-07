@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { slide, fade } from "svelte/transition";
+  import { fly, fade } from "svelte/transition";
+  import { cubicOut } from "svelte/easing";
   import * as Collapsible from "$lib/components/ui/collapsible";
 
   type NavItem = {
@@ -15,64 +16,53 @@
 
   let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
-  let headerHeight = $state(0);
 
   function toggleMenu() {
     isOpen = !isOpen;
+    // Prevent body scroll when menu is open
+    if (!isOpen) {
+      document.body.style.overflow = '';
+    } else {
+      document.body.style.overflow = 'hidden';
+    }
   }
 
   function closeMenu() {
     isOpen = false;
+    document.body.style.overflow = '';
   }
-
-  // Update header height on mount and when menu opens
-  $effect(() => {
-    if (isOpen) {
-      const header = document.querySelector('header');
-      if (header) {
-        headerHeight = header.getBoundingClientRect().height;
-      }
-    }
-  });
 </script>
 
-<!-- Toggle Button -->
+<!-- Toggle Button (hamburger icon stays consistent) -->
 <button
   onclick={toggleMenu}
   class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
   aria-label={isOpen ? "Close menu" : "Open menu"}
   aria-expanded={isOpen}
 >
-  {#if isOpen}
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
-  {:else}
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="4" x2="20" y1="12" y2="12" />
-      <line x1="4" x2="20" y1="6" y2="6" />
-      <line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
-  {/if}
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="4" x2="20" y1="12" y2="12" />
+    <line x1="4" x2="20" y1="6" y2="6" />
+    <line x1="4" x2="20" y1="18" y2="18" />
+  </svg>
 </button>
 
 {#if isOpen}
-  <!-- Backdrop overlay (dims content below header) -->
+  <!-- Backdrop overlay with blur -->
   <button
-    transition:fade={{ duration: 200 }}
-    class="fixed inset-0 z-40 bg-black/50"
-    style="top: {headerHeight}px"
+    transition:fade={{ duration: 250 }}
+    class="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
     onclick={closeMenu}
     aria-label="Close menu"
   ></button>
 
-  <!-- Dropdown Menu -->
+  <!-- Off-canvas panel (slides from right) -->
   <div
-    transition:slide={{ duration: 200 }}
-    class="absolute left-0 right-0 top-full z-50 max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-border bg-background shadow-lg"
+    transition:fly={{ x: '100%', duration: 300, easing: cubicOut }}
+    class="fixed right-0 top-0 z-50 h-full w-[80%] max-w-sm overflow-y-auto bg-background shadow-2xl"
   >
-    <nav class="p-4">
+    <!-- Navigation links -->
+    <nav class="px-4 pt-6 pb-4">
       <ul class="space-y-1">
         {#each navigation as item}
           {#if item.items}
