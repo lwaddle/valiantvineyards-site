@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/Button.astro";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import HeroImage from "../components/HeroImage.astro";
+import WeddingGallery from "../components/WeddingGallery.svelte";
 
 // Import images
 import heroImage from "../assets/images/wedding-dance-dip-kiss.webp";
@@ -25,6 +26,14 @@ const galleryArray = Object.entries(galleryImages)
     const numB = parseInt(b.src.src.match(/wedding-(\d+)/)?.[1] ?? "0");
     return numA - numB;
   });
+
+// Generate optimized image URLs for the lightbox
+const lightboxImages = await Promise.all(
+  galleryArray.map(async (image) => {
+    const optimized = await getImage({ src: image.src, width: 1200, quality: 85 });
+    return { src: optimized.src, alt: image.alt };
+  })
+);
 
 const venueFeatures = [
   {
@@ -230,20 +239,7 @@ const includedServices = [
         </p>
       </div>
 
-      <div class="columns-2 md:columns-3 lg:columns-4 gap-4 max-w-7xl mx-auto">
-        {galleryArray.map((image) => (
-          <div class="mb-4 break-inside-avoid overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-            <Image
-              src={image.src}
-              alt={image.alt}
-              class="w-full h-auto"
-              widths={[400, 600]}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              quality={80}
-            />
-          </div>
-        ))}
-      </div>
+      <WeddingGallery images={lightboxImages} client:load />
     </div>
   </section>
 
