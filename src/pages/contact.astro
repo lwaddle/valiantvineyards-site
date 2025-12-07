@@ -123,6 +123,20 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
                 ></textarea>
               </div>
 
+              <!-- Newsletter Signup -->
+              <div class="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="subscribe"
+                  name="subscribe"
+                  value="yes"
+                  class="mt-0.5 h-5 w-5 rounded border-neutral-300 accent-gold focus:ring-gold/20"
+                />
+                <label for="subscribe" class="text-sm text-muted-foreground">
+                  Sign me up for news and updates from Valiant Vineyards
+                </label>
+              </div>
+
               <!-- Cloudflare Turnstile -->
               <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light"></div>
 
