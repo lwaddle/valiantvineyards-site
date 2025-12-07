@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fly, fade } from "svelte/transition";
+  import { fade } from "svelte/transition";
   import { cubicOut } from "svelte/easing";
   import * as Collapsible from "$lib/components/ui/collapsible";
 
@@ -16,6 +16,15 @@
 
   let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
+
+  // Custom slide transition that works with percentages
+  function slideRight(node: HTMLElement, { duration = 300, easing = cubicOut }: { duration?: number; easing?: (t: number) => number } = {}) {
+    return {
+      duration,
+      easing,
+      css: (t: number) => `transform: translateX(${(1 - t) * 100}%)`
+    };
+  }
 
   function getScrollbarWidth() {
     return window.innerWidth - document.documentElement.clientWidth;
@@ -77,7 +86,7 @@
 
   <!-- Off-canvas panel (slides from right) -->
   <div
-    transition:fly={{ x: '100%', duration: 300, easing: cubicOut }}
+    transition:slideRight={{ duration: 300 }}
     class="fixed right-0 top-0 z-50 h-full w-[80%] max-w-sm overflow-y-auto bg-background shadow-2xl"
   >
     <!-- Navigation links -->
