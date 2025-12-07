@@ -54,7 +54,7 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
               <!-- Web3Forms configuration -->
               <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
               <input type="hidden" name="subject" value="Valiant Vineyards website message" />
-              <input type="hidden" name="redirect" value={`${Astro.url.origin}/thank-you/`} />
+              <input type="hidden" name="redirect" value="/thank-you/" />
               <!-- Honeypot field for spam protection -->
               <input type="checkbox" name="botcheck" class="hidden" />
 
