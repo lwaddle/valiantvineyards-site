@@ -17,19 +17,33 @@
   let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
 
+  function getScrollbarWidth() {
+    return window.innerWidth - document.documentElement.clientWidth;
+  }
+
+  function lockScroll() {
+    const scrollbarWidth = getScrollbarWidth();
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+  }
+
+  function unlockScroll() {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
   function toggleMenu() {
     isOpen = !isOpen;
-    // Prevent body scroll when menu is open
-    if (!isOpen) {
-      document.body.style.overflow = '';
+    if (isOpen) {
+      lockScroll();
     } else {
-      document.body.style.overflow = 'hidden';
+      unlockScroll();
     }
   }
 
   function closeMenu() {
     isOpen = false;
-    document.body.style.overflow = '';
+    unlockScroll();
   }
 </script>
 

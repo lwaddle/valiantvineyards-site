@@ -40,7 +40,10 @@ const navigation = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="relative z-40 w-full border-b border-border bg-white">
+<header
+  id="main-header"
+  class="sticky top-0 z-40 w-full border-b border-border bg-white transition-transform duration-300"
+>
   <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
     <!-- Logo -->
     <a href="/" class="flex items-center space-x-2">
@@ -94,3 +97,42 @@ const currentPath = Astro.url.pathname;
     </div>
   </div>
 </header>
+
+<script>
+  const header = document.getElementById('main-header');
+  if (header) {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const updateHeader = () => {
+      const currentScrollY = window.scrollY;
+
+      // Only hide after scrolling past the header height
+      if (currentScrollY > 80) {
+        if (currentScrollY > lastScrollY) {
+          // Scrolling down - hide header
+          header.classList.add('-translate-y-full');
+          header.classList.remove('shadow-md');
+        } else {
+          // Scrolling up - show header with shadow
+          header.classList.remove('-translate-y-full');
+          header.classList.add('shadow-md');
+        }
+      } else {
+        // At top of page - show header without shadow
+        header.classList.remove('-translate-y-full');
+        header.classList.remove('shadow-md');
+      }
+
+      lastScrollY = currentScrollY;
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+</script>
