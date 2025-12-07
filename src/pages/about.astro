@@ -36,9 +36,8 @@ import eldonImage from "../assets/images/eldon-green-background.jpg";
     <div class="container mx-auto px-4 lg:px-8">
       <div class="mx-auto max-w-3xl text-center">
         <p class="text-xl leading-relaxed text-foreground font-light">
-          Every bottle tells a story. Ours began in 1850 with a German immigrant's dream,
-          took root in South Dakota soil, and culminated in a legislative act that launched
-          an entire state industry.
+          Every bottle tells a story. Ours spans six generations—from a German immigrant's
+          dream in 1850 to the legislative act that made South Dakota wine possible.
         </p>
       </div>
     </div>
@@ -68,16 +67,21 @@ import eldonImage from "../assets/images/eldon-green-background.jpg";
         </div>
 
         <div class="order-first lg:order-last">
-          <div class="rounded-lg overflow-hidden shadow-xl">
-            <Image
-              src={eldonImage}
-              alt="Eldon Nygaard, founder of Valiant Vineyards and pioneer of South Dakota winemaking"
-              class="w-full h-full object-cover"
-              widths={[600, 800, 1000]}
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              quality={80}
-            />
-          </div>
+          <figure>
+            <div class="rounded-lg overflow-hidden shadow-xl">
+              <Image
+                src={eldonImage}
+                alt="Eldon Nygaard, founder of Valiant Vineyards and pioneer of South Dakota winemaking"
+                class="w-full h-full object-cover"
+                widths={[600, 800, 1000]}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={80}
+              />
+            </div>
+            <figcaption class="mt-3 text-center text-sm text-muted-foreground">
+              Eldon Nygaard, Founder & CEO
+            </figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -134,7 +138,7 @@ import eldonImage from "../assets/images/eldon-green-background.jpg";
             <p class="mt-4 text-lg text-muted-foreground">
               The family completed a 15,000-square-foot facility at Buffalo Run Resort in Vermillion.
               What started as a mulberry wine experiment on a Turner County farm had grown into a
-              full-fledged destination winery overlooking the Missouri River.
+              full-fledged destination winery.
             </p>
           </div>
         </div>
