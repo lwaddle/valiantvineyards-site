@@ -4,9 +4,6 @@ import Button from "../components/Button.astro";
 import HeroImage from "../components/HeroImage.astro";
 import heroImage from "../assets/images/dogs-in-cellar.webp";
 import { contact, address, hours } from "../data/site-info";
-
-const WEB3FORMS_ACCESS_KEY = "18309f94-8656-49f6-8b8a-0274b5758df4";
-const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
 ---
 
 <BaseLayout title="Contact" description="Get in touch with Valiant Vineyards. We'd love to hear from you about visits, events, or any questions.">
@@ -47,16 +44,10 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
             </p>
 
             <form
-              action="https://api.web3forms.com/submit"
+              action="https://formbold.com/s/9BqnD"
               method="POST"
               class="space-y-6"
             >
-              <!-- Web3Forms configuration -->
-              <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
-              <input type="hidden" name="subject" value="Valiant Vineyards website message" />
-              <input type="hidden" name="redirect" value="/thank-you/" />
-              <!-- Honeypot field for spam protection -->
-              <input type="checkbox" name="botcheck" class="hidden" />
 
               <!-- Name -->
               <div>
@@ -133,12 +124,9 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
                   class="mt-0.5 h-5 w-5 rounded border-neutral-300 accent-gold focus:ring-gold/20"
                 />
                 <label for="subscribe" class="text-sm text-muted-foreground">
-                  Sign me up for news and updates from Valiant Vineyards
+                  Sign me up for news and updates from Valiant Vineyards Winery & Distillery
                 </label>
               </div>
-
-              <!-- Cloudflare Turnstile -->
-              <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light"></div>
 
               <!-- Submit Button -->
               <div>
@@ -230,6 +218,4 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
     </div>
   </section>
 
-  <!-- Cloudflare Turnstile Script -->
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </BaseLayout>
