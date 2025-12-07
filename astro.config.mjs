@@ -10,6 +10,9 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://valiantvineyards.us',
+  prefetch: {
+    defaultStrategy: 'viewport'
+  },
   integrations: [svelte(), mdx(), sitemap()],
   markdown: {
     rehypePlugins: [rehypeExternalLinks],
