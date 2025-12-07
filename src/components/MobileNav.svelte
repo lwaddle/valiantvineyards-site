@@ -63,12 +63,17 @@
 
 {#if isOpen}
   <!-- Backdrop overlay with blur -->
-  <button
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div
     transition:fade={{ duration: 250 }}
     class="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+    style="-webkit-tap-highlight-color: transparent;"
     onclick={closeMenu}
+    onkeydown={(e) => e.key === 'Escape' && closeMenu()}
+    role="button"
+    tabindex="-1"
     aria-label="Close menu"
-  ></button>
+  ></div>
 
   <!-- Off-canvas panel (slides from right) -->
   <div
