@@ -65,6 +65,15 @@
     isOpen = false;
     unlockScroll();
   }
+
+  function handleNavClick(e: MouseEvent, href: string) {
+    e.preventDefault();
+    closeMenu();
+    // Navigate after a brief delay to let the close animation start
+    setTimeout(() => {
+      window.location.href = href;
+    }, 100);
+  }
 </script>
 
 <!-- Toggle Button -->
@@ -86,7 +95,7 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     transition:fade={{ duration: 250 }}
-    class="fixed inset-0 z-40 bg-black/70"
+    class="fixed inset-0 z-40 bg-black/80"
     style="-webkit-tap-highlight-color: transparent; -webkit-backface-visibility: hidden; backface-visibility: hidden;"
     onclick={closeMenu}
     onkeydown={(e) => e.key === 'Escape' && closeMenu()}
@@ -97,13 +106,13 @@
 
   <!-- Off-canvas panel (slides from right) -->
   <div
-    transition:slideRight={{ duration: 300 }}
-    class="fixed right-0 top-0 z-50 flex h-full w-[80%] max-w-sm flex-col overflow-y-auto bg-background shadow-2xl"
+    transition:slideRight={{ duration: 400 }}
+    class="fixed right-0 top-0 z-50 flex h-full w-[90%] max-w-sm flex-col overflow-y-auto bg-background shadow-2xl"
   >
     <!-- Header with logo and close button -->
     <div class="flex items-center justify-between border-b border-gold/20 px-4 py-4">
-      <a href="/" onclick={closeMenu} class="block">
-        <img src={logoSrc} alt="Valiant Vineyards" class="h-14 w-auto" />
+      <a href="/" onclick={(e) => handleNavClick(e, '/')} class="block">
+        <img src={logoSrc} alt="Valiant Vineyards" class="w-[158px]" />
       </a>
       <button
         onclick={closeMenu}
@@ -140,11 +149,11 @@
                 <Collapsible.Content>
                   <ul class="ml-4 mt-1 space-y-1 border-l-2 border-gold/30 pl-4">
                     {#each item.items as subItem}
-                      <li>
+                      <li class="animate-fade-in">
                         <a
                           href={subItem.href}
-                          onclick={closeMenu}
-                          class="block rounded-md px-3 py-2.5 font-serif text-xl transition-colors {currentPath === subItem.href ? 'text-gold font-semibold' : 'text-muted-foreground hover:text-gold'}"
+                          onclick={(e) => handleNavClick(e, subItem.href)}
+                          class="block rounded-md px-3 py-2.5 font-serif text-xl transition-colors {currentPath === subItem.href ? 'text-gold font-semibold' : 'text-foreground hover:text-gold'}"
                         >
                           {subItem.name}
                         </a>
@@ -158,7 +167,7 @@
             <li in:staggeredFade={{ delay: 150 + i * 50, duration: 250 }}>
               <a
                 href={item.href}
-                onclick={closeMenu}
+                onclick={(e) => handleNavClick(e, item.href!)}
                 class="block rounded-md px-3 py-3 font-serif text-2xl font-semibold transition-colors {currentPath === item.href ? 'text-gold' : 'text-foreground hover:bg-muted hover:text-gold'}"
               >
                 {item.name}
