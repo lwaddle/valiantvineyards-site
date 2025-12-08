@@ -5,17 +5,15 @@ import { social, contact, address } from "../data/site-info";
 const currentYear = new Date().getFullYear();
 
 const footerLinks = {
-  visit: [
+  visitEvents: [
     { name: "Tasting Room", href: "/tasting-room/" },
     { name: "Bed & Breakfast", href: "/bed-and-breakfast/" },
+    { name: "Private Events", href: "/private-events/" },
+    { name: "Weddings", href: "/weddings/" },
   ],
   wineSpirits: [
     { name: "Wines", href: "/wines/" },
     { name: "Distillery", href: "/distillery/" },
-  ],
-  events: [
-    { name: "Private Events", href: "/private-events/" },
-    { name: "Weddings", href: "/weddings/" },
   ],
   about: [
     { name: "Our Story", href: "/about/" },
@@ -23,9 +21,13 @@ const footerLinks = {
     { name: "News", href: "/news/" },
     { name: "Contact", href: "/contact/" },
   ],
-  resources: [
+  legal: [
     { name: "Privacy Policy", href: "/privacy-policy/" },
     { name: "Cookie Policy", href: "/cookie-policy/" },
+    { name: "Terms of Service", href: "/terms-of-service/" },
+    { name: "Accessibility", href: "/accessibility/" },
+  ],
+  resources: [
     { name: "Shareholders", href: "https://valiantvineyardsinc-my.sharepoint.com/:f:/g/personal/sherry_valiantvineyards_us/EkDHsWqcSPBHoZDQ7X93J0MBu2uIZEnpDMqnfievGcNOIw?e=Uauahg", external: true },
     { name: "Tasting Room Sign Up", href: "/tasting-room-sign-up/" },
   ],
@@ -70,11 +72,11 @@ const footerLinks = {
     </div>
 
     <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
-      <!-- Visit -->
+      <!-- Visit & Events -->
       <div>
-        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Visit</h3>
+        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Visit & Events</h3>
         <ul class="space-y-2">
-          {footerLinks.visit.map((link) => (
+          {footerLinks.visitEvents.map((link) => (
             <li>
               <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
                 {link.name}
@@ -98,11 +100,11 @@ const footerLinks = {
         </ul>
       </div>
 
-      <!-- Events -->
+      <!-- About -->
       <div>
-        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Events</h3>
+        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">About</h3>
         <ul class="space-y-2">
-          {footerLinks.events.map((link) => (
+          {footerLinks.about.map((link) => (
             <li>
               <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
                 {link.name}
@@ -112,11 +114,11 @@ const footerLinks = {
         </ul>
       </div>
 
-      <!-- About -->
+      <!-- Legal -->
       <div>
-        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">About</h3>
+        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Legal</h3>
         <ul class="space-y-2">
-          {footerLinks.about.map((link) => (
+          {footerLinks.legal.map((link) => (
             <li>
               <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
                 {link.name}
