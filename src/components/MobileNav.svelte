@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import { cubicOut } from "svelte/easing";
+  import { cubicOut, cubicInOut } from "svelte/easing";
   import * as Collapsible from "$lib/components/ui/collapsible";
 
   type NavItem = {
@@ -12,9 +12,10 @@
   interface Props {
     navigation: NavItem[];
     currentPath: string;
+    logoSrc: string;
   }
 
-  let { navigation, currentPath }: Props = $props();
+  let { navigation, currentPath, logoSrc }: Props = $props();
   let isOpen = $state(false);
 
   // Custom slide transition that works with percentages
@@ -23,6 +24,16 @@
       duration,
       easing,
       css: (t: number) => `transform: translateX(${(1 - t) * 100}%)`
+    };
+  }
+
+  // Staggered fade-in for nav items
+  function staggeredFade(node: HTMLElement, { delay = 0, duration = 200 }: { delay?: number; duration?: number } = {}) {
+    return {
+      delay,
+      duration,
+      easing: cubicOut,
+      css: (t: number) => `opacity: ${t}; transform: translateX(${(1 - t) * 12}px)`
     };
   }
 
@@ -56,7 +67,7 @@
   }
 </script>
 
-<!-- Toggle Button (hamburger icon stays consistent) -->
+<!-- Toggle Button -->
 <button
   onclick={toggleMenu}
   class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -71,11 +82,11 @@
 </button>
 
 {#if isOpen}
-  <!-- Backdrop overlay -->
+  <!-- Backdrop overlay (darker to hide logo behind) -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     transition:fade={{ duration: 250 }}
-    class="fixed inset-0 z-40 bg-black/50"
+    class="fixed inset-0 z-40 bg-black/70"
     style="-webkit-tap-highlight-color: transparent; -webkit-backface-visibility: hidden; backface-visibility: hidden;"
     onclick={closeMenu}
     onkeydown={(e) => e.key === 'Escape' && closeMenu()}
@@ -87,10 +98,13 @@
   <!-- Off-canvas panel (slides from right) -->
   <div
     transition:slideRight={{ duration: 300 }}
-    class="fixed right-0 top-0 z-50 h-full w-[80%] max-w-sm overflow-y-auto bg-background shadow-2xl"
+    class="fixed right-0 top-0 z-50 flex h-full w-[80%] max-w-sm flex-col overflow-y-auto bg-background shadow-2xl"
   >
-    <!-- Close button -->
-    <div class="flex justify-end px-4 pt-4">
+    <!-- Header with logo and close button -->
+    <div class="flex items-center justify-between border-b border-gold/20 px-4 py-4">
+      <a href="/" onclick={closeMenu} class="block">
+        <img src={logoSrc} alt="Valiant Vineyards" class="h-14 w-auto" />
+      </a>
       <button
         onclick={closeMenu}
         class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -104,18 +118,18 @@
     </div>
 
     <!-- Navigation links -->
-    <nav class="px-4 pt-2 pb-4">
-      <ul class="space-y-2">
-        {#each navigation as item}
+    <nav class="px-4 pt-6 pb-4">
+      <ul class="space-y-1">
+        {#each navigation as item, i}
           {#if item.items}
-            <li>
+            <li in:staggeredFade={{ delay: 150 + i * 50, duration: 250 }}>
               <Collapsible.Root>
                 <Collapsible.Trigger
-                  class="flex w-full items-center justify-between rounded-md px-3 py-4 text-2xl font-bold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&[data-state=open]>svg]:rotate-180"
+                  class="flex w-full items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-foreground transition-colors hover:bg-muted hover:text-gold data-[state=open]:text-gold [&[data-state=open]>svg]:rotate-180"
                 >
                   {item.name}
                   <svg
-                    class="h-5 w-5 transition-transform"
+                    class="h-5 w-5 text-gold transition-transform"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -124,13 +138,13 @@
                   </svg>
                 </Collapsible.Trigger>
                 <Collapsible.Content>
-                  <ul class="ml-4 mt-2 space-y-2 border-l-2 border-border pl-4">
+                  <ul class="ml-4 mt-1 space-y-1 border-l-2 border-gold/30 pl-4">
                     {#each item.items as subItem}
                       <li>
                         <a
                           href={subItem.href}
                           onclick={closeMenu}
-                          class="block rounded-md px-3 py-3 text-xl font-semibold transition-colors {currentPath === subItem.href ? 'text-primary font-bold' : 'text-muted-foreground hover:text-foreground'}"
+                          class="block rounded-md px-3 py-2.5 font-serif text-xl transition-colors {currentPath === subItem.href ? 'text-gold font-semibold' : 'text-muted-foreground hover:text-gold'}"
                         >
                           {subItem.name}
                         </a>
@@ -141,11 +155,11 @@
               </Collapsible.Root>
             </li>
           {:else}
-            <li>
+            <li in:staggeredFade={{ delay: 150 + i * 50, duration: 250 }}>
               <a
                 href={item.href}
                 onclick={closeMenu}
-                class="block rounded-md px-3 py-4 text-2xl font-bold transition-colors {currentPath === item.href ? 'text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}"
+                class="block rounded-md px-3 py-3 font-serif text-2xl font-semibold transition-colors {currentPath === item.href ? 'text-gold' : 'text-foreground hover:bg-muted hover:text-gold'}"
               >
                 {item.name}
               </a>
@@ -156,3 +170,4 @@
     </nav>
   </div>
 {/if}
+
