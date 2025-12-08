@@ -81,28 +81,29 @@ const featuredPosts = sortedPosts.slice(0, 3);
             const isLastOfThree = featuredPosts.length === 3 && index === 2;
 
             return (
-              <a
-                href={`/news/post/${post.id}/`}
+              <article
                 class:list={[
-                  "group block overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg",
+                  "group overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg",
                   isLastOfThree && "sm:col-span-2 sm:max-w-xl sm:mx-auto lg:col-span-1 lg:max-w-none"
                 ]}
               >
-                <div class="aspect-3/2 overflow-hidden">
-                  <Image
-                    src={image}
-                    alt={imageAlt}
-                    widths={[400, 600, 800]}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div class="p-6">
-                  <p class="text-sm font-medium text-gold">Posted {formattedDate}</p>
-                  <h3 class="mt-2 font-serif text-xl font-semibold group-hover:text-gold">{post.data.title}</h3>
-                  <p class="mt-2 line-clamp-2 text-muted-foreground">{post.data.description}</p>
-                </div>
-              </a>
+                <a href={`/news/post/${post.id}/`} class="block">
+                  <div class="aspect-3/2 overflow-hidden">
+                    <Image
+                      src={image}
+                      alt={imageAlt}
+                      widths={[400, 600, 800]}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div class="p-6">
+                    <p class="text-sm font-medium text-gold">Posted {formattedDate}</p>
+                    <h3 class="mt-2 font-serif text-xl font-semibold group-hover:text-gold">{post.data.title}</h3>
+                    <p class="mt-2 line-clamp-2 text-muted-foreground">{post.data.description}</p>
+                  </div>
+                </a>
+              </article>
             );
           })}
         </div>

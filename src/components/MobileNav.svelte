@@ -99,9 +99,8 @@
     style="-webkit-tap-highlight-color: transparent; -webkit-backface-visibility: hidden; backface-visibility: hidden;"
     onclick={closeMenu}
     onkeydown={(e) => e.key === 'Escape' && closeMenu()}
-    role="button"
-    tabindex="-1"
-    aria-label="Close menu"
+    role="presentation"
+    aria-hidden="true"
   ></div>
 
   <!-- Off-canvas panel (slides from right) -->

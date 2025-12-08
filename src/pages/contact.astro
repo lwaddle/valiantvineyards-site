@@ -54,13 +54,14 @@ import { contact, address, hours } from "../data/site-info";
               <!-- Name -->
               <div>
                 <label for="name" class="block text-sm font-medium mb-2">
-                  Name <span class="text-red-600">*</span>
+                  Name <span class="text-red-600" aria-hidden="true">*</span>
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
                   required
+                  aria-required="true"
                   autocomplete="name"
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                   placeholder="Your name"
@@ -70,13 +71,14 @@ import { contact, address, hours } from "../data/site-info";
               <!-- Email -->
               <div>
                 <label for="email" class="block text-sm font-medium mb-2">
-                  Email <span class="text-red-600">*</span>
+                  Email <span class="text-red-600" aria-hidden="true">*</span>
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   required
+                  aria-required="true"
                   autocomplete="email"
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                   placeholder="you@example.com"
@@ -93,10 +95,11 @@ import { contact, address, hours } from "../data/site-info";
                   id="phone"
                   name="phone"
                   autocomplete="tel"
+                  aria-describedby="phone-hint"
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                   placeholder="(555) 123-4567"
                 />
-                <p class="mt-1.5 text-sm text-muted-foreground">
+                <p id="phone-hint" class="mt-1.5 text-sm text-muted-foreground">
                   Include if you'd like a callback
                 </p>
               </div>
@@ -104,12 +107,13 @@ import { contact, address, hours } from "../data/site-info";
               <!-- Message -->
               <div>
                 <label for="message" class="block text-sm font-medium mb-2">
-                  Message <span class="text-red-600">*</span>
+                  Message <span class="text-red-600" aria-hidden="true">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   required
+                  aria-required="true"
                   rows={5}
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 resize-y"
                   placeholder="How can we help you?"
@@ -131,13 +135,18 @@ import { contact, address, hours } from "../data/site-info";
               </div>
 
               <!-- Cloudflare Turnstile -->
-              <div class="cf-turnstile" data-sitekey="0x4AAAAAAAxwNZm2SiOfTmsj" data-theme="light"></div>
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAAAxwNZm2SiOfTmsj" data-theme="light" aria-label="Security verification"></div>
 
               <!-- Submit Button -->
               <div>
-                <Button type="submit" variant="gold" size="lg" class="w-full sm:w-auto">
+                <Button type="submit" variant="gold" size="lg" class="w-full sm:w-auto" id="contact-submit">
                   Send Message
                 </Button>
+              </div>
+
+              <!-- Form feedback message -->
+              <div id="contact-message" class="hidden rounded-md p-4" aria-live="assertive" aria-atomic="true">
+                <p id="contact-message-text"></p>
               </div>
             </form>
           </div>
@@ -148,54 +157,56 @@ import { contact, address, hours } from "../data/site-info";
               Visit Us
             </h2>
 
-            <!-- Address -->
-            <div class="mb-8">
-              <h3 class="font-semibold text-lg mb-2">Location</h3>
-              <a
-                href={address.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-muted-foreground hover:text-gold transition-colors"
-              >
-                {address.street}<br />
-                {address.city}, {address.state} {address.zip}
-              </a>
-            </div>
-
-            <!-- Phone & Email -->
-            <div class="mb-8">
-              <h3 class="font-semibold text-lg mb-2">Contact</h3>
-              <div class="space-y-1">
-                <p>
-                  <a
-                    href={`tel:${contact.phone.replace(/[^0-9]/g, '')}`}
-                    class="text-muted-foreground hover:text-gold transition-colors"
-                  >
-                    {contact.phone}
-                  </a>
-                </p>
-                <p>
-                  <a
-                    href={`mailto:${contact.email}`}
-                    class="text-muted-foreground hover:text-gold transition-colors"
-                  >
-                    {contact.email}
-                  </a>
-                </p>
+            <address class="not-italic">
+              <!-- Address -->
+              <div class="mb-8">
+                <h3 class="font-semibold text-lg mb-2">Location</h3>
+                <a
+                  href={address.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-muted-foreground hover:text-gold transition-colors"
+                >
+                  {address.street}<br />
+                  {address.city}, {address.state} {address.zip}
+                </a>
               </div>
-            </div>
+
+              <!-- Phone & Email -->
+              <div class="mb-8">
+                <h3 class="font-semibold text-lg mb-2">Contact</h3>
+                <div class="space-y-1">
+                  <p>
+                    <a
+                      href={`tel:${contact.phone.replace(/[^0-9]/g, '')}`}
+                      class="text-muted-foreground hover:text-gold transition-colors"
+                    >
+                      {contact.phone}
+                    </a>
+                  </p>
+                  <p>
+                    <a
+                      href={`mailto:${contact.email}`}
+                      class="text-muted-foreground hover:text-gold transition-colors"
+                    >
+                      {contact.email}
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </address>
 
             <!-- Hours -->
             <div class="mb-8">
               <h3 class="font-semibold text-lg mb-3">Tasting Room Hours</h3>
-              <div class="divide-y divide-neutral-200 text-sm">
+              <dl class="divide-y divide-neutral-200 text-sm">
                 {hours.tastingRoom.map((item) => (
                   <div class="flex justify-between items-center py-2">
-                    <span class="font-medium">{item.days}</span>
-                    <span class="text-muted-foreground">{item.hours}</span>
+                    <dt class="font-medium">{item.days}</dt>
+                    <dd class="text-muted-foreground">{item.hours}</dd>
                   </div>
                 ))}
-              </div>
+              </dl>
               {hours.note && (
                 <p class="mt-4 text-sm text-muted-foreground italic">
                   {hours.note}
@@ -225,4 +236,59 @@ import { contact, address, hours } from "../data/site-info";
 
   <!-- Cloudflare Turnstile Script -->
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <script>
+    const form = document.querySelector('form[action*="usebasin"]') as HTMLFormElement;
+    const messageContainer = document.getElementById('contact-message') as HTMLElement;
+    const messageText = document.getElementById('contact-message-text') as HTMLElement;
+    const submitButton = document.getElementById('contact-submit') as HTMLButtonElement;
+
+    if (form && messageContainer && messageText && submitButton) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.setAttribute('aria-busy', 'true');
+        submitButton.disabled = true;
+
+        // Hide any previous message
+        messageContainer.classList.add('hidden');
+
+        try {
+          const formData = new FormData(form);
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            // Success
+            messageContainer.classList.remove('hidden', 'bg-red-50', 'text-red-700');
+            messageContainer.classList.add('bg-green-50', 'text-green-700');
+            messageText.textContent = 'Thank you for your message! We\'ll get back to you soon.';
+            form.reset();
+            // Reset Turnstile widget
+            if (typeof (window as any).turnstile !== 'undefined') {
+              (window as any).turnstile.reset();
+            }
+          } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          // Error
+          messageContainer.classList.remove('hidden', 'bg-green-50', 'text-green-700');
+          messageContainer.classList.add('bg-red-50', 'text-red-700');
+          messageText.textContent = 'Sorry, something went wrong. Please try again or email us directly.';
+        } finally {
+          submitButton.textContent = originalButtonText;
+          submitButton.setAttribute('aria-busy', 'false');
+          submitButton.disabled = false;
+        }
+      });
+    }
+  </script>
 </BaseLayout>

@@ -52,11 +52,14 @@ import logo from "../assets/logos/logo-dark.svg";
           method="POST"
           class="space-y-4"
         >
+          <label for="signup-email" class="sr-only">Email address</label>
           <input
+            id="signup-email"
             type="email"
             name="EMAIL"
             placeholder="Enter your email address"
             required
+            aria-required="true"
             autocomplete="email"
             class="w-full rounded-lg border border-secondary-foreground/20 bg-secondary-foreground/5 px-5 py-4 text-lg text-secondary-foreground placeholder:text-secondary-foreground/50 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
           />
@@ -68,7 +71,7 @@ import logo from "../assets/logos/logo-dark.svg";
           </button>
         </form>
 
-        <div id="message" class="mt-6 hidden">
+        <div id="message" class="mt-6 hidden" aria-live="polite" aria-atomic="true">
           <p id="message-text" class="text-lg"></p>
         </div>
       </div>
