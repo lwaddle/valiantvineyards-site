@@ -27,11 +27,14 @@ const galleryArray = Object.entries(galleryImages)
     return numA - numB;
   });
 
-// Generate optimized image URLs for the lightbox
+// Generate optimized image URLs for the lightbox with dimensions
 const lightboxImages = await Promise.all(
   galleryArray.map(async (image) => {
     const optimized = await getImage({ src: image.src, width: 1200, quality: 85 });
-    return { src: optimized.src, alt: image.alt };
+    // Calculate height based on original aspect ratio
+    const aspectRatio = image.src.height / image.src.width;
+    const height = Math.round(1200 * aspectRatio);
+    return { src: optimized.src, alt: image.alt, width: 1200, height };
   })
 );
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Lightbox from './Lightbox.svelte';
+  import PhotoSwipeLightbox from './PhotoSwipeLightbox.svelte';
 
   interface Props {
     images: Array<{ src: string; alt: string }>;
@@ -34,7 +34,7 @@
   {/each}
 </div>
 
-<Lightbox
+<PhotoSwipeLightbox
   {images}
   initialIndex={selectedIndex}
   bind:open={lightboxOpen}
