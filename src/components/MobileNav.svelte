@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import { cubicOut, cubicInOut } from "svelte/easing";
+  import { cubicOut } from "svelte/easing";
   import * as Collapsible from "$lib/components/ui/collapsible";
 
   type NavItem = {
@@ -107,7 +107,7 @@
   <!-- Off-canvas panel (slides from right) -->
   <div
     transition:slideRight={{ duration: 400 }}
-    class="fixed right-0 top-0 z-50 flex h-full w-[90%] max-w-sm flex-col overflow-y-auto bg-background shadow-2xl"
+    class="fixed right-0 top-0 z-50 flex h-full w-[90%] max-w-sm flex-col overflow-y-auto bg-background shadow-2xl will-change-transform"
   >
     <!-- Header with logo and close button -->
     <div class="flex items-center justify-between border-b border-gold/20 px-4 py-4">
