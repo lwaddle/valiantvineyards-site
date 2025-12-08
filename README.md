@@ -61,7 +61,3 @@ When users check "Sign me up for news and updates", Basin automatically adds the
    - `pinned` — Set `true` to feature at top of news list
    - `draft` — Set `false` when ready to publish
 4. Write content in Markdown/MDX below the frontmatter
-
-## Documentation
-
-See [PROJECT.md](PROJECT.md) for detailed project status and page inventory.
