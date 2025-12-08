@@ -59,8 +59,11 @@ async function optimizeImagesMultiSize(images: { src: ImageMetadata; alt: string
         getImage({ src: img.src, width: 1200, format: 'webp', quality: 85 }),
         getImage({ src: img.src, width: 600, format: 'webp', quality: 80 }),
       ]);
+      // Calculate height based on original aspect ratio
+      const aspectRatio = img.src.height / img.src.width;
+      const height = Math.round(1200 * aspectRatio);
       return {
-        full: { src: full.src, alt: img.alt },
+        full: { src: full.src, alt: img.alt, width: 1200, height },
         thumb: { src: thumb.src, alt: img.alt },
       };
     })
@@ -184,7 +187,7 @@ const amenities = [
 <BaseLayout title="Bed & Breakfast" description="Stay overnight at Valiant Vineyards Bed & Breakfast. Six uniquely themed rooms with complimentary wine tasting and homemade breakfast.">
   <!-- Hero Section -->
   <section class="relative">
-    <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24">
+    <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24 bg-neutral-900">
       <HeroImage
         src={heroImage}
         alt="Cozy bed with wine glass at Valiant Vineyards Bed and Breakfast"

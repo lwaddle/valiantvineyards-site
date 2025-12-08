@@ -16,7 +16,7 @@ const image = featuredImage ?? defaultImage;
 const imageAlt = featuredImageAlt ?? title;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} image={image.src} type="article">
   <article class="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
     <div class="mx-auto max-w-3xl">
       <!-- Featured Image -->
@@ -139,5 +139,13 @@ const imageAlt = featuredImageAlt ?? title;
     margin: 1.5rem 0;
     font-style: italic;
     color: var(--color-muted-foreground, #6b7280);
+  }
+
+  .prose iframe {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: 2rem 0;
+    border-radius: 0.5rem;
   }
 </style>

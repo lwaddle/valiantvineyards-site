@@ -4,15 +4,12 @@ import Button from "../components/Button.astro";
 import HeroImage from "../components/HeroImage.astro";
 import heroImage from "../assets/images/dogs-in-cellar.webp";
 import { contact, address, hours } from "../data/site-info";
-
-const WEB3FORMS_ACCESS_KEY = "18309f94-8656-49f6-8b8a-0274b5758df4";
-const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
 ---
 
 <BaseLayout title="Contact" description="Get in touch with Valiant Vineyards. We'd love to hear from you about visits, events, or any questions.">
   <!-- Hero Section -->
   <section class="relative">
-    <div class="relative min-h-[40vh] md:min-h-[50vh] lg:min-h-[80vh] flex items-center justify-center py-24">
+    <div class="relative min-h-[40vh] md:min-h-[50vh] lg:min-h-[80vh] flex items-center justify-center py-24 bg-neutral-900">
       <HeroImage
         src={heroImage}
         alt="Luna and Rizzo, the official winery dogs of Valiant Vineyards, sitting in front of oak barrels"
@@ -47,27 +44,24 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
             </p>
 
             <form
-              action="https://api.web3forms.com/submit"
+              action="https://usebasin.com/f/5c8715be7ba0"
               method="POST"
               class="space-y-6"
             >
-              <!-- Web3Forms configuration -->
-              <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
-              <input type="hidden" name="subject" value="Valiant Vineyards website message" />
-              <input type="hidden" name="redirect" value={`${Astro.url.origin}/thank-you/`} />
-              <!-- Honeypot field for spam protection -->
-              <input type="checkbox" name="botcheck" class="hidden" />
+              <!-- Honeypot field - hidden from real users -->
+              <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" />
 
               <!-- Name -->
               <div>
                 <label for="name" class="block text-sm font-medium mb-2">
-                  Name <span class="text-red-600">*</span>
+                  Name <span class="text-red-600" aria-hidden="true">*</span>
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
                   required
+                  aria-required="true"
                   autocomplete="name"
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                   placeholder="Your name"
@@ -77,13 +71,14 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
               <!-- Email -->
               <div>
                 <label for="email" class="block text-sm font-medium mb-2">
-                  Email <span class="text-red-600">*</span>
+                  Email <span class="text-red-600" aria-hidden="true">*</span>
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   required
+                  aria-required="true"
                   autocomplete="email"
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                   placeholder="you@example.com"
@@ -100,10 +95,11 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
                   id="phone"
                   name="phone"
                   autocomplete="tel"
+                  aria-describedby="phone-hint"
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                   placeholder="(555) 123-4567"
                 />
-                <p class="mt-1.5 text-sm text-muted-foreground">
+                <p id="phone-hint" class="mt-1.5 text-sm text-muted-foreground">
                   Include if you'd like a callback
                 </p>
               </div>
@@ -111,12 +107,13 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
               <!-- Message -->
               <div>
                 <label for="message" class="block text-sm font-medium mb-2">
-                  Message <span class="text-red-600">*</span>
+                  Message <span class="text-red-600" aria-hidden="true">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   required
+                  aria-required="true"
                   rows={5}
                   class="w-full rounded-md border border-neutral-300 bg-white px-4 py-3 text-base transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 resize-y"
                   placeholder="How can we help you?"
@@ -133,18 +130,23 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
                   class="mt-0.5 h-5 w-5 rounded border-neutral-300 accent-gold focus:ring-gold/20"
                 />
                 <label for="subscribe" class="text-sm text-muted-foreground">
-                  Sign me up for news and updates from Valiant Vineyards
+                  Sign me up for news and updates from Valiant Vineyards Winery & Distillery
                 </label>
               </div>
 
               <!-- Cloudflare Turnstile -->
-              <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light"></div>
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAAAxwNZm2SiOfTmsj" data-theme="light" aria-label="Security verification"></div>
 
               <!-- Submit Button -->
               <div>
-                <Button type="submit" variant="gold" size="lg" class="w-full sm:w-auto">
+                <Button type="submit" variant="gold" size="lg" class="w-full sm:w-auto" id="contact-submit">
                   Send Message
                 </Button>
+              </div>
+
+              <!-- Form feedback message -->
+              <div id="contact-message" class="hidden rounded-md p-4" aria-live="assertive" aria-atomic="true">
+                <p id="contact-message-text"></p>
               </div>
             </form>
           </div>
@@ -155,54 +157,56 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
               Visit Us
             </h2>
 
-            <!-- Address -->
-            <div class="mb-8">
-              <h3 class="font-semibold text-lg mb-2">Location</h3>
-              <a
-                href={address.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-muted-foreground hover:text-gold transition-colors"
-              >
-                {address.street}<br />
-                {address.city}, {address.state} {address.zip}
-              </a>
-            </div>
-
-            <!-- Phone & Email -->
-            <div class="mb-8">
-              <h3 class="font-semibold text-lg mb-2">Contact</h3>
-              <div class="space-y-1">
-                <p>
-                  <a
-                    href={`tel:${contact.phone.replace(/[^0-9]/g, '')}`}
-                    class="text-muted-foreground hover:text-gold transition-colors"
-                  >
-                    {contact.phone}
-                  </a>
-                </p>
-                <p>
-                  <a
-                    href={`mailto:${contact.email}`}
-                    class="text-muted-foreground hover:text-gold transition-colors"
-                  >
-                    {contact.email}
-                  </a>
-                </p>
+            <address class="not-italic">
+              <!-- Address -->
+              <div class="mb-8">
+                <h3 class="font-semibold text-lg mb-2">Location</h3>
+                <a
+                  href={address.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-muted-foreground hover:text-gold transition-colors"
+                >
+                  {address.street}<br />
+                  {address.city}, {address.state} {address.zip}
+                </a>
               </div>
-            </div>
+
+              <!-- Phone & Email -->
+              <div class="mb-8">
+                <h3 class="font-semibold text-lg mb-2">Contact</h3>
+                <div class="space-y-1">
+                  <p>
+                    <a
+                      href={`tel:${contact.phone.replace(/[^0-9]/g, '')}`}
+                      class="text-muted-foreground hover:text-gold transition-colors"
+                    >
+                      {contact.phone}
+                    </a>
+                  </p>
+                  <p>
+                    <a
+                      href={`mailto:${contact.email}`}
+                      class="text-muted-foreground hover:text-gold transition-colors"
+                    >
+                      {contact.email}
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </address>
 
             <!-- Hours -->
             <div class="mb-8">
               <h3 class="font-semibold text-lg mb-3">Tasting Room Hours</h3>
-              <div class="divide-y divide-neutral-200 text-sm">
+              <dl class="divide-y divide-neutral-200 text-sm">
                 {hours.tastingRoom.map((item) => (
                   <div class="flex justify-between items-center py-2">
-                    <span class="font-medium">{item.days}</span>
-                    <span class="text-muted-foreground">{item.hours}</span>
+                    <dt class="font-medium">{item.days}</dt>
+                    <dd class="text-muted-foreground">{item.hours}</dd>
                   </div>
                 ))}
-              </div>
+              </dl>
               {hours.note && (
                 <p class="mt-4 text-sm text-muted-foreground italic">
                   {hours.note}
@@ -211,7 +215,7 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
             </div>
 
             <!-- Map -->
-            <div class="rounded-lg overflow-hidden shadow-md border border-neutral-200">
+            <div class="rounded-lg overflow-hidden shadow-md border border-neutral-200 relative" id="map-container">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.3149839770444!2d-96.95530832322022!3d42.78169057115689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x878e4fb0f48b9aad%3A0x57bf31cf907162f8!2sValiant%20Vineyards%20Winery%20%26%20Distillery!5e0!3m2!1sen!2sus!4v1764961367261!5m2!1sen!2sus"
                 width="100%"
@@ -222,7 +226,24 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
                 referrerpolicy="no-referrer-when-downgrade"
                 title="Valiant Vineyards location on Google Maps"
                 class="w-full"
+                id="google-map"
               ></iframe>
+              <!-- Fallback for when Google Maps fails to load -->
+              <div id="map-fallback" class="hidden absolute inset-0 bg-neutral-100 flex flex-col items-center justify-center p-6 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-neutral-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <p class="text-sm text-muted-foreground mb-3">Map couldn't be loaded</p>
+                <a
+                  href={address.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm font-medium text-gold hover:underline"
+                >
+                  Open in Google Maps
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -232,4 +253,91 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAAxwNZm2SiOfTmsj";
 
   <!-- Cloudflare Turnstile Script -->
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <script>
+    // Google Maps iframe fallback detection
+    const mapIframe = document.getElementById('google-map') as HTMLIFrameElement;
+    const mapFallback = document.getElementById('map-fallback') as HTMLElement;
+
+    if (mapIframe && mapFallback) {
+      // Set a timeout to show fallback if iframe doesn't load
+      const mapTimeout = setTimeout(() => {
+        mapIframe.classList.add('hidden');
+        mapFallback.classList.remove('hidden');
+      }, 5000);
+
+      mapIframe.addEventListener('load', () => {
+        clearTimeout(mapTimeout);
+      });
+
+      mapIframe.addEventListener('error', () => {
+        clearTimeout(mapTimeout);
+        mapIframe.classList.add('hidden');
+        mapFallback.classList.remove('hidden');
+      });
+    }
+
+    // Contact form handling
+    const form = document.querySelector('form[action*="usebasin"]') as HTMLFormElement;
+    const messageContainer = document.getElementById('contact-message') as HTMLElement;
+    const messageText = document.getElementById('contact-message-text') as HTMLElement;
+    const submitButton = document.getElementById('contact-submit') as HTMLButtonElement;
+
+    if (form && messageContainer && messageText && submitButton) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Validate Turnstile CAPTCHA before submission
+        const turnstileResponse = form.querySelector('[name="cf-turnstile-response"]') as HTMLInputElement;
+        if (!turnstileResponse || !turnstileResponse.value) {
+          messageContainer.classList.remove('hidden', 'bg-green-50', 'text-green-700');
+          messageContainer.classList.add('bg-red-50', 'text-red-700');
+          messageText.textContent = 'Please complete the security check before submitting.';
+          return;
+        }
+
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.setAttribute('aria-busy', 'true');
+        submitButton.disabled = true;
+
+        // Hide any previous message
+        messageContainer.classList.add('hidden');
+
+        try {
+          const formData = new FormData(form);
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            // Success
+            messageContainer.classList.remove('hidden', 'bg-red-50', 'text-red-700');
+            messageContainer.classList.add('bg-green-50', 'text-green-700');
+            messageText.textContent = 'Thank you for your message! We\'ll get back to you soon.';
+            form.reset();
+            // Reset Turnstile widget
+            if (typeof (window as any).turnstile !== 'undefined') {
+              (window as any).turnstile.reset();
+            }
+          } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          // Error
+          messageContainer.classList.remove('hidden', 'bg-green-50', 'text-green-700');
+          messageContainer.classList.add('bg-red-50', 'text-red-700');
+          messageText.textContent = 'Sorry, something went wrong. Please try again or email us directly.';
+        } finally {
+          submitButton.textContent = originalButtonText;
+          submitButton.setAttribute('aria-busy', 'false');
+          submitButton.disabled = false;
+        }
+      });
+    }
+  </script>
 </BaseLayout>

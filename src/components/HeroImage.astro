@@ -77,23 +77,16 @@ if (import.meta.env.DEV) {
     loading="eager"
     decoding="async"
     fetchpriority="high"
+    onload="this.classList.add('loaded')"
   />
 </div>
 
 <script>
-  // Handle image load for blur-up transition
+  // Handle cached images that load before onload can fire
   document.querySelectorAll('.hero-image-main').forEach((img) => {
     const imgEl = img as HTMLImageElement;
-
-    const handleLoad = () => {
-      imgEl.classList.add('loaded');
-    };
-
-    // If already loaded (cached), add class immediately
     if (imgEl.complete && imgEl.naturalHeight !== 0) {
-      handleLoad();
-    } else {
-      imgEl.addEventListener('load', handleLoad, { once: true });
+      imgEl.classList.add('loaded');
     }
   });
 </script>
@@ -104,6 +97,7 @@ if (import.meta.env.DEV) {
     inset: 0;
     overflow: hidden;
     z-index: 0; /* Keep below overlay and content */
+    background-color: #1a1a1a; /* Dark fallback prevents cream flash */
   }
 
   .hero-image-placeholder {
@@ -124,7 +118,7 @@ if (import.meta.env.DEV) {
     object-fit: cover;
     object-position: var(--object-position);
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
   }
 
   .hero-image-main.loaded {

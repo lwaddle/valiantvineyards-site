@@ -40,7 +40,10 @@ const navigation = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="relative z-40 w-full border-b border-border bg-white">
+<header
+  id="main-header"
+  class="sticky top-0 z-40 w-full border-b border-border bg-white transition-transform duration-300"
+>
   <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
     <!-- Logo -->
     <a href="/" class="flex items-center space-x-2">
@@ -48,24 +51,33 @@ const currentPath = Astro.url.pathname;
     </a>
 
     <!-- Desktop Navigation -->
-    <nav class="hidden lg:flex lg:items-center lg:space-x-1">
-      {navigation.map((item) => (
+    <nav class="hidden lg:flex lg:items-center lg:space-x-1" aria-label="Main navigation">
+      {navigation.map((item, index) => (
         item.items ? (
-          <div class="group relative">
+          <div class="dropdown-container group relative">
             <button
-              class="flex items-center gap-1 px-4 py-2 text-sm font-bold uppercase text-muted-foreground transition-colors hover:text-foreground"
+              type="button"
+              class="dropdown-trigger flex items-center gap-1 px-4 py-2 text-sm font-bold uppercase text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls={`dropdown-menu-${index}`}
             >
               {item.name}
-              <svg class="h-4 w-4 transition-transform group-hover:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <svg class="dropdown-arrow h-4 w-4 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
               </svg>
             </button>
-            <div class="invisible absolute left-0 top-full min-w-[180px] rounded-md border border-border bg-background p-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
+            <div
+              id={`dropdown-menu-${index}`}
+              role="menu"
+              class="dropdown-menu invisible absolute left-0 top-full min-w-[180px] rounded-md border border-border bg-background p-1 opacity-0 shadow-lg transition-all"
+            >
               {item.items.map((subItem) => (
                 <a
                   href={subItem.href}
+                  role="menuitem"
                   class:list={[
-                    "block rounded-sm px-4 py-2 text-sm transition-colors hover:bg-muted",
+                    "block rounded-sm px-4 py-2 text-sm transition-colors hover:bg-muted focus:bg-muted focus:outline-none",
                     currentPath === subItem.href ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
                   ]}
                 >
@@ -78,7 +90,7 @@ const currentPath = Astro.url.pathname;
           <a
             href={item.href}
             class:list={[
-              "px-4 py-2 text-sm font-bold uppercase transition-colors hover:text-foreground",
+              "px-4 py-2 text-sm font-bold uppercase transition-colors hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
               currentPath === item.href ? "text-primary" : "text-muted-foreground"
             ]}
           >
@@ -90,7 +102,158 @@ const currentPath = Astro.url.pathname;
 
     <!-- Mobile Navigation -->
     <div class="lg:hidden">
-      <MobileNav client:idle navigation={navigation} currentPath={currentPath} />
+      <MobileNav client:idle navigation={navigation} currentPath={currentPath} logoSrc={logoLight.src} />
     </div>
   </div>
 </header>
+
+<script>
+  const header = document.getElementById('main-header');
+  if (header) {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const updateHeader = () => {
+      const currentScrollY = window.scrollY;
+
+      // Only hide after scrolling past the header height
+      if (currentScrollY > 80) {
+        if (currentScrollY > lastScrollY) {
+          // Scrolling down - hide header
+          header.classList.add('-translate-y-full');
+          header.classList.remove('shadow-md');
+        } else {
+          // Scrolling up - show header with shadow
+          header.classList.remove('-translate-y-full');
+          header.classList.add('shadow-md');
+        }
+      } else {
+        // At top of page - show header without shadow
+        header.classList.remove('-translate-y-full');
+        header.classList.remove('shadow-md');
+      }
+
+      lastScrollY = currentScrollY;
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  // Dropdown menu keyboard accessibility
+  const dropdownContainers = document.querySelectorAll('.dropdown-container');
+
+  dropdownContainers.forEach((container) => {
+    const trigger = container.querySelector('.dropdown-trigger') as HTMLButtonElement;
+    const menu = container.querySelector('.dropdown-menu') as HTMLElement;
+    const arrow = container.querySelector('.dropdown-arrow') as SVGElement;
+    const menuItems = menu?.querySelectorAll('[role="menuitem"]') as NodeListOf<HTMLAnchorElement>;
+
+    if (!trigger || !menu || !menuItems) return;
+
+    let isOpen = false;
+
+    const openMenu = () => {
+      isOpen = true;
+      trigger.setAttribute('aria-expanded', 'true');
+      menu.classList.remove('invisible', 'opacity-0');
+      menu.classList.add('visible', 'opacity-100');
+      arrow?.classList.add('rotate-180');
+    };
+
+    const closeMenu = () => {
+      isOpen = false;
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.classList.add('invisible', 'opacity-0');
+      menu.classList.remove('visible', 'opacity-100');
+      arrow?.classList.remove('rotate-180');
+    };
+
+    const toggleMenu = () => {
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    };
+
+    // Mouse hover (preserve existing behavior)
+    container.addEventListener('mouseenter', openMenu);
+    container.addEventListener('mouseleave', closeMenu);
+
+    // Keyboard: toggle on Enter/Space, close on Escape
+    trigger.addEventListener('keydown', (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          toggleMenu();
+          if (isOpen && menuItems.length > 0) {
+            menuItems[0].focus();
+          }
+          break;
+        case 'Escape':
+          if (isOpen) {
+            e.preventDefault();
+            closeMenu();
+            trigger.focus();
+          }
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          if (!isOpen) {
+            openMenu();
+          }
+          if (menuItems.length > 0) {
+            menuItems[0].focus();
+          }
+          break;
+      }
+    });
+
+    // Keyboard navigation within menu
+    menuItems.forEach((item, index) => {
+      item.addEventListener('keydown', (e: KeyboardEvent) => {
+        switch (e.key) {
+          case 'Escape':
+            e.preventDefault();
+            closeMenu();
+            trigger.focus();
+            break;
+          case 'ArrowDown':
+            e.preventDefault();
+            if (index < menuItems.length - 1) {
+              menuItems[index + 1].focus();
+            } else {
+              menuItems[0].focus();
+            }
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            if (index > 0) {
+              menuItems[index - 1].focus();
+            } else {
+              menuItems[menuItems.length - 1].focus();
+            }
+            break;
+          case 'Tab':
+            // Allow Tab to close menu and move to next element
+            closeMenu();
+            break;
+        }
+      });
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e: MouseEvent) => {
+      if (!container.contains(e.target as Node) && isOpen) {
+        closeMenu();
+      }
+    });
+  });
+</script>

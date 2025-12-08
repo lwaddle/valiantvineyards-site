@@ -12,7 +12,7 @@ import { hours, contact } from "../data/site-info";
 <BaseLayout title="Tasting Room" description="Visit our tasting room to sample wines, spirits, and craft cocktails at Valiant Vineyards. South Dakota's first winery.">
   <!-- Hero Section -->
   <section class="relative">
-    <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24">
+    <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24 bg-neutral-900">
       <HeroImage
         src={heroImage}
         alt="Wine being poured into glasses at Valiant Vineyards tasting room"
@@ -165,14 +165,14 @@ import { hours, contact } from "../data/site-info";
               Hours & Reservations
             </h2>
 
-            <div class="space-y-3 text-base">
+            <dl class="space-y-3 text-base">
               {hours.tastingRoom.map((item) => (
                 <div class="flex justify-between items-center border-b border-neutral-200 pb-3">
-                  <span class="font-medium">{item.days}</span>
-                  <span class="text-muted-foreground">{item.hours}</span>
+                  <dt class="font-medium">{item.days}</dt>
+                  <dd class="text-muted-foreground">{item.hours}</dd>
                 </div>
               ))}
-            </div>
+            </dl>
 
             {hours.note && (
               <p class="mt-6 text-sm text-muted-foreground italic">

@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/Button.astro";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import HeroImage from "../components/HeroImage.astro";
+import WeddingGallery from "../components/WeddingGallery.svelte";
 
 // Import images
 import heroImage from "../assets/images/wedding-dance-dip-kiss.webp";
@@ -26,10 +27,21 @@ const galleryArray = Object.entries(galleryImages)
     return numA - numB;
   });
 
+// Generate optimized image URLs for the lightbox with dimensions
+const lightboxImages = await Promise.all(
+  galleryArray.map(async (image) => {
+    const optimized = await getImage({ src: image.src, width: 1200, quality: 85 });
+    // Calculate height based on original aspect ratio
+    const aspectRatio = image.src.height / image.src.width;
+    const height = Math.round(1200 * aspectRatio);
+    return { src: optimized.src, alt: image.alt, width: 1200, height };
+  })
+);
+
 const venueFeatures = [
   {
     title: "Breathtaking Views",
-    description: "Nestled on a bluff overlooking the valley, our vineyard offers stunning natural backdrops for your ceremony and photos.",
+    description: "With sweeping views of the countryside and open skies, our grounds offer stunning natural backdrops for your ceremony and photos.",
     icon: "mountain",
   },
   {
@@ -63,7 +75,7 @@ const includedServices = [
 <BaseLayout title="Weddings" description="Celebrate your wedding at Valiant Vineyards - a stunning vineyard venue in South Dakota wine country for your special day.">
   <!-- Hero Section -->
   <section class="relative">
-    <div class="relative min-h-[70vh] xl:min-h-[80vh] flex items-center justify-center py-24">
+    <div class="relative min-h-[70vh] xl:min-h-[80vh] flex items-center justify-center py-24 bg-neutral-900">
       <HeroImage
         src={heroImage}
         alt="Couple sharing a romantic dip kiss during their first dance at Valiant Vineyards"
@@ -78,7 +90,7 @@ const includedServices = [
         <h1 class="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
           Your Perfect Day Starts Here
         </h1>
-        <p class="mt-4 text-xl text-white font-medium max-w-2xl mx-auto [text-shadow:0_1px_4px_rgb(0_0_0/60%)]">
+        <p class="mt-4 text-xl text-white font-semibold max-w-2xl mx-auto [text-shadow:0_1px_4px_rgb(0_0_0/60%)]">
           Where golden sunsets, stunning views, and heartfelt moments create the wedding of your dreams
         </p>
         <div class="mt-8">
@@ -102,7 +114,7 @@ const includedServices = [
           Your Love Story Deserves a Beautiful Setting
         </h2>
         <p class="text-lg leading-relaxed text-muted-foreground mb-4">
-          Nestled on the bluffs overlooking the Missouri River valley, Valiant Vineyards offers a picturesque escape for couples seeking a venue as unique as their love. Our family-owned vineyard combines rustic elegance with warm hospitality to create an unforgettable wedding experience.
+          Set among rolling hills in the heart of South Dakota wine country, Valiant Vineyards offers a picturesque escape for couples seeking a venue as unique as their love. Our family-owned vineyard combines rustic elegance with warm hospitality to create an unforgettable wedding experience.
         </p>
         <p class="text-lg leading-relaxed text-muted-foreground">
           From intimate elopements to grand celebrations of up to 200 guests, we work closely with each couple to bring their vision to life. Exchange vows beneath open skies, dance the night away in our elegant banquet hall, and toast to forever with award-winning wines crafted right here on our estate.
@@ -230,20 +242,7 @@ const includedServices = [
         </p>
       </div>
 
-      <div class="columns-2 md:columns-3 lg:columns-4 gap-4 max-w-7xl mx-auto">
-        {galleryArray.map((image) => (
-          <div class="mb-4 break-inside-avoid overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-            <Image
-              src={image.src}
-              alt={image.alt}
-              class="w-full h-auto"
-              widths={[400, 600]}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              quality={80}
-            />
-          </div>
-        ))}
-      </div>
+      <WeddingGallery images={lightboxImages} client:load />
     </div>
   </section>
 

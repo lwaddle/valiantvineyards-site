@@ -1,16 +1,16 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Button from "../../components/Button.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
 import { Image } from "astro:assets";
-import HeroImage from "../../components/HeroImage.astro";
+import HeroImage from "../components/HeroImage.astro";
 
 // Import images
-import heroImage from "../../assets/images/banquet-table-setting.webp";
-import banquetImage from "../../assets/images/banquet.jpg";
-import boardroomImage from "../../assets/images/boardroom.jpg";
-import weddingTablesImage from "../../assets/images/wedding-tables.jpg";
-import weddingCakeImage from "../../assets/images/wedding-cake.jpg";
-import weddingSunsetImage from "../../assets/images/wedding-sunset.jpg";
+import heroImage from "../assets/images/banquet-table-setting.webp";
+import banquetImage from "../assets/images/banquet.jpg";
+import boardroomImage from "../assets/images/boardroom.jpg";
+import weddingTablesImage from "../assets/images/wedding-tables.jpg";
+import weddingCakeImage from "../assets/images/wedding-cake.jpg";
+import weddingSunsetImage from "../assets/images/wedding-sunset.jpg";
 
 const eventTypes = [
   { name: "Business Meetings", icon: "briefcase" },
@@ -27,11 +27,11 @@ const eventTypes = [
 <BaseLayout title="Private Events" description="Host your private event at Valiant Vineyards - the perfect venue for banquets, meetings, weddings, and special occasions. Accommodating 10-200 guests.">
   <!-- Hero Section -->
   <section class="relative">
-    <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24">
+    <div class="relative min-h-[60vh] xl:min-h-[75vh] flex items-center justify-center py-24 bg-neutral-900">
       <HeroImage
         src={heroImage}
         alt="Elegant banquet table setting at Valiant Vineyards"
-        position="center"
+        position="bottom"
       />
       <div class="absolute inset-0 bg-black/50"></div>
 
@@ -72,7 +72,7 @@ const eventTypes = [
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 max-w-4xl mx-auto">
         {eventTypes.map((event) => (
           <div class="flex items-center gap-3 rounded-lg border border-border bg-background p-4">
-            <div class="shrink-0 text-gold">
+            <div class="shrink-0 text-gold" aria-hidden="true">
               {event.icon === "briefcase" && (
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

@@ -5,17 +5,15 @@ import { social, contact, address } from "../data/site-info";
 const currentYear = new Date().getFullYear();
 
 const footerLinks = {
-  visit: [
+  visitEvents: [
     { name: "Tasting Room", href: "/tasting-room/" },
     { name: "Bed & Breakfast", href: "/bed-and-breakfast/" },
+    { name: "Private Events", href: "/private-events/" },
+    { name: "Weddings", href: "/weddings/" },
   ],
   wineSpirits: [
     { name: "Wines", href: "/wines/" },
     { name: "Distillery", href: "/distillery/" },
-  ],
-  events: [
-    { name: "Private Events", href: "/private-events/" },
-    { name: "Weddings", href: "/weddings/" },
   ],
   about: [
     { name: "Our Story", href: "/about/" },
@@ -23,9 +21,13 @@ const footerLinks = {
     { name: "News", href: "/news/" },
     { name: "Contact", href: "/contact/" },
   ],
-  resources: [
+  legal: [
     { name: "Privacy Policy", href: "/privacy-policy/" },
     { name: "Cookie Policy", href: "/cookie-policy/" },
+    { name: "Terms of Service", href: "/terms-of-service/" },
+    { name: "Accessibility", href: "/accessibility/" },
+  ],
+  resources: [
     { name: "Shareholders", href: "https://valiantvineyardsinc-my.sharepoint.com/:f:/g/personal/sherry_valiantvineyards_us/EkDHsWqcSPBHoZDQ7X93J0MBu2uIZEnpDMqnfievGcNOIw?e=Uauahg", external: true },
     { name: "Tasting Room Sign Up", href: "/tasting-room-sign-up/" },
   ],
@@ -38,7 +40,12 @@ const footerLinks = {
     <div class="mb-12 border-b border-secondary-foreground/10 pb-12">
       <div class="flex flex-col gap-6 text-center md:flex-row md:items-center md:gap-12 md:justify-between md:text-left">
         <div class="md:max-w-xl">
-          <h3 class="mb-2 font-serif text-xl font-semibold text-gold">Stay Connected</h3>
+          <div class="mb-2 flex items-center justify-center gap-2 md:justify-start">
+            <svg class="h-5 w-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+            </svg>
+            <h3 class="font-serif text-xl font-semibold text-gold">Stay Connected</h3>
+          </div>
           <p class="text-sm text-secondary-foreground/70">
             Stay up to date on the latest offers, products, and news at Valiant Winery & Distillery.
           </p>
@@ -50,12 +57,16 @@ const footerLinks = {
             method="POST"
             class="flex flex-col gap-3 sm:flex-row"
           >
+            <label for="footer-newsletter-email" class="sr-only">Email address for newsletter</label>
             <input
+              id="footer-newsletter-email"
               type="email"
               name="EMAIL"
               placeholder="Enter your email"
               required
-              class="flex-1 rounded-md border border-secondary-foreground/20 bg-secondary-foreground/5 px-4 py-3 text-sm text-secondary-foreground placeholder:text-secondary-foreground/50 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 sm:min-w-64 lg:min-w-80"
+              aria-required="true"
+              autocomplete="email"
+              class="flex-1 rounded-md border border-secondary-foreground/20 bg-secondary-foreground/5 px-4 py-3 text-base sm:text-sm text-secondary-foreground placeholder:text-secondary-foreground/50 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 sm:min-w-64 lg:min-w-80"
             />
             <button
               type="submit"
@@ -64,17 +75,17 @@ const footerLinks = {
               Subscribe
             </button>
           </form>
-          <p id="newsletter-message" class="mt-4 text-sm hidden"></p>
+          <p id="newsletter-message" class="mt-4 text-sm hidden wrap-break-word" aria-live="polite" aria-atomic="true"></p>
         </div>
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
-      <!-- Visit -->
-      <div>
-        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Visit</h3>
+      <!-- Visit & Events -->
+      <nav aria-labelledby="footer-nav-visit">
+        <h3 id="footer-nav-visit" class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Visit & Events</h3>
         <ul class="space-y-2">
-          {footerLinks.visit.map((link) => (
+          {footerLinks.visitEvents.map((link) => (
             <li>
               <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
                 {link.name}
@@ -82,11 +93,11 @@ const footerLinks = {
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
 
       <!-- Wine & Spirits -->
-      <div>
-        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Wine & Spirits</h3>
+      <nav aria-labelledby="footer-nav-wine">
+        <h3 id="footer-nav-wine" class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Wine & Spirits</h3>
         <ul class="space-y-2">
           {footerLinks.wineSpirits.map((link) => (
             <li>
@@ -96,25 +107,11 @@ const footerLinks = {
             </li>
           ))}
         </ul>
-      </div>
-
-      <!-- Events -->
-      <div>
-        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Events</h3>
-        <ul class="space-y-2">
-          {footerLinks.events.map((link) => (
-            <li>
-              <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
-                {link.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+      </nav>
 
       <!-- About -->
-      <div>
-        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">About</h3>
+      <nav aria-labelledby="footer-nav-about">
+        <h3 id="footer-nav-about" class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">About</h3>
         <ul class="space-y-2">
           {footerLinks.about.map((link) => (
             <li>
@@ -124,11 +121,25 @@ const footerLinks = {
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
+
+      <!-- Legal -->
+      <nav aria-labelledby="footer-nav-legal">
+        <h3 id="footer-nav-legal" class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Legal</h3>
+        <ul class="space-y-2">
+          {footerLinks.legal.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm font-semibold text-secondary-foreground/70 transition-colors hover:text-gold">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <!-- Resources -->
-      <div>
-        <h3 class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Resources</h3>
+      <nav aria-labelledby="footer-nav-resources">
+        <h3 id="footer-nav-resources" class="mb-4 font-serif text-sm font-semibold uppercase tracking-wider text-gold">Resources</h3>
         <ul class="space-y-2">
           {footerLinks.resources.map((link) => (
             <li>
@@ -142,7 +153,7 @@ const footerLinks = {
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
     </div>
 
     <!-- Bottom bar -->
@@ -246,7 +257,7 @@ const footerLinks = {
 
     if (response.result === 'success') {
       message.classList.add('text-green-400');
-      message.textContent = 'Thanks for subscribing! Please check your email to confirm.';
+      message.textContent = 'Thanks for subscribing! We\'ll keep you updated on news and events.';
       form.reset();
     } else {
       message.classList.add('text-red-400');
@@ -264,9 +275,9 @@ const footerLinks = {
     button.disabled = false;
     button.textContent = originalText;
 
-    // Auto-hide message after 5 seconds
+    // Auto-hide message after 8 seconds (longer for screen reader users)
     setTimeout(() => {
       message.classList.add('hidden');
-    }, 5000);
+    }, 8000);
   });
 </script>
