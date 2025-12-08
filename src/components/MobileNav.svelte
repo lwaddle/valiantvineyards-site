@@ -89,19 +89,33 @@
     transition:slideRight={{ duration: 300 }}
     class="fixed right-0 top-0 z-50 h-full w-[80%] max-w-sm overflow-y-auto bg-background shadow-2xl"
   >
+    <!-- Close button -->
+    <div class="flex justify-end px-4 pt-4">
+      <button
+        onclick={closeMenu}
+        class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        aria-label="Close menu"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+
     <!-- Navigation links -->
-    <nav class="px-4 pt-6 pb-4">
-      <ul class="space-y-1">
+    <nav class="px-4 pt-2 pb-4">
+      <ul class="space-y-2">
         {#each navigation as item}
           {#if item.items}
             <li>
               <Collapsible.Root>
                 <Collapsible.Trigger
-                  class="flex w-full items-center justify-between rounded-md px-3 py-3 text-lg font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&[data-state=open]>svg]:rotate-180"
+                  class="flex w-full items-center justify-between rounded-md px-3 py-4 text-2xl font-bold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&[data-state=open]>svg]:rotate-180"
                 >
                   {item.name}
                   <svg
-                    class="h-4 w-4 transition-transform"
+                    class="h-5 w-5 transition-transform"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -110,13 +124,13 @@
                   </svg>
                 </Collapsible.Trigger>
                 <Collapsible.Content>
-                  <ul class="ml-4 mt-1 space-y-1 border-l border-border pl-4">
+                  <ul class="ml-4 mt-2 space-y-2 border-l-2 border-border pl-4">
                     {#each item.items as subItem}
                       <li>
                         <a
                           href={subItem.href}
                           onclick={closeMenu}
-                          class="block rounded-md px-3 py-2 text-base font-medium transition-colors {currentPath === subItem.href ? 'text-primary font-semibold' : 'text-muted-foreground hover:text-foreground'}"
+                          class="block rounded-md px-3 py-3 text-xl font-semibold transition-colors {currentPath === subItem.href ? 'text-primary font-bold' : 'text-muted-foreground hover:text-foreground'}"
                         >
                           {subItem.name}
                         </a>
@@ -131,7 +145,7 @@
               <a
                 href={item.href}
                 onclick={closeMenu}
-                class="block rounded-md px-3 py-3 text-lg font-semibold transition-colors {currentPath === item.href ? 'text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}"
+                class="block rounded-md px-3 py-4 text-2xl font-bold transition-colors {currentPath === item.href ? 'text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}"
               >
                 {item.name}
               </a>
