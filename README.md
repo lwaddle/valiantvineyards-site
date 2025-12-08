@@ -43,27 +43,10 @@ public/
 ## Contact Form & Newsletter Integration
 
 The contact form uses:
-- **Web3Forms** (Pro plan) for form submissions with Cloudflare Turnstile spam protection
-- **Cloudflare Worker** to handle newsletter signups via Mailchimp
+- **Basin Forms** for form submissions with built-in Mailchimp integration
+- **Cloudflare Turnstile** for spam protection
 
-### How it works
-
-1. User submits the contact form (optionally checking "Sign me up for news and updates")
-2. Web3Forms processes the submission and sends emails to configured recipients
-3. Web3Forms sends a webhook to our Cloudflare Worker
-4. The worker checks if `subscribe === "yes"` and adds the user to Mailchimp if so
-
-### Cloudflare Worker Configuration
-
-The worker is deployed separately and requires these environment variables (set as secrets in Cloudflare dashboard):
-
-| Variable | Description |
-|----------|-------------|
-| `MAILCHIMP_API_KEY` | Mailchimp API key |
-| `MAILCHIMP_AUDIENCE_ID` | Mailchimp audience/list ID |
-| `MAILCHIMP_DC` | Mailchimp data center prefix (e.g., `us21`) |
-
-The worker URL is configured as a webhook endpoint in the Web3Forms dashboard.
+When users check "Sign me up for news and updates", Basin automatically adds them to the Mailchimp audience.
 
 ## Documentation
 
