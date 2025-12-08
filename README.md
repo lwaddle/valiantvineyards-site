@@ -48,6 +48,20 @@ The contact form uses:
 
 When users check "Sign me up for news and updates", Basin automatically adds them to the Mailchimp audience.
 
+## Adding a News Post
+
+1. Copy the template: `src/content/news/0-TEMPLATE.mdx`
+2. Rename it with a descriptive slug (e.g., `summer-wine-tasting-event.mdx`)
+3. Update the frontmatter:
+   - `title` — The post headline
+   - `description` — Short summary for SEO/previews
+   - `date` — Publication date (YYYY-MM-DD)
+   - `featuredImage` — Path to image in `_images/` folder
+   - `featuredImageAlt` — Alt text for accessibility
+   - `pinned` — Set `true` to feature at top of news list
+   - `draft` — Set `false` when ready to publish
+4. Write content in Markdown/MDX below the frontmatter
+
 ## Documentation
 
 See [PROJECT.md](PROJECT.md) for detailed project status and page inventory.

@@ -1,0 +1,9 @@
+# Security headers
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Cache hashed assets for 1 year (they have unique filenames)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
