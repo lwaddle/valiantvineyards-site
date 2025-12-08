@@ -44,11 +44,12 @@ import { contact, address, hours } from "../data/site-info";
             </p>
 
             <form
-              action="https://formbold.com/s/9BqnD"
+              action="https://usebasin.com/f/5c8715be7ba0"
               method="POST"
               class="space-y-6"
             >
-              <input type="hidden" name="redirect" value="/thank-you/" />
+              <!-- Honeypot field - hidden from real users -->
+              <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" />
 
               <!-- Name -->
               <div>
@@ -129,8 +130,8 @@ import { contact, address, hours } from "../data/site-info";
                 </label>
               </div>
 
-              <!-- reCAPTCHA -->
-              <div class="g-recaptcha" data-sitekey="6LfzbiQsAAAAAPg143hKAzqACN4RuzRMDEsCNJT_"></div>
+              <!-- Cloudflare Turnstile -->
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAAAxwNZm2SiOfTmsj"></div>
 
               <!-- Submit Button -->
               <div>
@@ -222,6 +223,6 @@ import { contact, address, hours } from "../data/site-info";
     </div>
   </section>
 
-  <!-- Google reCAPTCHA Script -->
-  <script is:inline src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- Cloudflare Turnstile Script -->
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </BaseLayout>
