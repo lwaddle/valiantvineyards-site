@@ -50,27 +50,44 @@
 
   // Swipe support for touch devices
   let touchStartX = 0;
-  let touchEndX = 0;
+  let touchStartY = 0;
   const SWIPE_THRESHOLD = 50;
 
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }
+
+  function handleTouchMove(e: TouchEvent) {
+    if (!touchStartX || !touchStartY) return;
+
+    const diffX = Math.abs(e.changedTouches[0].screenX - touchStartX);
+    const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+
+    // If horizontal movement is greater, prevent scroll
+    if (diffX > diffY) {
+      e.preventDefault();
+    }
   }
 
   function handleTouchEnd(e: TouchEvent) {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  }
+    const touchEndX = e.changedTouches[0].screenX;
+    const touchEndY = e.changedTouches[0].screenY;
 
-  function handleSwipe() {
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > SWIPE_THRESHOLD) {
-      if (diff > 0) {
+    const diffX = touchStartX - touchEndX;
+    const diffY = Math.abs(touchStartY - touchEndY);
+
+    // Only trigger swipe if horizontal movement exceeds vertical
+    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(diffX) > diffY) {
+      if (diffX > 0) {
         next(); // Swipe left = next image
       } else {
         prev(); // Swipe right = previous image
       }
     }
+
+    touchStartX = 0;
+    touchStartY = 0;
   }
 
   onMount(() => {
@@ -108,6 +125,7 @@
       <figure
         class="image-container"
         ontouchstart={handleTouchStart}
+        ontouchmove={handleTouchMove}
         ontouchend={handleTouchEnd}
       >
         <img
