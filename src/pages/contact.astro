@@ -215,7 +215,7 @@ import { contact, address, hours } from "../data/site-info";
             </div>
 
             <!-- Map -->
-            <div class="rounded-lg overflow-hidden shadow-md border border-neutral-200">
+            <div class="rounded-lg overflow-hidden shadow-md border border-neutral-200 relative" id="map-container">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.3149839770444!2d-96.95530832322022!3d42.78169057115689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x878e4fb0f48b9aad%3A0x57bf31cf907162f8!2sValiant%20Vineyards%20Winery%20%26%20Distillery!5e0!3m2!1sen!2sus!4v1764961367261!5m2!1sen!2sus"
                 width="100%"
@@ -226,7 +226,24 @@ import { contact, address, hours } from "../data/site-info";
                 referrerpolicy="no-referrer-when-downgrade"
                 title="Valiant Vineyards location on Google Maps"
                 class="w-full"
+                id="google-map"
               ></iframe>
+              <!-- Fallback for when Google Maps fails to load -->
+              <div id="map-fallback" class="hidden absolute inset-0 bg-neutral-100 flex flex-col items-center justify-center p-6 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-neutral-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <p class="text-sm text-muted-foreground mb-3">Map couldn't be loaded</p>
+                <a
+                  href={address.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm font-medium text-gold hover:underline"
+                >
+                  Open in Google Maps
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -238,6 +255,29 @@ import { contact, address, hours } from "../data/site-info";
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <script>
+    // Google Maps iframe fallback detection
+    const mapIframe = document.getElementById('google-map') as HTMLIFrameElement;
+    const mapFallback = document.getElementById('map-fallback') as HTMLElement;
+
+    if (mapIframe && mapFallback) {
+      // Set a timeout to show fallback if iframe doesn't load
+      const mapTimeout = setTimeout(() => {
+        mapIframe.classList.add('hidden');
+        mapFallback.classList.remove('hidden');
+      }, 5000);
+
+      mapIframe.addEventListener('load', () => {
+        clearTimeout(mapTimeout);
+      });
+
+      mapIframe.addEventListener('error', () => {
+        clearTimeout(mapTimeout);
+        mapIframe.classList.add('hidden');
+        mapFallback.classList.remove('hidden');
+      });
+    }
+
+    // Contact form handling
     const form = document.querySelector('form[action*="usebasin"]') as HTMLFormElement;
     const messageContainer = document.getElementById('contact-message') as HTMLElement;
     const messageText = document.getElementById('contact-message-text') as HTMLElement;
@@ -246,6 +286,15 @@ import { contact, address, hours } from "../data/site-info";
     if (form && messageContainer && messageText && submitButton) {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // Validate Turnstile CAPTCHA before submission
+        const turnstileResponse = form.querySelector('[name="cf-turnstile-response"]') as HTMLInputElement;
+        if (!turnstileResponse || !turnstileResponse.value) {
+          messageContainer.classList.remove('hidden', 'bg-green-50', 'text-green-700');
+          messageContainer.classList.add('bg-red-50', 'text-red-700');
+          messageText.textContent = 'Please complete the security check before submitting.';
+          return;
+        }
 
         const originalButtonText = submitButton.textContent;
         submitButton.textContent = 'Sending...';

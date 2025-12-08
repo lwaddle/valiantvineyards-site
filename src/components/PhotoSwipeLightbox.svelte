@@ -36,12 +36,26 @@
       bgOpacity: 0.95,
       showHideAnimationType: 'fade',
       pswpModule: PhotoSwipe,
+      errorMsg: 'This image could not be loaded',
     });
 
     pswp.on('close', () => {
       open = false;
       onclose?.();
       pswp = null;
+    });
+
+    // Handle image load errors in lightbox
+    pswp.on('loadComplete', (e) => {
+      const { slide } = e;
+      if (slide && slide.data.element) {
+        const img = slide.data.element.querySelector('img');
+        if (img) {
+          img.onerror = () => {
+            slide.data.element.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#999;font-family:system-ui;">Image unavailable</div>';
+          };
+        }
+      }
     });
 
     pswp.init();
