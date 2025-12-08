@@ -40,6 +40,31 @@
   function handleBackdropClick(e: MouseEvent) {
     if (e.target === e.currentTarget) close();
   }
+
+  // Swipe support for touch devices
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const SWIPE_THRESHOLD = 50;
+
+  function handleTouchStart(e: TouchEvent) {
+    touchStartX = e.changedTouches[0].screenX;
+  }
+
+  function handleTouchEnd(e: TouchEvent) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }
+
+  function handleSwipe() {
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > SWIPE_THRESHOLD) {
+      if (diff > 0) {
+        next(); // Swipe left = next image
+      } else {
+        prev(); // Swipe right = previous image
+      }
+    }
+  }
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -100,7 +125,11 @@
     </div>
 
     <!-- Main Image -->
-    <div class="relative max-h-[85vh] max-w-[90vw] flex items-center justify-center">
+    <div
+      class="relative max-h-[85vh] max-w-[90vw] flex items-center justify-center"
+      on:touchstart={handleTouchStart}
+      on:touchend={handleTouchEnd}
+    >
       <img
         src={images[currentIndex].src}
         alt={images[currentIndex].alt}

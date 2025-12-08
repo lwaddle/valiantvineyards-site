@@ -48,6 +48,31 @@
     }
   }
 
+  // Swipe support for touch devices
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const SWIPE_THRESHOLD = 50;
+
+  function handleTouchStart(e: TouchEvent) {
+    touchStartX = e.changedTouches[0].screenX;
+  }
+
+  function handleTouchEnd(e: TouchEvent) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }
+
+  function handleSwipe() {
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > SWIPE_THRESHOLD) {
+      if (diff > 0) {
+        next(); // Swipe left = next image
+      } else {
+        prev(); // Swipe right = previous image
+      }
+    }
+  }
+
   onMount(() => {
     if (open && dialog) {
       dialog.showModal();
@@ -80,7 +105,11 @@
         </button>
       {/if}
 
-      <figure class="image-container">
+      <figure
+        class="image-container"
+        ontouchstart={handleTouchStart}
+        ontouchend={handleTouchEnd}
+      >
         <img
           src={images[currentIndex].src}
           alt={images[currentIndex].alt}
