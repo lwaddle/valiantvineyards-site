@@ -16,18 +16,18 @@
   }
 </script>
 
-<div class="columns-2 md:columns-3 lg:columns-4 gap-4 max-w-7xl mx-auto">
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
   {#each images as image, index}
     <button
       type="button"
-      class="gallery-item mb-4 break-inside-avoid overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer block w-full p-0 border-0 bg-transparent group"
+      class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer block w-full p-0 border-0 bg-transparent group"
       onclick={() => openLightbox(index)}
       aria-label="View {image.alt} in lightbox"
     >
       <img
         src={image.src}
         alt={image.alt}
-        class="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+        class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
         loading="lazy"
       />
     </button>
