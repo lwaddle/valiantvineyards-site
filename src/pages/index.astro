@@ -22,33 +22,38 @@ const featuredPosts = sortedPosts.slice(0, 3);
 ---
 
 <BaseLayout title="Home" description="Valiant Vineyards Winery & Distillery - Experience award-winning wines, craft spirits, and warm hospitality in the heart of South Dakota.">
-  <!-- Mobile Hero: Image first, then text section (hidden on md+) -->
+  <!-- Mobile Hero: Image with overlaid h1, then text section (hidden on md+) -->
   <section class="md:hidden">
-    <!-- Full-width image at natural aspect ratio -->
-    <div class="w-full">
+    <!-- Hero image with overlaid heading -->
+    <div class="relative w-full aspect-5/6 sm:aspect-video">
       <Image
         src={heroImage}
         alt="Aerial view of Valiant Vineyards surrounded by lush green farmland in South Dakota"
         widths={[640, 768, 1024]}
         sizes="100vw"
         quality={80}
-        class="w-full h-auto"
+        class="absolute inset-0 w-full h-full object-cover object-bottom"
       />
-    </div>
-    <!-- Text content section with background -->
-    <div class="bg-secondary px-4 py-12 text-center">
-      <div class="mx-auto max-w-2xl">
-        <h1 class="font-serif text-4xl font-semibold tracking-tight text-secondary-foreground">
+      <!-- Dark overlay for text legibility -->
+      <div class="absolute inset-0 bg-black/45"></div>
+      <!-- Centered h1 on image -->
+      <div class="absolute inset-0 flex items-center justify-center px-4">
+        <h1 class="font-serif text-4xl font-semibold tracking-tight text-white text-center drop-shadow-lg">
           Sip. Celebrate. Stay.
         </h1>
-        <p class="mx-auto mt-6 max-w-2xl text-lg text-secondary-foreground/80">
+      </div>
+    </div>
+    <!-- Text content section with light background -->
+    <div class="bg-neutral-100 px-4 py-12 text-center">
+      <div class="mx-auto max-w-2xl">
+        <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
           Since 1996, the Nygaard family has welcomed guests to sip award-winning wines, sample small-batch spirits, and unwind above the Missouri River in Vermillion, South Dakota.
         </p>
         <div class="mx-auto mt-8 flex max-w-xs flex-col gap-4">
           <Button href="/tasting-room/" variant="gold" size="lg" class="w-full">
             Visit the Tasting Room
           </Button>
-          <Button href="/about/" variant="white" size="lg" class="w-full">
+          <Button href="/about/" variant="gold-outline" size="lg" class="w-full">
             Our Story
           </Button>
         </div>

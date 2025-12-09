@@ -16,6 +16,7 @@
 
   let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
+  let isClosing = $state(false); // Track closing state to prevent header flash
   let headerHeight = $state(65); // Default fallback
   let menuButton: HTMLButtonElement;
   let navPanel: HTMLElement;
@@ -107,7 +108,27 @@
   }
 
   function closeMenu() {
+    if (isClosing) return; // Prevent double-close
+    isClosing = true;
+
+    // Lock header position during close to prevent flash
+    const header = document.getElementById('main-header');
+    if (header) {
+      header.style.transform = 'translateY(0)';
+      header.classList.remove('-translate-y-full');
+    }
+
     isOpen = false;
+
+    // Reset closing state after transition completes
+    const transitionDuration = prefersReducedMotion ? 0 : 250;
+    setTimeout(() => {
+      isClosing = false;
+      // Restore header's normal scroll behavior
+      if (header) {
+        header.style.transform = '';
+      }
+    }, transitionDuration);
   }
 
   function handleNavClick(e: MouseEvent, href: string) {
