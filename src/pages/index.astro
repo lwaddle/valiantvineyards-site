@@ -22,8 +22,42 @@ const featuredPosts = sortedPosts.slice(0, 3);
 ---
 
 <BaseLayout title="Home" description="Valiant Vineyards Winery & Distillery - Experience award-winning wines, craft spirits, and warm hospitality in the heart of South Dakota.">
-  <section class="relative">
-    <!-- Hero with background image -->
+  <!-- Mobile Hero: Image first, then text section (hidden on md+) -->
+  <section class="md:hidden">
+    <!-- Full-width image at natural aspect ratio -->
+    <div class="w-full">
+      <Image
+        src={heroImage}
+        alt="Aerial view of Valiant Vineyards surrounded by lush green farmland in South Dakota"
+        widths={[640, 768, 1024]}
+        sizes="100vw"
+        quality={80}
+        class="w-full h-auto"
+      />
+    </div>
+    <!-- Text content section with background -->
+    <div class="bg-secondary px-4 py-12 text-center">
+      <div class="mx-auto max-w-2xl">
+        <h1 class="font-serif text-4xl font-semibold tracking-tight text-secondary-foreground">
+          Sip. Celebrate. Stay.
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-secondary-foreground/80">
+          Since 1996, the Nygaard family has welcomed guests to sip award-winning wines, sample small-batch spirits, and unwind above the Missouri River in Vermillion, South Dakota.
+        </p>
+        <div class="mx-auto mt-8 flex max-w-xs flex-col gap-4">
+          <Button href="/tasting-room/" variant="gold" size="lg" class="w-full">
+            Visit the Tasting Room
+          </Button>
+          <Button href="/about/" variant="white" size="lg" class="w-full">
+            Our Story
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Desktop Hero: Original overlaid layout (hidden on mobile) -->
+  <section class="relative hidden md:block">
     <div class="relative min-h-[90vh] flex items-center justify-center py-24 lg:py-32 bg-neutral-900">
       <!-- Background image with blur-up placeholder -->
       <HeroImage
