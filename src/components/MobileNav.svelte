@@ -52,32 +52,36 @@
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape' && isOpen) {
       closeMenu();
-      menuButton?.focus();
+      // Only restore focus on keyboard close, not touch
+      menuButton?.focus({ preventScroll: true });
     }
   }
 
-  // Focus management when menu opens
+  // Focus management when menu opens - only for keyboard users
+  // Skip auto-focus on touch devices to avoid iOS focus ring
   $effect(() => {
     if (isOpen && navPanel) {
-      // Focus first focusable element in the menu after animation completes
-      const firstFocusable = navPanel.querySelector<HTMLElement>('a, button');
-      firstFocusable?.focus({ preventScroll: true });
+      // Check if this was likely a keyboard interaction (not touch)
+      const isKeyboardUser = !('ontouchstart' in window) || window.matchMedia('(hover: hover)').matches;
+      if (isKeyboardUser) {
+        const firstFocusable = navPanel.querySelector<HTMLElement>('a, button');
+        firstFocusable?.focus({ preventScroll: true });
+      }
     }
   });
 
-  // Dropdown expand transition - grows down from top edge
+  // Dropdown expand transition - uses transform for smoother iOS performance
   function expandDown(node: HTMLElement, { duration = 300, easing = cubicOut }: { duration?: number; easing?: (t: number) => number } = {}) {
     if (prefersReducedMotion) {
       return { duration: 0, css: () => '' };
     }
-    const height = node.offsetHeight;
     return {
       duration,
       easing,
       css: (t: number) => `
-        height: ${t * height}px;
+        transform: scaleY(${t});
+        transform-origin: top;
         opacity: ${t};
-        overflow: hidden;
       `
     };
   }
@@ -129,12 +133,12 @@
 >
   <div class="flex flex-col items-center justify-center gap-1.5">
     <span
-      class="block h-0.5 w-7 bg-current transition-all duration-300 ease-out origin-center motion-reduce:transition-none"
+      class="block h-0.5 w-7 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
       class:translate-y-1={isOpen}
       class:rotate-45={isOpen}
     ></span>
     <span
-      class="block h-0.5 w-7 bg-current transition-all duration-300 ease-out origin-center motion-reduce:transition-none"
+      class="block h-0.5 w-7 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
       class:-translate-y-1={isOpen}
       class:-rotate-45={isOpen}
     ></span>
@@ -151,8 +155,8 @@
   <!-- Backdrop overlay (below header only) -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
-    transition:fade={{ duration: 250 }}
-    class="fixed left-0 right-0 bottom-0 z-40 bg-black/50"
+    transition:fade={{ duration: 200 }}
+    class="fixed left-0 right-0 bottom-0 z-40 bg-black/50 backface-hidden"
     style="top: {headerHeight}px; -webkit-tap-highlight-color: transparent;"
     onclick={closeMenu}
     onkeydown={(e) => e.key === 'Escape' && closeMenu()}
@@ -167,8 +171,8 @@
     role="dialog"
     aria-modal="true"
     aria-label="Navigation menu"
-    transition:expandDown={{ duration: 300 }}
-    class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-background shadow-2xl will-change-transform"
+    transition:expandDown={{ duration: 250 }}
+    class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-background shadow-2xl backface-hidden"
     style="top: {headerHeight}px;"
   >
     <!-- Navigation links -->
