@@ -1,6 +1,5 @@
 ---
 import MobileNav from "./MobileNav.svelte";
-import logoLight from "../assets/logos/logo-light.svg";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -100,8 +99,8 @@ const currentPath = Astro.url.pathname;
     </nav>
 
     <!-- Mobile Navigation -->
-    <div class="lg:hidden">
-      <MobileNav client:idle navigation={navigation} currentPath={currentPath} logoSrc={logoLight.src} />
+    <div class="relative lg:hidden">
+      <MobileNav client:idle navigation={navigation} currentPath={currentPath} />
     </div>
   </div>
 </header>

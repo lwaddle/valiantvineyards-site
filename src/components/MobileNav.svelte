@@ -12,58 +12,50 @@
   interface Props {
     navigation: NavItem[];
     currentPath: string;
-    logoSrc: string;
   }
 
-  let { navigation, currentPath, logoSrc }: Props = $props();
+  let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
+  let headerHeight = $state(65); // Default fallback
 
-  // Custom slide transition that works with percentages
-  function slideRight(node: HTMLElement, { duration = 300, easing = cubicOut }: { duration?: number; easing?: (t: number) => number } = {}) {
+  // Get header height on mount
+  $effect(() => {
+    const header = document.getElementById('main-header');
+    if (header) {
+      headerHeight = header.offsetHeight;
+    }
+  });
+
+  // Dropdown expand transition - grows down from top edge
+  function expandDown(node: HTMLElement, { duration = 300, easing = cubicOut }: { duration?: number; easing?: (t: number) => number } = {}) {
+    const height = node.offsetHeight;
     return {
       duration,
       easing,
-      css: (t: number) => `transform: translateX(${(1 - t) * 100}%)`
+      css: (t: number) => `
+        height: ${t * height}px;
+        opacity: ${t};
+        overflow: hidden;
+      `
     };
   }
 
-  // Staggered fade-in for nav items
+  // Staggered fade-in for nav items (vertical motion)
   function staggeredFade(node: HTMLElement, { delay = 0, duration = 200 }: { delay?: number; duration?: number } = {}) {
     return {
       delay,
       duration,
       easing: cubicOut,
-      css: (t: number) => `opacity: ${t}; transform: translateX(${(1 - t) * 12}px)`
+      css: (t: number) => `opacity: ${t}; transform: translateY(${(1 - t) * -8}px)`
     };
-  }
-
-  function getScrollbarWidth() {
-    return window.innerWidth - document.documentElement.clientWidth;
-  }
-
-  function lockScroll() {
-    const scrollbarWidth = getScrollbarWidth();
-    document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
-  }
-
-  function unlockScroll() {
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
   }
 
   function toggleMenu() {
     isOpen = !isOpen;
-    if (isOpen) {
-      lockScroll();
-    } else {
-      unlockScroll();
-    }
   }
 
   function closeMenu() {
     isOpen = false;
-    unlockScroll();
   }
 
   function handleNavClick(e: MouseEvent, href: string) {
@@ -76,57 +68,53 @@
   }
 </script>
 
-<!-- Toggle Button -->
+<!-- Toggle Button - 2-bar with MENU text, animates to X -->
 <button
   onclick={toggleMenu}
-  class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+  class="flex flex-col items-center justify-center gap-1 p-2 text-muted-foreground transition-colors hover:text-foreground"
   aria-label={isOpen ? "Close menu" : "Open menu"}
   aria-expanded={isOpen}
 >
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="4" x2="20" y1="12" y2="12" />
-    <line x1="4" x2="20" y1="6" y2="6" />
-    <line x1="4" x2="20" y1="18" y2="18" />
-  </svg>
+  <div class="flex flex-col items-center justify-center gap-1.5">
+    <span
+      class="block h-0.5 w-6 bg-current transition-all duration-300 ease-out"
+      class:translate-y-[4px]={isOpen}
+      class:rotate-45={isOpen}
+    ></span>
+    <span
+      class="block h-0.5 w-6 bg-current transition-all duration-300 ease-out"
+      class:-translate-y-[4px]={isOpen}
+      class:-rotate-45={isOpen}
+    ></span>
+  </div>
+  <span
+    class="font-serif text-[10px] uppercase tracking-widest text-gold transition-all duration-200"
+    class:opacity-0={isOpen}
+    class:translate-y-1={isOpen}
+  >MENU</span>
 </button>
 
 {#if isOpen}
-  <!-- Backdrop overlay (darker to hide logo behind) -->
+  <!-- Backdrop overlay (below header only) -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     transition:fade={{ duration: 250 }}
-    class="fixed inset-0 z-40 bg-black/80"
-    style="-webkit-tap-highlight-color: transparent; -webkit-backface-visibility: hidden; backface-visibility: hidden;"
+    class="fixed left-0 right-0 bottom-0 z-40 bg-black/50"
+    style="top: {headerHeight}px; -webkit-tap-highlight-color: transparent;"
     onclick={closeMenu}
     onkeydown={(e) => e.key === 'Escape' && closeMenu()}
     role="presentation"
     aria-hidden="true"
   ></div>
 
-  <!-- Off-canvas panel (slides from right) -->
+  <!-- Dropdown panel (fixed to viewport, positioned below header) -->
   <div
-    transition:slideRight={{ duration: 400 }}
-    class="fixed right-0 top-0 z-50 flex h-full w-[90%] max-w-sm flex-col overflow-y-auto bg-background shadow-2xl will-change-transform"
+    transition:expandDown={{ duration: 300 }}
+    class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-background shadow-2xl will-change-transform"
+    style="top: {headerHeight}px;"
   >
-    <!-- Header with logo and close button -->
-    <div class="flex items-center justify-between border-b border-gold/20 px-4 py-4">
-      <a href="/" onclick={(e) => handleNavClick(e, '/')} class="block">
-        <img src={logoSrc} alt="Valiant Vineyards" class="w-[158px]" />
-      </a>
-      <button
-        onclick={closeMenu}
-        class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-        aria-label="Close menu"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </button>
-    </div>
-
     <!-- Navigation links -->
-    <nav class="px-4 pt-6 pb-4">
+    <nav class="px-4 py-4">
       <ul class="space-y-1">
         {#each navigation as item, i}
           {#if item.items}
