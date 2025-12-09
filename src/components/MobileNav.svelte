@@ -18,12 +18,19 @@
   let isOpen = $state(false);
   let headerHeight = $state(65); // Default fallback
 
-  // Get header height on mount
-  $effect(() => {
+  // Update header height whenever menu opens or window resizes
+  function updateHeaderHeight() {
     const header = document.getElementById('main-header');
     if (header) {
       headerHeight = header.offsetHeight;
     }
+  }
+
+  // Get header height on mount and listen for resize
+  $effect(() => {
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    return () => window.removeEventListener('resize', updateHeaderHeight);
   });
 
   // Dropdown expand transition - grows down from top edge
@@ -51,6 +58,9 @@
   }
 
   function toggleMenu() {
+    if (!isOpen) {
+      updateHeaderHeight(); // Recalculate before opening
+    }
     isOpen = !isOpen;
   }
 

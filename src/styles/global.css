@@ -104,8 +104,8 @@
   --color-destructive-foreground: #ffffff;
 
   /* Typography */
-  --font-serif: "EB Garamond", Georgia, serif;
-  --font-sans: "Mulish", system-ui, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
 
   /* Spacing */
   --radius-sm: 0.25rem;
@@ -125,9 +125,20 @@
     font-family: var(--font-sans);
   }
 
+  /* Sans-serif body text vertical scaling */
+  p, span, a, li, td, th, label, input, textarea, button, dd, dt {
+    transform: scaleY(0.95);
+    transform-origin: top;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     @apply font-semibold tracking-tight;
+  }
+
+  h1, h2 {
+    transform: scaleY(0.92);
+    transform-origin: top;
   }
 }
 
