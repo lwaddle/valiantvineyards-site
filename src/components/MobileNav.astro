@@ -1,0 +1,278 @@
+---
+interface NavItem {
+  name: string;
+  href?: string;
+  items?: { name: string; href: string }[];
+}
+
+interface Props {
+  navigation: NavItem[];
+  currentPath: string;
+}
+
+const { navigation, currentPath } = Astro.props;
+---
+
+<!-- Toggle Button - 2-bar with MENU text, animates to X -->
+<button
+  id="mobile-nav-toggle"
+  class="flex flex-col items-center justify-center gap-1 p-2 text-white/70 transition-colors hover:text-white motion-reduce:transition-none"
+  aria-label="Open menu"
+  aria-expanded="false"
+  aria-controls="mobile-nav-panel"
+>
+  <div class="flex flex-col items-center justify-center gap-1.5">
+    <span
+      class="mobile-nav-bar block h-0.5 w-7 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
+    ></span>
+    <span
+      class="mobile-nav-bar block h-0.5 w-7 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
+    ></span>
+  </div>
+  <span
+    class="mobile-nav-label font-sans text-[11px] uppercase tracking-widest text-gold transition-all duration-200 motion-reduce:transition-none"
+    aria-hidden="true"
+  >MENU</span>
+</button>
+
+<!-- Backdrop overlay -->
+<div
+  id="mobile-nav-backdrop"
+  class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 motion-reduce:transition-none"
+  aria-hidden="true"
+></div>
+
+<!-- Dropdown panel -->
+<div
+  id="mobile-nav-panel"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+  class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-neutral-900 shadow-2xl invisible"
+>
+  <nav class="px-4 py-4" aria-label="Mobile navigation">
+    <ul class="space-y-1">
+      {navigation.map((item, i) => (
+        item.items ? (
+          <li class="mobile-nav-item" style={`--delay: ${150 + i * 50}ms`}>
+            <details class="group">
+              <summary
+                class="flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold list-none [&::-webkit-details-marker]:hidden"
+              >
+                {item.name}
+                <svg
+                  class="h-5 w-5 text-gold transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </summary>
+              <ul class="ml-4 mt-1 space-y-1 border-l-2 border-gold/30 pl-4">
+                {item.items.map((subItem) => (
+                  <li>
+                    <a
+                      href={subItem.href}
+                      class:list={[
+                        "mobile-nav-link block rounded-md px-3 py-2.5 font-serif text-xl transition-colors",
+                        currentPath === subItem.href ? "text-gold font-semibold" : "text-white/80 hover:text-gold"
+                      ]}
+                      aria-current={currentPath === subItem.href ? "page" : undefined}
+                    >
+                      {subItem.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </li>
+        ) : (
+          <li class="mobile-nav-item" style={`--delay: ${150 + i * 50}ms`}>
+            <a
+              href={item.href}
+              class:list={[
+                "mobile-nav-link block rounded-md px-3 py-3 font-serif text-2xl font-semibold transition-colors",
+                currentPath === item.href ? "text-gold" : "text-white hover:bg-white/10 hover:text-gold"
+              ]}
+              aria-current={currentPath === item.href ? "page" : undefined}
+            >
+              {item.name}
+            </a>
+          </li>
+        )
+      ))}
+    </ul>
+  </nav>
+</div>
+
+<style>
+  /* Hamburger to X animation */
+  #mobile-nav-toggle[aria-expanded="true"] .mobile-nav-bar:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+
+  #mobile-nav-toggle[aria-expanded="true"] .mobile-nav-bar:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  #mobile-nav-toggle[aria-expanded="true"] .mobile-nav-label {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  /* Panel default state */
+  #mobile-nav-panel {
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0;
+    transition: transform 250ms ease-out, opacity 250ms ease-out, visibility 0s 250ms;
+  }
+
+  /* Panel open state */
+  #mobile-nav-panel.open {
+    visibility: visible;
+    transform: scaleY(1);
+    opacity: 1;
+    transition: transform 250ms ease-out, opacity 250ms ease-out, visibility 0s 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-nav-panel {
+      transition: none;
+    }
+    #mobile-nav-panel.open {
+      transition: none;
+    }
+  }
+
+  /* Backdrop open state */
+  #mobile-nav-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Staggered fade-in for nav items when menu opens */
+  #mobile-nav-panel.open .mobile-nav-item {
+    animation: fadeSlideIn 250ms ease-out forwards;
+    animation-delay: var(--delay);
+    opacity: 0;
+  }
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-nav-panel.open .mobile-nav-item {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('mobile-nav-toggle');
+  const panel = document.getElementById('mobile-nav-panel');
+  const backdrop = document.getElementById('mobile-nav-backdrop');
+  const header = document.getElementById('main-header');
+
+  if (toggle && panel && backdrop) {
+    let isOpen = false;
+
+    function getHeaderHeight() {
+      return header?.offsetHeight ?? 65;
+    }
+
+    function openMenu() {
+      isOpen = true;
+      const headerHeight = getHeaderHeight();
+
+      // Position panel and backdrop below header
+      panel.style.top = `${headerHeight}px`;
+      backdrop.style.top = `${headerHeight}px`;
+
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+      panel.classList.add('open');
+      backdrop.classList.add('open');
+
+      // Focus first link for keyboard users
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const delay = prefersReducedMotion ? 0 : 250;
+      setTimeout(() => {
+        const firstLink = panel.querySelector('a, button, summary');
+        if (firstLink instanceof HTMLElement) {
+          firstLink.focus({ preventScroll: true });
+        }
+      }, delay);
+    }
+
+    function closeMenu() {
+      isOpen = false;
+
+      // Lock header position during close to prevent flash
+      if (header) {
+        header.style.transform = 'translateY(0)';
+        header.classList.remove('-translate-y-full');
+      }
+
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      panel.classList.remove('open');
+      backdrop.classList.remove('open');
+
+      // Restore header scroll behavior after transition
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const delay = prefersReducedMotion ? 0 : 250;
+      setTimeout(() => {
+        if (header) {
+          header.style.transform = '';
+        }
+      }, delay);
+    }
+
+    function toggleMenu() {
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    // Toggle button click
+    toggle.addEventListener('click', toggleMenu);
+
+    // Backdrop click closes menu
+    backdrop.addEventListener('click', closeMenu);
+
+    // Escape key closes menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeMenu();
+        toggle.focus();
+      }
+    });
+
+    // Close menu on nav link click (with brief delay for visual feedback)
+    panel.querySelectorAll('.mobile-nav-link').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = (e.currentTarget as HTMLAnchorElement).href;
+        closeMenu();
+        setTimeout(() => {
+          window.location.href = href;
+        }, 100);
+      });
+    });
+  }
+</script>

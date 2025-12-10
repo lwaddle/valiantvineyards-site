@@ -1,5 +1,5 @@
 ---
-import MobileNav from "./MobileNav.svelte";
+import MobileNav from "./MobileNav.astro";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -100,7 +100,7 @@ const currentPath = Astro.url.pathname;
 
     <!-- Mobile Navigation -->
     <div class="relative lg:hidden">
-      <MobileNav client:idle navigation={navigation} currentPath={currentPath} />
+      <MobileNav navigation={navigation} currentPath={currentPath} />
     </div>
   </div>
 </header>
