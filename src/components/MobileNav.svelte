@@ -155,7 +155,7 @@
 <button
   bind:this={menuButton}
   onclick={toggleMenu}
-  class="flex flex-col items-center justify-center gap-1 p-2 text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none"
+  class="flex flex-col items-center justify-center gap-1 p-2 text-white/70 transition-colors hover:text-white motion-reduce:transition-none"
   aria-label={isOpen ? "Close menu" : "Open menu"}
   aria-expanded={isOpen}
   aria-controls="mobile-nav-panel"
@@ -205,7 +205,7 @@
     aria-modal="true"
     aria-label="Navigation menu"
     transition:expandDown={{ duration: 250 }}
-    class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-background backface-hidden"
+    class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-neutral-900 backface-hidden"
     style="top: {headerHeight}px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);"
   >
     <!-- Navigation links -->
@@ -216,7 +216,7 @@
             <li in:staggeredFade={{ delay: 150 + i * 50, duration: 250 }}>
               <Collapsible.Root>
                 <Collapsible.Trigger
-                  class="flex w-full items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-foreground transition-colors hover:bg-muted hover:text-gold data-[state=open]:text-gold [&[data-state=open]>svg]:rotate-180"
+                  class="flex w-full items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold data-[state=open]:text-gold [&[data-state=open]>svg]:rotate-180"
                 >
                   {item.name}
                   <svg
@@ -236,7 +236,7 @@
                         <a
                           href={subItem.href}
                           onclick={(e) => handleNavClick(e, subItem.href)}
-                          class="block rounded-md px-3 py-2.5 font-serif text-xl transition-colors transform-[scaleY(0.97)] {currentPath === subItem.href ? 'text-gold font-semibold' : 'text-foreground hover:text-gold'}"
+                          class="block rounded-md px-3 py-2.5 font-serif text-xl transition-colors transform-[scaleY(0.97)] {currentPath === subItem.href ? 'text-gold font-semibold' : 'text-white/80 hover:text-gold'}"
                           aria-current={currentPath === subItem.href ? 'page' : undefined}
                         >
                           {subItem.name}
@@ -252,7 +252,7 @@
               <a
                 href={item.href}
                 onclick={(e) => handleNavClick(e, item.href!)}
-                class="block rounded-md px-3 py-3 font-serif text-2xl font-semibold transition-colors {currentPath === item.href ? 'text-gold' : 'text-foreground hover:bg-muted hover:text-gold'}"
+                class="block rounded-md px-3 py-3 font-serif text-2xl font-semibold transition-colors {currentPath === item.href ? 'text-gold' : 'text-white hover:bg-white/10 hover:text-gold'}"
                 aria-current={currentPath === item.href ? 'page' : undefined}
               >
                 {item.name}
