@@ -112,7 +112,7 @@ const currentPath = Astro.url.pathname;
     let scrollUpAccumulator = 0; // Track how much user has scrolled up
     let isHeaderHidden = false;
     let ticking = false;
-    const SCROLL_UP_THRESHOLD = 20; // Pixels of upward scroll needed to show header
+    const SCROLL_UP_THRESHOLD = 40; // Pixels of upward scroll needed to show header
 
     const updateHeader = () => {
       const currentScrollY = window.scrollY;
