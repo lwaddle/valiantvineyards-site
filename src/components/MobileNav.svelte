@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
   import { cubicOut } from "svelte/easing";
   import * as Collapsible from "$lib/components/ui/collapsible";
 
@@ -12,58 +11,132 @@
   interface Props {
     navigation: NavItem[];
     currentPath: string;
-    logoSrc: string;
   }
 
-  let { navigation, currentPath, logoSrc }: Props = $props();
+  let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
+  let isClosing = $state(false); // Track closing state to prevent header flash
+  let backdropVisible = $state(false); // Separate state for backdrop to control timing
+  let headerHeight = $state(65); // Default fallback
+  let menuButton: HTMLButtonElement;
+  let navPanel: HTMLElement | undefined = $state();
+  let prefersReducedMotion = $state(false);
 
-  // Custom slide transition that works with percentages
-  function slideRight(node: HTMLElement, { duration = 300, easing = cubicOut }: { duration?: number; easing?: (t: number) => number } = {}) {
+  // Check for reduced motion preference
+  $effect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    prefersReducedMotion = mediaQuery.matches;
+
+    const handler = (e: MediaQueryListEvent) => {
+      prefersReducedMotion = e.matches;
+    };
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  });
+
+  // Update header height whenever menu opens or window resizes
+  function updateHeaderHeight() {
+    const header = document.getElementById('main-header');
+    if (header) {
+      headerHeight = header.offsetHeight;
+    }
+  }
+
+  // Get header height on mount and listen for resize
+  $effect(() => {
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    return () => window.removeEventListener('resize', updateHeaderHeight);
+  });
+
+  // Handle keyboard navigation
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Escape' && isOpen) {
+      closeMenu();
+      // Only restore focus on keyboard close, not touch
+      menuButton?.focus({ preventScroll: true });
+    }
+  }
+
+  // Focus management when menu opens - only for keyboard users
+  // Skip auto-focus on touch devices to avoid iOS focus ring
+  $effect(() => {
+    if (isOpen && navPanel) {
+      // Check if this was likely a keyboard interaction (not touch)
+      const isKeyboardUser = !('ontouchstart' in window) || window.matchMedia('(hover: hover)').matches;
+      if (isKeyboardUser) {
+        const firstFocusable = navPanel.querySelector<HTMLElement>('a, button');
+        firstFocusable?.focus({ preventScroll: true });
+      }
+    }
+  });
+
+  // Dropdown expand transition - uses transform for smoother iOS performance
+  function expandDown(node: HTMLElement, { duration = 300, easing = cubicOut }: { duration?: number; easing?: (t: number) => number } = {}) {
+    if (prefersReducedMotion) {
+      return { duration: 0, css: () => '' };
+    }
     return {
       duration,
       easing,
-      css: (t: number) => `transform: translateX(${(1 - t) * 100}%)`
+      css: (t: number) => `
+        transform: scaleY(${t});
+        transform-origin: top;
+        opacity: ${t};
+      `
     };
   }
 
-  // Staggered fade-in for nav items
+  // Staggered fade-in for nav items (vertical motion)
   function staggeredFade(node: HTMLElement, { delay = 0, duration = 200 }: { delay?: number; duration?: number } = {}) {
+    if (prefersReducedMotion) {
+      return { duration: 0, css: () => '' };
+    }
     return {
       delay,
       duration,
       easing: cubicOut,
-      css: (t: number) => `opacity: ${t}; transform: translateX(${(1 - t) * 12}px)`
+      css: (t: number) => `opacity: ${t}; transform: translateY(${(1 - t) * -8}px)`
     };
   }
 
-  function getScrollbarWidth() {
-    return window.innerWidth - document.documentElement.clientWidth;
-  }
-
-  function lockScroll() {
-    const scrollbarWidth = getScrollbarWidth();
-    document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
-  }
-
-  function unlockScroll() {
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
-  }
-
   function toggleMenu() {
-    isOpen = !isOpen;
-    if (isOpen) {
-      lockScroll();
+    if (!isOpen) {
+      updateHeaderHeight(); // Recalculate before opening
+      backdropVisible = true;
+      // Small delay to let backdrop render at opacity-0 before transitioning
+      requestAnimationFrame(() => {
+        isOpen = true;
+      });
     } else {
-      unlockScroll();
+      closeMenu();
     }
   }
 
   function closeMenu() {
+    if (isClosing) return; // Prevent double-close
+    isClosing = true;
+
+    // Lock header position during close to prevent flash
+    const header = document.getElementById('main-header');
+    if (header) {
+      header.style.transform = 'translateY(0)';
+      header.classList.remove('-translate-y-full');
+    }
+
+    // Close both panel and backdrop together (backdrop will fade via CSS)
     isOpen = false;
-    unlockScroll();
+
+    // Reset closing state and remove backdrop after transition completes
+    const transitionDuration = prefersReducedMotion ? 0 : 250;
+    setTimeout(() => {
+      backdropVisible = false;
+      isClosing = false;
+      // Restore header's normal scroll behavior
+      if (header) {
+        header.style.transform = '';
+      }
+    }, transitionDuration);
   }
 
   function handleNavClick(e: MouseEvent, href: string) {
@@ -76,71 +149,83 @@
   }
 </script>
 
-<!-- Toggle Button -->
+<svelte:window onkeydown={handleKeydown} />
+
+<!-- Toggle Button - 2-bar with MENU text, animates to X -->
 <button
+  bind:this={menuButton}
   onclick={toggleMenu}
-  class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+  class="flex flex-col items-center justify-center gap-1 p-2 text-white/70 transition-colors hover:text-white motion-reduce:transition-none"
   aria-label={isOpen ? "Close menu" : "Open menu"}
   aria-expanded={isOpen}
+  aria-controls="mobile-nav-panel"
 >
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="4" x2="20" y1="12" y2="12" />
-    <line x1="4" x2="20" y1="6" y2="6" />
-    <line x1="4" x2="20" y1="18" y2="18" />
-  </svg>
+  <div class="flex flex-col items-center justify-center gap-1.5">
+    <span
+      class="block h-0.5 w-7 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
+      class:translate-y-1={isOpen}
+      class:rotate-45={isOpen}
+    ></span>
+    <span
+      class="block h-0.5 w-7 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
+      class:-translate-y-1={isOpen}
+      class:-rotate-45={isOpen}
+    ></span>
+  </div>
+  <span
+    class="font-sans text-[11px] uppercase tracking-widest text-gold transition-all duration-200 motion-reduce:transition-none"
+    class:opacity-0={isOpen}
+    class:translate-y-1={isOpen}
+    aria-hidden="true"
+  >MENU</span>
 </button>
 
-{#if isOpen}
-  <!-- Backdrop overlay (darker to hide logo behind) -->
+{#if backdropVisible}
+  <!-- Backdrop overlay (below header only) -->
+  <!-- Uses backdrop-blur to create visual separation and avoid triggering iOS Safari's dark UI bar detection -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
-    transition:fade={{ duration: 250 }}
-    class="fixed inset-0 z-40 bg-black/80"
-    style="-webkit-tap-highlight-color: transparent; -webkit-backface-visibility: hidden; backface-visibility: hidden;"
+    class="fixed left-0 right-0 bottom-0 z-40 bg-black/15 backdrop-blur-sm backface-hidden transition-opacity duration-200"
+    class:opacity-0={!isOpen}
+    class:opacity-100={isOpen}
+    style="top: {headerHeight}px; -webkit-tap-highlight-color: transparent;"
     onclick={closeMenu}
     onkeydown={(e) => e.key === 'Escape' && closeMenu()}
     role="presentation"
     aria-hidden="true"
   ></div>
+{/if}
 
-  <!-- Off-canvas panel (slides from right) -->
+{#if isOpen}
+
+  <!-- Dropdown panel (fixed to viewport, positioned below header) -->
   <div
-    transition:slideRight={{ duration: 400 }}
-    class="fixed right-0 top-0 z-50 flex h-full w-[90%] max-w-sm flex-col overflow-y-auto bg-background shadow-2xl will-change-transform"
+    bind:this={navPanel}
+    id="mobile-nav-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Navigation menu"
+    transition:expandDown={{ duration: 250 }}
+    class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-neutral-900 backface-hidden"
+    style="top: {headerHeight}px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);"
   >
-    <!-- Header with logo and close button -->
-    <div class="flex items-center justify-between border-b border-gold/20 px-4 py-4">
-      <a href="/" onclick={(e) => handleNavClick(e, '/')} class="block">
-        <img src={logoSrc} alt="Valiant Vineyards" class="w-[158px]" />
-      </a>
-      <button
-        onclick={closeMenu}
-        class="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-        aria-label="Close menu"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </button>
-    </div>
-
     <!-- Navigation links -->
-    <nav class="px-4 pt-6 pb-4">
+    <nav class="px-4 py-4" aria-label="Mobile navigation">
       <ul class="space-y-1">
         {#each navigation as item, i}
           {#if item.items}
             <li in:staggeredFade={{ delay: 150 + i * 50, duration: 250 }}>
               <Collapsible.Root>
                 <Collapsible.Trigger
-                  class="flex w-full items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-foreground transition-colors hover:bg-muted hover:text-gold data-[state=open]:text-gold [&[data-state=open]>svg]:rotate-180"
+                  class="flex w-full items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold data-[state=open]:text-gold [&[data-state=open]>svg]:rotate-180"
                 >
                   {item.name}
                   <svg
-                    class="h-5 w-5 text-gold transition-transform"
+                    class="h-5 w-5 text-gold transition-transform motion-reduce:transition-none"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
+                    aria-hidden="true"
                   >
                     <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                   </svg>
@@ -152,7 +237,8 @@
                         <a
                           href={subItem.href}
                           onclick={(e) => handleNavClick(e, subItem.href)}
-                          class="block rounded-md px-3 py-2.5 font-serif text-xl transition-colors {currentPath === subItem.href ? 'text-gold font-semibold' : 'text-foreground hover:text-gold'}"
+                          class="block rounded-md px-3 py-2.5 font-serif text-xl transition-colors transform-[scaleY(0.97)] {currentPath === subItem.href ? 'text-gold font-semibold' : 'text-white/80 hover:text-gold'}"
+                          aria-current={currentPath === subItem.href ? 'page' : undefined}
                         >
                           {subItem.name}
                         </a>
@@ -167,7 +253,8 @@
               <a
                 href={item.href}
                 onclick={(e) => handleNavClick(e, item.href!)}
-                class="block rounded-md px-3 py-3 font-serif text-2xl font-semibold transition-colors {currentPath === item.href ? 'text-gold' : 'text-foreground hover:bg-muted hover:text-gold'}"
+                class="block rounded-md px-3 py-3 font-serif text-2xl font-semibold transition-colors {currentPath === item.href ? 'text-gold' : 'text-white hover:bg-white/10 hover:text-gold'}"
+                aria-current={currentPath === item.href ? 'page' : undefined}
               >
                 {item.name}
               </a>
