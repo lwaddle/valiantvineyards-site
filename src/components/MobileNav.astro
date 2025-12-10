@@ -203,6 +203,11 @@ const { navigation, currentPath } = Astro.props;
   if (toggle && panel && backdrop) {
     let isOpen = false;
 
+    // Store references after null check for TypeScript
+    const toggleEl = toggle;
+    const panelEl = panel;
+    const backdropEl = backdrop;
+
     function getHeaderHeight() {
       return header?.offsetHeight ?? 65;
     }
@@ -212,19 +217,19 @@ const { navigation, currentPath } = Astro.props;
       const headerHeight = getHeaderHeight();
 
       // Position panel and backdrop below header
-      panel.style.top = `${headerHeight}px`;
-      backdrop.style.top = `${headerHeight}px`;
+      panelEl.style.top = `${headerHeight}px`;
+      backdropEl.style.top = `${headerHeight}px`;
 
-      toggle.setAttribute('aria-expanded', 'true');
-      toggle.setAttribute('aria-label', 'Close menu');
-      panel.classList.add('open');
-      backdrop.classList.add('open');
+      toggleEl.setAttribute('aria-expanded', 'true');
+      toggleEl.setAttribute('aria-label', 'Close menu');
+      panelEl.classList.add('open');
+      backdropEl.classList.add('open');
 
       // Focus first link for keyboard users
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const delay = prefersReducedMotion ? 0 : 250;
       setTimeout(() => {
-        const firstLink = panel.querySelector('a, button, summary');
+        const firstLink = panelEl.querySelector('a, button, summary');
         if (firstLink instanceof HTMLElement) {
           firstLink.focus({ preventScroll: true });
         }
@@ -235,7 +240,7 @@ const { navigation, currentPath } = Astro.props;
       isOpen = false;
 
       // Collapse all open details elements before closing to prevent visual artifacts
-      panel.querySelectorAll('details[open]').forEach((details) => {
+      panelEl.querySelectorAll('details[open]').forEach((details) => {
         details.removeAttribute('open');
       });
 
@@ -245,10 +250,10 @@ const { navigation, currentPath } = Astro.props;
         header.classList.remove('-translate-y-full');
       }
 
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', 'Open menu');
-      panel.classList.remove('open');
-      backdrop.classList.remove('open');
+      toggleEl.setAttribute('aria-expanded', 'false');
+      toggleEl.setAttribute('aria-label', 'Open menu');
+      panelEl.classList.remove('open');
+      backdropEl.classList.remove('open');
 
       // Restore header scroll behavior after transition
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -269,21 +274,21 @@ const { navigation, currentPath } = Astro.props;
     }
 
     // Toggle button click
-    toggle.addEventListener('click', toggleMenu);
+    toggleEl.addEventListener('click', toggleMenu);
 
     // Backdrop click closes menu
-    backdrop.addEventListener('click', closeMenu);
+    backdropEl.addEventListener('click', closeMenu);
 
     // Escape key closes menu
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen) {
         closeMenu();
-        toggle.focus();
+        toggleEl.focus();
       }
     });
 
     // Close menu on nav link click (with brief delay for visual feedback)
-    panel.querySelectorAll('.mobile-nav-link').forEach((link) => {
+    panelEl.querySelectorAll('.mobile-nav-link').forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const href = (e.currentTarget as HTMLAnchorElement).href;
