@@ -19,7 +19,7 @@
   let backdropVisible = $state(false); // Separate state for backdrop to control timing
   let headerHeight = $state(65); // Default fallback
   let menuButton: HTMLButtonElement;
-  let navPanel: HTMLElement;
+  let navPanel: HTMLElement | undefined = $state();
   let prefersReducedMotion = $state(false);
 
   // Check for reduced motion preference
@@ -205,8 +205,8 @@
     aria-modal="true"
     aria-label="Navigation menu"
     transition:expandDown={{ duration: 250 }}
-    class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-background shadow-2xl backface-hidden"
-    style="top: {headerHeight}px;"
+    class="fixed left-0 right-0 z-50 max-h-[80vh] overflow-y-auto bg-background backface-hidden"
+    style="top: {headerHeight}px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);"
   >
     <!-- Navigation links -->
     <nav class="px-4 py-4" aria-label="Mobile navigation">
