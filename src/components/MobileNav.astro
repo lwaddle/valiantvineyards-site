@@ -108,18 +108,32 @@ const { navigation, currentPath } = Astro.props;
 </div>
 
 <style>
-  /* Hide focus ring on touch-initiated focus, show only for keyboard navigation */
-  #mobile-nav-panel a:focus,
-  #mobile-nav-panel summary:focus,
-  #mobile-nav-panel button:focus {
-    outline: none;
+  /* Hide all focus rings on touch devices (coarse pointer = finger/touch) */
+  @media (pointer: coarse) {
+    #mobile-nav-panel a:focus,
+    #mobile-nav-panel a:focus-visible,
+    #mobile-nav-panel summary:focus,
+    #mobile-nav-panel summary:focus-visible,
+    #mobile-nav-panel button:focus,
+    #mobile-nav-panel button:focus-visible {
+      outline: none !important;
+    }
   }
 
-  #mobile-nav-panel a:focus-visible,
-  #mobile-nav-panel summary:focus-visible,
-  #mobile-nav-panel button:focus-visible {
-    outline: 2px solid var(--color-gold, #d4af37);
-    outline-offset: 2px;
+  /* On non-touch devices, show focus ring only for keyboard navigation */
+  @media (pointer: fine) {
+    #mobile-nav-panel a:focus,
+    #mobile-nav-panel summary:focus,
+    #mobile-nav-panel button:focus {
+      outline: none;
+    }
+
+    #mobile-nav-panel a:focus-visible,
+    #mobile-nav-panel summary:focus-visible,
+    #mobile-nav-panel button:focus-visible {
+      outline: 2px solid var(--color-gold, #d4af37);
+      outline-offset: 2px;
+    }
   }
 
   /* Hamburger to X animation */
