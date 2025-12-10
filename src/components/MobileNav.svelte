@@ -42,11 +42,21 @@
     }
   }
 
+  // Debounced resize handler to prevent forced reflow/layout thrashing
+  let resizeTimeout: number;
+  function debouncedUpdateHeaderHeight() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(updateHeaderHeight, 150);
+  }
+
   // Get header height on mount and listen for resize
   $effect(() => {
     updateHeaderHeight();
-    window.addEventListener('resize', updateHeaderHeight);
-    return () => window.removeEventListener('resize', updateHeaderHeight);
+    window.addEventListener('resize', debouncedUpdateHeaderHeight);
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', debouncedUpdateHeaderHeight);
+    };
   });
 
   // Handle keyboard navigation
