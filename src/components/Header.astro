@@ -109,27 +109,41 @@ const currentPath = Astro.url.pathname;
   const header = document.getElementById('main-header');
   if (header) {
     let lastScrollY = window.scrollY;
+    let scrollUpAccumulator = 0; // Track how much user has scrolled up
+    let isHeaderHidden = false;
     let ticking = false;
+    const SCROLL_UP_THRESHOLD = 20; // Pixels of upward scroll needed to show header
 
     const updateHeader = () => {
       const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
 
       // Only hide after scrolling past the header height
       if (currentScrollY > 80) {
-        if (currentScrollY > lastScrollY) {
-          // Scrolling down - hide header
+        if (scrollDelta > 0) {
+          // Scrolling down - hide header immediately and reset accumulator
           header.classList.add('-translate-y-full');
           header.classList.remove('shadow-md');
-        } else {
-          // Scrolling up - show header with shadow
-          header.classList.remove('-translate-y-full');
-          header.classList.add('shadow-md');
+          scrollUpAccumulator = 0;
+          isHeaderHidden = true;
+        } else if (scrollDelta < 0) {
+          // Scrolling up - accumulate scroll distance
+          scrollUpAccumulator += Math.abs(scrollDelta);
+
+          // Only show header after threshold is met
+          if (scrollUpAccumulator >= SCROLL_UP_THRESHOLD && isHeaderHidden) {
+            header.classList.remove('-translate-y-full');
+            header.classList.add('shadow-md');
+            isHeaderHidden = false;
+          }
         }
       } else {
         // At top of page - show header instantly without animation
         header.classList.add('!transition-none');
         header.classList.remove('-translate-y-full');
         header.classList.remove('shadow-md');
+        scrollUpAccumulator = 0;
+        isHeaderHidden = false;
         // Re-enable transitions after a frame
         requestAnimationFrame(() => {
           header.classList.remove('!transition-none');
