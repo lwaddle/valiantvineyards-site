@@ -55,13 +55,13 @@ const currentPath = Astro.url.pathname;
           <div class="dropdown-container group relative">
             <button
               type="button"
-              class="dropdown-trigger flex items-center gap-1 px-4 py-2 text-sm font-normal text-white/80 transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+              class="dropdown-trigger flex items-center gap-1 px-4 py-2 text-base font-normal text-white/80 transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
               aria-expanded="false"
               aria-haspopup="true"
               aria-controls={`dropdown-menu-${index}`}
             >
               {item.name}
-              <svg class="dropdown-arrow h-4 w-4 text-gold transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <svg class="dropdown-arrow h-4 w-4 text-gold-light transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
               </svg>
             </button>
@@ -75,7 +75,7 @@ const currentPath = Astro.url.pathname;
                   href={subItem.href}
                   role="menuitem"
                   class:list={[
-                    "block rounded-sm px-4 py-2 text-sm transition-colors hover:bg-muted focus:bg-muted focus:outline-none",
+                    "block rounded-sm px-4 py-2 text-base transition-colors hover:bg-muted focus:bg-muted focus:outline-none",
                     currentPath === subItem.href ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
                   ]}
                 >
@@ -88,8 +88,8 @@ const currentPath = Astro.url.pathname;
           <a
             href={item.href}
             class:list={[
-              "px-4 py-2 text-sm font-normal transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
-              currentPath === item.href ? "text-gold" : "text-white/80"
+              "px-4 py-2 text-base font-normal transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+              currentPath === item.href ? "text-gold-light" : "text-white/80"
             ]}
           >
             {item.name}
