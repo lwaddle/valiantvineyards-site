@@ -122,12 +122,12 @@ const { navigation, currentPath } = Astro.props;
     transform: translateY(4px);
   }
 
-  /* Panel default state */
+  /* Panel default state (closing) */
   #mobile-nav-panel {
     transform: scaleY(0);
     transform-origin: top;
     opacity: 0;
-    transition: transform 250ms ease-out, opacity 250ms ease-out, visibility 0s 250ms;
+    transition: transform 150ms ease-out, opacity 150ms ease-out, visibility 0s 150ms;
   }
 
   /* Panel open state */
@@ -220,6 +220,11 @@ const { navigation, currentPath } = Astro.props;
     function closeMenu() {
       isOpen = false;
 
+      // Collapse all open details elements before closing to prevent visual artifacts
+      panel.querySelectorAll('details[open]').forEach((details) => {
+        details.removeAttribute('open');
+      });
+
       // Lock header position during close to prevent flash
       if (header) {
         header.style.transform = 'translateY(0)';
@@ -233,7 +238,7 @@ const { navigation, currentPath } = Astro.props;
 
       // Restore header scroll behavior after transition
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const delay = prefersReducedMotion ? 0 : 250;
+      const delay = prefersReducedMotion ? 0 : 150;
       setTimeout(() => {
         if (header) {
           header.style.transform = '';
