@@ -108,6 +108,20 @@ const { navigation, currentPath } = Astro.props;
 </div>
 
 <style>
+  /* Hide focus ring on touch-initiated focus, show only for keyboard navigation */
+  #mobile-nav-panel a:focus,
+  #mobile-nav-panel summary:focus,
+  #mobile-nav-panel button:focus {
+    outline: none;
+  }
+
+  #mobile-nav-panel a:focus-visible,
+  #mobile-nav-panel summary:focus-visible,
+  #mobile-nav-panel button:focus-visible {
+    outline: 2px solid var(--color-gold, #d4af37);
+    outline-offset: 2px;
+  }
+
   /* Hamburger to X animation */
   #mobile-nav-toggle[aria-expanded="true"] .mobile-nav-bar:first-child {
     transform: translateY(4px) rotate(45deg);
@@ -276,7 +290,7 @@ const { navigation, currentPath } = Astro.props;
         closeMenu();
         setTimeout(() => {
           window.location.href = href;
-        }, 100);
+        }, 200);
       });
     });
   }
