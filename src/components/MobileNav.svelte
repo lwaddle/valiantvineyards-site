@@ -181,10 +181,11 @@
 </button>
 
 {#if backdropVisible}
-  <!-- Backdrop overlay (below header only) - no transition to prevent flash on close -->
+  <!-- Backdrop overlay (below header only) -->
+  <!-- Uses backdrop-blur to create visual separation and avoid triggering iOS Safari's dark UI bar detection -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
-    class="fixed left-0 right-0 bottom-0 z-40 bg-black/35 backface-hidden transition-opacity duration-200"
+    class="fixed left-0 right-0 bottom-0 z-40 bg-black/15 backdrop-blur-sm backface-hidden transition-opacity duration-200"
     class:opacity-0={!isOpen}
     class:opacity-100={isOpen}
     style="top: {headerHeight}px; -webkit-tap-highlight-color: transparent;"
