@@ -30,7 +30,7 @@ const { navigation, currentPath } = Astro.props;
     ></span>
   </div>
   <span
-    class="mobile-nav-label font-sans text-[11px] uppercase tracking-widest text-gold transition-all duration-200 motion-reduce:transition-none"
+    class="mobile-nav-label font-sans text-[11px] uppercase tracking-widest text-gold-light transition-all duration-200 motion-reduce:transition-none"
     aria-hidden="true"
   >MENU</span>
 </button>
@@ -57,11 +57,11 @@ const { navigation, currentPath } = Astro.props;
           <li class="mobile-nav-item" style={`--delay: ${150 + i * 50}ms`}>
             <details class="group">
               <summary
-                class="flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold list-none [&::-webkit-details-marker]:hidden"
+                class="flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold-light list-none [&::-webkit-details-marker]:hidden"
               >
                 {item.name}
                 <svg
-                  class="h-5 w-5 text-gold transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
+                  class="h-5 w-5 text-gold-light transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -77,7 +77,7 @@ const { navigation, currentPath } = Astro.props;
                       href={subItem.href}
                       class:list={[
                         "mobile-nav-link block rounded-md px-3 py-2.5 font-serif text-xl transition-colors",
-                        currentPath === subItem.href ? "text-gold font-semibold" : "text-white/80 hover:text-gold"
+                        currentPath === subItem.href ? "text-gold-light font-semibold" : "text-white/80 hover:text-gold-light"
                       ]}
                       aria-current={currentPath === subItem.href ? "page" : undefined}
                     >
@@ -94,7 +94,7 @@ const { navigation, currentPath } = Astro.props;
               href={item.href}
               class:list={[
                 "mobile-nav-link block rounded-md px-3 py-3 font-serif text-2xl font-semibold transition-colors",
-                currentPath === item.href ? "text-gold" : "text-white hover:bg-white/10 hover:text-gold"
+                currentPath === item.href ? "text-gold-light" : "text-white hover:bg-white/10 hover:text-gold-light"
               ]}
               aria-current={currentPath === item.href ? "page" : undefined}
             >
