@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
   import { cubicOut } from "svelte/easing";
   import * as Collapsible from "$lib/components/ui/collapsible";
 
@@ -17,6 +16,7 @@
   let { navigation, currentPath }: Props = $props();
   let isOpen = $state(false);
   let isClosing = $state(false); // Track closing state to prevent header flash
+  let backdropVisible = $state(false); // Separate state for backdrop to control timing
   let headerHeight = $state(65); // Default fallback
   let menuButton: HTMLButtonElement;
   let navPanel: HTMLElement;
@@ -103,8 +103,14 @@
   function toggleMenu() {
     if (!isOpen) {
       updateHeaderHeight(); // Recalculate before opening
+      backdropVisible = true;
+      // Small delay to let backdrop render at opacity-0 before transitioning
+      requestAnimationFrame(() => {
+        isOpen = true;
+      });
+    } else {
+      closeMenu();
     }
-    isOpen = !isOpen;
   }
 
   function closeMenu() {
@@ -118,11 +124,13 @@
       header.classList.remove('-translate-y-full');
     }
 
+    // Close both panel and backdrop together (backdrop will fade via CSS)
     isOpen = false;
 
-    // Reset closing state after transition completes
+    // Reset closing state and remove backdrop after transition completes
     const transitionDuration = prefersReducedMotion ? 0 : 250;
     setTimeout(() => {
+      backdropVisible = false;
       isClosing = false;
       // Restore header's normal scroll behavior
       if (header) {
@@ -172,18 +180,22 @@
   >MENU</span>
 </button>
 
-{#if isOpen}
-  <!-- Backdrop overlay (below header only) -->
+{#if backdropVisible}
+  <!-- Backdrop overlay (below header only) - no transition to prevent flash on close -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
-    transition:fade={{ duration: 200 }}
-    class="fixed left-0 right-0 bottom-0 z-40 bg-black/50 backface-hidden"
+    class="fixed left-0 right-0 bottom-0 z-40 bg-black/35 backface-hidden transition-opacity duration-200"
+    class:opacity-0={!isOpen}
+    class:opacity-100={isOpen}
     style="top: {headerHeight}px; -webkit-tap-highlight-color: transparent;"
     onclick={closeMenu}
     onkeydown={(e) => e.key === 'Escape' && closeMenu()}
     role="presentation"
     aria-hidden="true"
   ></div>
+{/if}
+
+{#if isOpen}
 
   <!-- Dropdown panel (fixed to viewport, positioned below header) -->
   <div
