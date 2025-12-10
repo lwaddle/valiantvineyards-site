@@ -21,7 +21,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const POSTS_PER_PAGE = 9;
 
 const { page } = Astro.params;
-const currentPage = parseInt(page);
+const currentPage = parseInt(String(page ?? "1"));
 
 const allPosts = await getCollection("news", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort(
