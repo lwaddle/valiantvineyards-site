@@ -42,6 +42,7 @@
   --color-background: var(--color-cream);
   --color-foreground: var(--color-charcoal);
   --color-muted: #f1ede8;
+  --color-muted-light: #FAF8F5;
   --color-muted-foreground: var(--color-slate);
   --color-accent: var(--color-burgundy);
   --color-accent-foreground: #ffffff;
