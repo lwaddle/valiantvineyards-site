@@ -4,7 +4,6 @@
   export let heroSrc: string;
   export let heroAlt: string;
   export let images: { src: string; alt: string }[] = [];
-  export let thumbnails: { src: string; alt: string }[] = [];
   export let roomName: string = '';
 
   let isOpen = false;
@@ -28,7 +27,7 @@
       alt={heroAlt}
       class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 bg-neutral-200"
       on:error={(e) => {
-        const img = e.currentTarget;
+        const img = e.currentTarget as HTMLImageElement;
         img.onerror = null;
         img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23e5e5e5' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23737373' font-family='system-ui' font-size='14'%3EImage unavailable%3C/text%3E%3C/svg%3E";
       }}

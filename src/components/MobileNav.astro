@@ -54,14 +54,14 @@ const { navigation, currentPath } = Astro.props;
     <ul class="space-y-1">
       {navigation.map((item, i) => (
         item.items ? (
-          <li class="mobile-nav-item" style={`--delay: ${150 + i * 50}ms`}>
-            <details class="group">
+          <li class="mobile-nav-item" style={`--delay: ${100 + i * 30}ms`}>
+            <details class="group mobile-nav-details">
               <summary
-                class="flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold-light list-none [&::-webkit-details-marker]:hidden"
+                class="flex w-full cursor-pointer select-none items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold-light list-none [&::-webkit-details-marker]:hidden"
               >
                 {item.name}
                 <svg
-                  class="h-5 w-5 text-gold-light transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
+                  class="mobile-nav-arrow h-5 w-5 text-gold-light transition-transform duration-200 motion-reduce:transition-none"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -70,26 +70,28 @@ const { navigation, currentPath } = Astro.props;
                   <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                 </svg>
               </summary>
-              <ul class="ml-4 mt-1 space-y-1 border-l-2 border-gold/30 pl-4">
-                {item.items.map((subItem) => (
-                  <li>
-                    <a
-                      href={subItem.href}
-                      class:list={[
-                        "mobile-nav-link block rounded-md px-3 py-2.5 font-serif text-xl transition-colors",
-                        currentPath === subItem.href ? "text-gold-light font-semibold" : "text-white/80 hover:text-gold-light"
-                      ]}
-                      aria-current={currentPath === subItem.href ? "page" : undefined}
-                    >
-                      {subItem.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <div class="mobile-nav-submenu-wrapper">
+                <ul class="mobile-nav-submenu ml-4 mt-1 space-y-1 border-l-2 border-gold/30 pl-4">
+                  {item.items.map((subItem) => (
+                    <li>
+                      <a
+                        href={subItem.href}
+                        class:list={[
+                          "mobile-nav-link block rounded-md px-3 py-2.5 font-serif text-xl transition-colors",
+                          currentPath === subItem.href ? "text-gold-light font-semibold" : "text-white/80 hover:text-gold-light"
+                        ]}
+                        aria-current={currentPath === subItem.href ? "page" : undefined}
+                      >
+                        {subItem.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </details>
           </li>
         ) : (
-          <li class="mobile-nav-item" style={`--delay: ${150 + i * 50}ms`}>
+          <li class="mobile-nav-item" style={`--delay: ${100 + i * 30}ms`}>
             <a
               href={item.href}
               class:list={[
@@ -152,18 +154,17 @@ const { navigation, currentPath } = Astro.props;
 
   /* Panel default state (closing) */
   #mobile-nav-panel {
-    transform: scaleY(0);
-    transform-origin: top;
+    clip-path: inset(0 0 100% 0);
     opacity: 0;
-    transition: transform 150ms ease-out, opacity 150ms ease-out, visibility 0s 150ms;
+    transition: clip-path 150ms ease-out, opacity 150ms ease-out, visibility 0s 150ms;
   }
 
   /* Panel open state */
   #mobile-nav-panel.open {
     visibility: visible;
-    transform: scaleY(1);
+    clip-path: inset(0 0 0 0);
     opacity: 1;
-    transition: transform 250ms ease-out, opacity 250ms ease-out, visibility 0s 0s;
+    transition: clip-path 250ms ease-out, opacity 250ms ease-out, visibility 0s 0s;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -183,7 +184,7 @@ const { navigation, currentPath } = Astro.props;
 
   /* Staggered fade-in for nav items when menu opens */
   #mobile-nav-panel.open .mobile-nav-item {
-    animation: fadeSlideIn 250ms ease-out forwards;
+    animation: fadeSlideIn 150ms ease-out forwards;
     animation-delay: var(--delay);
     opacity: 0;
   }
@@ -206,6 +207,23 @@ const { navigation, currentPath } = Astro.props;
       opacity: 1;
     }
   }
+
+  /* Animated submenu using grid technique */
+  .mobile-nav-submenu-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 200ms ease-out;
+  }
+
+  .mobile-nav-submenu {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-nav-submenu-wrapper {
+      transition: none;
+    }
+  }
 </style>
 
 <script>
@@ -226,6 +244,8 @@ const { navigation, currentPath } = Astro.props;
       return header?.offsetHeight ?? 65;
     }
 
+    let openedViaKeyboard = false;
+
     function openMenu() {
       isOpen = true;
       const headerHeight = getHeaderHeight();
@@ -239,15 +259,18 @@ const { navigation, currentPath } = Astro.props;
       panelEl.classList.add('open');
       backdropEl.classList.add('open');
 
-      // Focus first link for keyboard users
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const delay = prefersReducedMotion ? 0 : 250;
-      setTimeout(() => {
-        const firstLink = panelEl.querySelector('a, button, summary');
-        if (firstLink instanceof HTMLElement) {
-          firstLink.focus({ preventScroll: true });
-        }
-      }, delay);
+      // Focus first link only for keyboard users
+      if (openedViaKeyboard) {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const delay = prefersReducedMotion ? 0 : 250;
+        setTimeout(() => {
+          const firstLink = panelEl.querySelector('a, button, summary');
+          if (firstLink instanceof HTMLElement) {
+            firstLink.focus({ preventScroll: true });
+          }
+        }, delay);
+      }
+      openedViaKeyboard = false;
     }
 
     function closeMenu() {
@@ -290,6 +313,13 @@ const { navigation, currentPath } = Astro.props;
     // Toggle button click
     toggleEl.addEventListener('click', toggleMenu);
 
+    // Track keyboard activation for focus management
+    toggleEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        openedViaKeyboard = true;
+      }
+    });
+
     // Backdrop click closes menu
     backdropEl.addEventListener('click', closeMenu);
 
@@ -301,16 +331,37 @@ const { navigation, currentPath } = Astro.props;
       }
     });
 
-    // Close menu on nav link click (with brief delay for visual feedback)
-    panelEl.querySelectorAll('.mobile-nav-link').forEach((link) => {
-      link.addEventListener('click', (e) => {
+    // Handle submenu toggle with JS to ensure animation works in Chrome
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    panelEl.querySelectorAll('.mobile-nav-details').forEach((details) => {
+      const summary = details.querySelector('summary');
+      const wrapper = details.querySelector('.mobile-nav-submenu-wrapper') as HTMLElement;
+      const arrow = details.querySelector('.mobile-nav-arrow') as SVGElement;
+
+      if (!summary || !wrapper) return;
+
+      summary.addEventListener('click', (e) => {
         e.preventDefault();
-        const href = (e.currentTarget as HTMLAnchorElement).href;
-        closeMenu();
-        setTimeout(() => {
-          window.location.href = href;
-        }, 200);
+
+        if (details.hasAttribute('open')) {
+          // Closing: animate arrow and submenu together, then remove open attribute
+          arrow?.classList.remove('rotate-180');
+          wrapper.style.gridTemplateRows = '0fr';
+          const delay = prefersReducedMotion ? 0 : 200;
+          setTimeout(() => {
+            details.removeAttribute('open');
+          }, delay);
+        } else {
+          // Opening: add open attribute, then trigger animation on next frame
+          details.setAttribute('open', '');
+          requestAnimationFrame(() => {
+            arrow?.classList.add('rotate-180');
+            wrapper.style.gridTemplateRows = '1fr';
+          });
+        }
       });
     });
+
   }
 </script>

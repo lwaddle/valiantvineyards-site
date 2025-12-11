@@ -35,6 +35,8 @@
       index: initialIndex,
       bgOpacity: 0.95,
       showHideAnimationType: 'fade',
+      hideAnimationDuration: 200,
+      showAnimationDuration: 250,
       pswpModule: PhotoSwipe,
       errorMsg: 'This image could not be loaded',
     });
