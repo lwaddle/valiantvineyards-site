@@ -10,7 +10,7 @@ import heroImage from "../assets/images/wedding-dance-dip-kiss.webp";
 
 // Import gallery images
 const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/images/wedding-gallery/*.jpg",
+  "../assets/images/wedding-gallery/*.webp",
   { eager: true }
 );
 
@@ -30,7 +30,7 @@ const galleryArray = Object.entries(galleryImages)
 // Generate optimized image URLs for the lightbox with dimensions
 const lightboxImages = await Promise.all(
   galleryArray.map(async (image) => {
-    const optimized = await getImage({ src: image.src, width: 1200, quality: 85 });
+    const optimized = await getImage({ src: image.src, width: 1200, quality: 75 });
     // Calculate height based on original aspect ratio
     const aspectRatio = image.src.height / image.src.width;
     const height = Math.round(1200 * aspectRatio);
@@ -219,7 +219,7 @@ const includedServices = [
                     class={`w-full object-cover ${index === 0 ? 'h-64' : 'h-40'}`}
                     widths={[400, 800]}
                     sizes="(max-width: 1024px) 50vw, 25vw"
-                    quality={85}
+                    quality={75}
                   />
                 </div>
               ))}
