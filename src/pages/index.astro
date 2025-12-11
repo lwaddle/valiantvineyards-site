@@ -36,13 +36,13 @@ const featuredPosts = sortedPosts.slice(0, 3);
         fetchpriority="high"
         class="absolute inset-0 w-full h-full object-cover object-bottom"
       />
-      <!-- Dark overlay for text legibility -->
-      <div class="absolute inset-0 bg-black/45"></div>
-      <!-- Centered h1 on image -->
+      <!-- Centered h1 on image with backdrop -->
       <div class="absolute inset-0 flex items-center justify-center px-4">
-        <h1 class="font-serif text-4xl font-semibold tracking-tight text-white text-center drop-shadow-lg">
-          Sip. Celebrate. Stay.
-        </h1>
+        <div class="inline-block bg-black/50 px-8 py-6">
+          <h1 class="font-serif text-4xl font-semibold tracking-tight text-white text-center">
+            Sip. Celebrate. Stay.
+          </h1>
+        </div>
       </div>
     </div>
     <!-- Text content section with light background -->
@@ -75,25 +75,24 @@ const featuredPosts = sortedPosts.slice(0, 3);
         quality={80}
         position="bottom"
       />
-      <!-- Light dark overlay -->
-      <div class="absolute inset-0 bg-black/55"></div>
-
       <!-- Content -->
       <div class="container relative mx-auto px-4 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
-          <h1 class="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl drop-shadow-lg">
-            Sip. Celebrate. Stay.
-          </h1>
-          <p class="mx-auto mt-6 max-w-2xl text-xl font-medium text-white/90 drop-shadow-md">
-            Since 1996, the Nygaard family has welcomed guests to sip award-winning wines, sample small-batch spirits, and unwind above the Missouri River in Vermillion, South Dakota.
-          </p>
-          <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button href="/tasting-room/" variant="gold" size="lg">
-              Visit the Tasting Room
-            </Button>
-            <Button href="/about/" variant="white" size="lg">
-              Our Story
-            </Button>
+          <div class="inline-block bg-black/50 px-8 py-6">
+            <h1 class="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Sip. Celebrate. Stay.
+            </h1>
+            <p class="mx-auto mt-6 max-w-2xl text-xl font-medium text-white">
+              Since 1996, the Nygaard family has welcomed guests to sip award-winning wines, sample small-batch spirits, and unwind above the Missouri River in Vermillion, South Dakota.
+            </p>
+            <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Button href="/tasting-room/" variant="gold" size="lg">
+                Visit the Tasting Room
+              </Button>
+              <Button href="/about/" variant="white" size="lg">
+                Our Story
+              </Button>
+            </div>
           </div>
         </div>
       </div>
