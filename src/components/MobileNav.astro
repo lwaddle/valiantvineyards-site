@@ -52,9 +52,9 @@ const { navigation, currentPath } = Astro.props;
 >
   <nav class="px-4 py-4" aria-label="Mobile navigation">
     <ul class="space-y-1">
-      {navigation.map((item, i) => (
+      {navigation.map((item) => (
         item.items ? (
-          <li class="mobile-nav-item" style={`--delay: ${100 + i * 30}ms`}>
+          <li>
             <details class="group mobile-nav-details">
               <summary
                 class="flex w-full cursor-pointer select-none items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold-light list-none [&::-webkit-details-marker]:hidden"
@@ -91,7 +91,7 @@ const { navigation, currentPath } = Astro.props;
             </details>
           </li>
         ) : (
-          <li class="mobile-nav-item" style={`--delay: ${100 + i * 30}ms`}>
+          <li>
             <a
               href={item.href}
               class:list={[
@@ -180,32 +180,6 @@ const { navigation, currentPath } = Astro.props;
   #mobile-nav-backdrop.open {
     opacity: 1;
     pointer-events: auto;
-  }
-
-  /* Staggered fade-in for nav items when menu opens */
-  #mobile-nav-panel.open .mobile-nav-item {
-    animation: fadeSlideIn 150ms ease-out forwards;
-    animation-delay: var(--delay);
-    opacity: 0;
-  }
-
-  @keyframes fadeSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Respect reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    #mobile-nav-panel.open .mobile-nav-item {
-      animation: none;
-      opacity: 1;
-    }
   }
 
   /* Animated submenu using grid technique */
