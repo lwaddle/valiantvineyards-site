@@ -61,7 +61,7 @@ const { navigation, currentPath } = Astro.props;
               >
                 {item.name}
                 <svg
-                  class="h-5 w-5 text-gold-light transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
+                  class="mobile-nav-arrow h-5 w-5 text-gold-light transition-transform duration-200 motion-reduce:transition-none"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -337,6 +337,7 @@ const { navigation, currentPath } = Astro.props;
     panelEl.querySelectorAll('.mobile-nav-details').forEach((details) => {
       const summary = details.querySelector('summary');
       const wrapper = details.querySelector('.mobile-nav-submenu-wrapper') as HTMLElement;
+      const arrow = details.querySelector('.mobile-nav-arrow') as SVGElement;
 
       if (!summary || !wrapper) return;
 
@@ -344,7 +345,8 @@ const { navigation, currentPath } = Astro.props;
         e.preventDefault();
 
         if (details.hasAttribute('open')) {
-          // Closing: animate first, then remove open attribute
+          // Closing: animate arrow and submenu together, then remove open attribute
+          arrow?.classList.remove('rotate-180');
           wrapper.style.gridTemplateRows = '0fr';
           const delay = prefersReducedMotion ? 0 : 200;
           setTimeout(() => {
@@ -354,6 +356,7 @@ const { navigation, currentPath } = Astro.props;
           // Opening: add open attribute, then trigger animation on next frame
           details.setAttribute('open', '');
           requestAnimationFrame(() => {
+            arrow?.classList.add('rotate-180');
             wrapper.style.gridTemplateRows = '1fr';
           });
         }
