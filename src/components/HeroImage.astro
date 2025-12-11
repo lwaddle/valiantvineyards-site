@@ -82,11 +82,12 @@ if (import.meta.env.DEV) {
 </div>
 
 <script>
-  // Handle cached images that load before onload can fire
+  // Handle cached images - skip transition entirely for instant display
   document.querySelectorAll('.hero-image-main').forEach((img) => {
     const imgEl = img as HTMLImageElement;
     if (imgEl.complete && imgEl.naturalHeight !== 0) {
-      imgEl.classList.add('loaded');
+      // Image already loaded (cached) - show instantly without transition
+      imgEl.classList.add('cached');
     }
   });
 </script>
@@ -118,7 +119,13 @@ if (import.meta.env.DEV) {
     object-fit: cover;
     object-position: var(--object-position);
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 150ms ease-in-out;
+  }
+
+  /* Cached images skip the transition entirely */
+  .hero-image-main.cached {
+    transition: none;
+    opacity: 1;
   }
 
   .hero-image-main.loaded {

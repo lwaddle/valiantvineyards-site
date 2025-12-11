@@ -21,7 +21,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const POSTS_PER_PAGE = 9;
 
 const { page } = Astro.params;
-const currentPage = parseInt(page);
+const currentPage = parseInt(String(page ?? "1"));
 
 const allPosts = await getCollection("news", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort(
@@ -74,7 +74,7 @@ const posts = sortedPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
                 href={`/news/post/${post.id}/`}
                 class="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
               >
-                <div class="aspect-[16/10] overflow-hidden">
+                <div class="aspect-16/10 overflow-hidden">
                   <Image
                     src={image}
                     alt={imageAlt}

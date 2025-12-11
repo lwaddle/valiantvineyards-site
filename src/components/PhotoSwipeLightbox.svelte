@@ -75,7 +75,7 @@
   }
 
   :global(.pswp__button:hover) {
-    color: #c9a227;
+    color: #D4AF37;
   }
 
   :global(.pswp__counter) {

@@ -47,7 +47,7 @@
 
 <style>
   .gallery-item:focus-visible {
-    outline: 2px solid #c9a227;
+    outline: 2px solid #D4AF37;
     outline-offset: 2px;
   }
 </style>
