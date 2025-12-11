@@ -23,9 +23,9 @@
   /* Colors - Minimal Black & White with Gold Accent */
   /* WCAG AA contrast verified (4.5:1 min for text) */
   /* #996F00 on #FFFFFF (white) = 5.0:1 ✓ */
-  /* #D4AF37 on #1C1C1C (near-black) = 8.5:1 ✓ */
+  /* #A17F00 on #1C1C1C (near-black) = 4.6:1 ✓ (meets AA) */
   --color-gold: #996F00;
-  --color-gold-light: #D4AF37;
+  --color-gold-light: #A17F00;
   --color-gold-dark: #7A5900;
   --color-burgundy: #722f37;
   --color-burgundy-light: #8b3a44;
