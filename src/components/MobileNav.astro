@@ -55,7 +55,7 @@ const { navigation, currentPath } = Astro.props;
       {navigation.map((item, i) => (
         item.items ? (
           <li class="mobile-nav-item" style={`--delay: ${150 + i * 50}ms`}>
-            <details class="group">
+            <details class="group mobile-nav-details">
               <summary
                 class="flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-3 font-serif text-2xl font-semibold text-white transition-colors hover:bg-white/10 hover:text-gold-light list-none [&::-webkit-details-marker]:hidden"
               >
@@ -70,22 +70,24 @@ const { navigation, currentPath } = Astro.props;
                   <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                 </svg>
               </summary>
-              <ul class="ml-4 mt-1 space-y-1 border-l-2 border-gold/30 pl-4">
-                {item.items.map((subItem) => (
-                  <li>
-                    <a
-                      href={subItem.href}
-                      class:list={[
-                        "mobile-nav-link block rounded-md px-3 py-2.5 font-serif text-xl transition-colors",
-                        currentPath === subItem.href ? "text-gold-light font-semibold" : "text-white/80 hover:text-gold-light"
-                      ]}
-                      aria-current={currentPath === subItem.href ? "page" : undefined}
-                    >
-                      {subItem.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <div class="mobile-nav-submenu-wrapper">
+                <ul class="mobile-nav-submenu ml-4 mt-1 space-y-1 border-l-2 border-gold/30 pl-4">
+                  {item.items.map((subItem) => (
+                    <li>
+                      <a
+                        href={subItem.href}
+                        class:list={[
+                          "mobile-nav-link block rounded-md px-3 py-2.5 font-serif text-xl transition-colors",
+                          currentPath === subItem.href ? "text-gold-light font-semibold" : "text-white/80 hover:text-gold-light"
+                        ]}
+                        aria-current={currentPath === subItem.href ? "page" : undefined}
+                      >
+                        {subItem.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </details>
           </li>
         ) : (
@@ -152,18 +154,17 @@ const { navigation, currentPath } = Astro.props;
 
   /* Panel default state (closing) */
   #mobile-nav-panel {
-    transform: scaleY(0);
-    transform-origin: top;
+    clip-path: inset(0 0 100% 0);
     opacity: 0;
-    transition: transform 150ms ease-out, opacity 150ms ease-out, visibility 0s 150ms;
+    transition: clip-path 150ms ease-out, opacity 150ms ease-out, visibility 0s 150ms;
   }
 
   /* Panel open state */
   #mobile-nav-panel.open {
     visibility: visible;
-    transform: scaleY(1);
+    clip-path: inset(0 0 0 0);
     opacity: 1;
-    transition: transform 250ms ease-out, opacity 250ms ease-out, visibility 0s 0s;
+    transition: clip-path 250ms ease-out, opacity 250ms ease-out, visibility 0s 0s;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -204,6 +205,27 @@ const { navigation, currentPath } = Astro.props;
     #mobile-nav-panel.open .mobile-nav-item {
       animation: none;
       opacity: 1;
+    }
+  }
+
+  /* Animated submenu using grid technique */
+  .mobile-nav-submenu-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 200ms ease-out;
+  }
+
+  .mobile-nav-details[open] .mobile-nav-submenu-wrapper {
+    grid-template-rows: 1fr;
+  }
+
+  .mobile-nav-submenu {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-nav-submenu-wrapper {
+      transition: none;
     }
   }
 </style>
@@ -301,16 +323,5 @@ const { navigation, currentPath } = Astro.props;
       }
     });
 
-    // Close menu on nav link click (with brief delay for visual feedback)
-    panelEl.querySelectorAll('.mobile-nav-link').forEach((link) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const href = (e.currentTarget as HTMLAnchorElement).href;
-        closeMenu();
-        setTimeout(() => {
-          window.location.href = href;
-        }, 200);
-      });
-    });
   }
 </script>
