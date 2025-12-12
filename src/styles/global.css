@@ -80,6 +80,11 @@
     transform-origin: top;
   }
 
+  /* Mobile nav sub-menu links need slightly less compression */
+  .mobile-nav-submenu a {
+    transform: scaleY(0.97);
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     @apply font-semibold tracking-tight;
