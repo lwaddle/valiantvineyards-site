@@ -10,7 +10,7 @@ import heroImage from "../assets/images/wedding-dance-dip-kiss.webp";
 
 // Import gallery images
 const galleryImages = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/images/wedding-gallery/*.jpg",
+  "../assets/images/wedding-gallery/*.webp",
   { eager: true }
 );
 
@@ -30,7 +30,7 @@ const galleryArray = Object.entries(galleryImages)
 // Generate optimized image URLs for the lightbox with dimensions
 const lightboxImages = await Promise.all(
   galleryArray.map(async (image) => {
-    const optimized = await getImage({ src: image.src, width: 1200, quality: 85 });
+    const optimized = await getImage({ src: image.src, width: 1200, quality: 75 });
     // Calculate height based on original aspect ratio
     const aspectRatio = image.src.height / image.src.width;
     const height = Math.round(1200 * aspectRatio);
@@ -137,7 +137,7 @@ const includedServices = [
 
       <div class="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
         {venueFeatures.map((feature) => (
-          <div class="flex gap-4 p-6 rounded-lg border border-border bg-background">
+          <div class="flex gap-4 p-6 border border-border bg-background">
             <div class="shrink-0 text-gold">
               {feature.icon === "mountain" && (
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 576 512">
@@ -212,14 +212,14 @@ const includedServices = [
           <div class="relative">
             <div class="grid grid-cols-2 gap-4">
               {galleryArray.slice(0, 4).map((image, index) => (
-                <div class={`overflow-hidden rounded-lg shadow-lg ${index === 0 ? 'col-span-2' : ''}`}>
+                <div class={`overflow-hidden shadow-lg ${index === 0 ? 'col-span-2' : ''}`}>
                   <Image
                     src={image.src}
                     alt={image.alt}
                     class={`w-full object-cover ${index === 0 ? 'h-64' : 'h-40'}`}
                     widths={[400, 800]}
                     sizes="(max-width: 1024px) 50vw, 25vw"
-                    quality={85}
+                    quality={75}
                   />
                 </div>
               ))}
@@ -297,7 +297,7 @@ const includedServices = [
         </h2>
 
         <div class="space-y-6">
-          <details class="group rounded-lg border border-border bg-background p-6">
+          <details class="group border border-border bg-background p-6">
             <summary class="flex cursor-pointer items-center justify-between font-serif text-lg font-semibold">
               How many guests can you accommodate?
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-muted-foreground transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -309,7 +309,7 @@ const includedServices = [
             </p>
           </details>
 
-          <details class="group rounded-lg border border-border bg-background p-6">
+          <details class="group border border-border bg-background p-6">
             <summary class="flex cursor-pointer items-center justify-between font-serif text-lg font-semibold">
               Can we hold the ceremony on-site?
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-muted-foreground transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -321,7 +321,7 @@ const includedServices = [
             </p>
           </details>
 
-          <details class="group rounded-lg border border-border bg-background p-6">
+          <details class="group border border-border bg-background p-6">
             <summary class="flex cursor-pointer items-center justify-between font-serif text-lg font-semibold">
               Do you provide catering?
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-muted-foreground transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -333,7 +333,7 @@ const includedServices = [
             </p>
           </details>
 
-          <details class="group rounded-lg border border-border bg-background p-6">
+          <details class="group border border-border bg-background p-6">
             <summary class="flex cursor-pointer items-center justify-between font-serif text-lg font-semibold">
               What about bar service?
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-muted-foreground transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -345,7 +345,7 @@ const includedServices = [
             </p>
           </details>
 
-          <details class="group rounded-lg border border-border bg-background p-6">
+          <details class="group border border-border bg-background p-6">
             <summary class="flex cursor-pointer items-center justify-between font-serif text-lg font-semibold">
               Is there lodging available nearby?
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-muted-foreground transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
