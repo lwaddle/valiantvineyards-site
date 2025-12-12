@@ -68,14 +68,14 @@ const currentPath = Astro.url.pathname;
             <div
               id={`dropdown-menu-${index}`}
               role="menu"
-              class="dropdown-menu invisible absolute left-0 top-full min-w-[180px] rounded-md border border-border bg-background p-1 opacity-0 shadow-lg transition-all"
+              class="dropdown-menu invisible absolute left-0 top-full min-w-[180px] border border-border bg-background p-1 opacity-0 shadow-lg transition-all"
             >
               {item.items.map((subItem) => (
                 <a
                   href={subItem.href}
                   role="menuitem"
                   class:list={[
-                    "block rounded-sm px-4 py-2 text-sm transition-colors hover:bg-muted focus:bg-muted focus:outline-none",
+                    "block px-4 py-2 text-sm transition-colors hover:bg-muted focus:bg-muted focus:outline-none",
                     currentPath === subItem.href ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
                   ]}
                 >
