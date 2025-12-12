@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/Button.astro";
 import { Image } from "astro:assets";
 import HeroImage from "../components/HeroImage.astro";
 import heroImage from "../assets/images/winemakers-lucas-leif-rum-cropped.webp";
@@ -286,9 +285,12 @@ const tastingRoom = [
       <p class="text-muted-foreground max-w-2xl mx-auto mb-8">
         Visit our tasting room in Vermillion, South Dakota. Our friendly staff is ready to share our story and help you discover your new favorite wine or spirit.
       </p>
-      <Button href="/tasting-room/" variant="gold" size="lg">
+      <a
+        href="/tasting-room"
+        class="inline-flex items-center justify-center rounded-md bg-gold px-6 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-gold/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+      >
         Plan Your Visit
-      </Button>
+      </a>
     </div>
   </section>
 </BaseLayout>
