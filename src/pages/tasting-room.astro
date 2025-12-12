@@ -226,12 +226,15 @@ import { hours, contact } from "../data/site-info";
             <p class="text-lg leading-relaxed text-foreground mb-6">
               Join us on select weekends for our legendary Monster Bloody Marys — towering creations that have become a fan favorite. Made with our own Stone Faces spirits, these aren't your average brunch cocktails.
             </p>
-            <p class="text-muted-foreground mb-8">
+            <p class="text-foreground italic mb-8">
               Available Saturdays and Sundays during featured weekends. Check our news section for upcoming dates.
             </p>
-            <Button href="/news/" variant="gold-outline">
+            <a href="/news/" class="inline-flex items-center text-foreground font-semibold hover:text-gold transition-colors">
               See Upcoming Events
-            </Button>
+              <svg class="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
           </div>
 
           <!-- Image -->
