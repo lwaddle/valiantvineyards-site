@@ -20,7 +20,7 @@
   {#each images as image, index}
     <button
       type="button"
-      class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer block w-full p-0 border-0 bg-transparent group"
+      class="gallery-item overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer block w-full p-0 border-0 bg-transparent group"
       onclick={() => openLightbox(index)}
       aria-label="View {image.alt} in lightbox"
     >

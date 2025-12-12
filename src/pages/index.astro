@@ -118,7 +118,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
             return (
               <article
                 class:list={[
-                  "group overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg",
+                  "group overflow-hidden border border-border bg-background transition-all hover:border-gold hover:shadow-lg",
                   isLastOfThree && "sm:col-span-2 sm:max-w-xl sm:mx-auto lg:col-span-1 lg:max-w-none"
                 ]}
               >
@@ -176,7 +176,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         <!-- Wines Card -->
-        <a href="/wines/" class="group overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
+        <a href="/wines/" class="group overflow-hidden border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
           <div class="aspect-3/2 overflow-hidden">
             <Image
               src={wineImage}
@@ -199,7 +199,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
         </a>
 
         <!-- Spirits Card -->
-        <a href="/distillery/" class="group overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
+        <a href="/distillery/" class="group overflow-hidden border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
           <div class="aspect-3/2 overflow-hidden">
             <Image
               src={spiritsImage}
@@ -222,7 +222,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
         </a>
 
         <!-- Stay Card -->
-        <a href="/bed-and-breakfast/" class="group md:col-span-2 md:max-w-xl md:mx-auto lg:col-span-1 lg:max-w-none overflow-hidden rounded-lg border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
+        <a href="/bed-and-breakfast/" class="group md:col-span-2 md:max-w-xl md:mx-auto lg:col-span-1 lg:max-w-none overflow-hidden border border-border bg-background transition-all hover:border-gold hover:shadow-lg">
           <div class="aspect-3/2 overflow-hidden">
             <Image
               src={stayImage}
@@ -261,7 +261,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
       <!-- Two Column Grid with Better Balance -->
       <div class="mx-auto grid max-w-5xl gap-8 lg:grid-cols-2 lg:gap-12">
         <!-- Hours Column -->
-        <div class="rounded-lg border border-secondary-foreground/20 bg-secondary-foreground/5 p-8 backdrop-blur-sm">
+        <div class="border border-secondary-foreground/20 bg-secondary-foreground/5 p-8 backdrop-blur-sm">
           <h3 class="text-sm font-semibold uppercase tracking-wider text-white">Tasting Room Hours</h3>
           <dl class="mt-6 space-y-4">
             {hours.tastingRoom.map((schedule) => (
@@ -277,7 +277,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
         </div>
 
         <!-- Location & Contact Column -->
-        <div class="rounded-lg border border-secondary-foreground/20 bg-secondary-foreground/5 p-8 backdrop-blur-sm">
+        <div class="border border-secondary-foreground/20 bg-secondary-foreground/5 p-8 backdrop-blur-sm">
           <h3 class="text-sm font-semibold uppercase tracking-wider text-white">Location & Contact</h3>
 
           <div class="mt-6">

@@ -18,7 +18,7 @@
 <!-- Clickable Hero Image -->
 <button
   on:click={() => openGallery(0)}
-  class="block w-full h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 rounded-lg overflow-hidden transform-none!"
+  class="block w-full h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 overflow-hidden transform-none!"
   aria-label="View all photos of {roomName}"
 >
   <div class="aspect-4/3 relative group">
