@@ -48,6 +48,17 @@ The contact form uses:
 
 When users check "Sign me up for news and updates", Basin automatically adds them to the Mailchimp audience.
 
+## Updating Business Hours & Contact Info
+
+All business hours, contact details, and address information are centralized in `src/data/site-info.ts`. Edit this file to update:
+
+- **Tasting room hours** — Modify the `tastingRoom` array
+- **Seasonal notes** — Update the `note` field (e.g., holiday closures)
+- **Phone/email** — Edit the `contact` object
+- **Address** — Edit the `address` object
+
+Changes will automatically propagate to the homepage, tasting room page, and contact page.
+
 ## Adding a News Post
 
 1. Copy the template: `src/content/news/0-TEMPLATE.mdx`
