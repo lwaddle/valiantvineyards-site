@@ -53,8 +53,11 @@
       if (slide && slide.data.element) {
         const img = slide.data.element.querySelector('img');
         if (img) {
+          const element = slide.data.element;
           img.onerror = () => {
-            slide.data.element.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#999;font-family:system-ui;">Image unavailable</div>';
+            if (element) {
+              element.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#999;font-family:system-ui;">Image unavailable</div>';
+            }
           };
         }
       }
