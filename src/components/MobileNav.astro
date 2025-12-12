@@ -16,21 +16,21 @@ const { navigation, currentPath } = Astro.props;
 <!-- Toggle Button - 2-bar with MENU text, animates to X -->
 <button
   id="mobile-nav-toggle"
-  class="flex flex-col items-center justify-center gap-1 p-2 text-white/70 transition-colors hover:text-white motion-reduce:transition-none"
+  class="flex flex-col items-center justify-center gap-1 p-3 text-white/70 transition-colors hover:text-white motion-reduce:transition-none"
   aria-label="Open menu"
   aria-expanded="false"
   aria-controls="mobile-nav-panel"
 >
   <div class="flex flex-col items-center justify-center gap-1.5">
     <span
-      class="mobile-nav-bar block h-0.5 w-7 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
+      class="mobile-nav-bar block h-0.5 w-8 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
     ></span>
     <span
-      class="mobile-nav-bar block h-0.5 w-7 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
+      class="mobile-nav-bar block h-0.5 w-8 bg-current transition-transform duration-300 ease-out origin-center will-change-transform backface-hidden motion-reduce:transition-none"
     ></span>
   </div>
   <span
-    class="mobile-nav-label font-sans text-[11px] uppercase tracking-widest text-gold-light transition-all duration-200 motion-reduce:transition-none"
+    class="mobile-nav-label font-sans text-xs uppercase tracking-widest text-gold-light transition-all duration-200 motion-reduce:transition-none"
     aria-hidden="true"
   >MENU</span>
 </button>
@@ -78,7 +78,7 @@ const { navigation, currentPath } = Astro.props;
                         href={subItem.href}
                         class:list={[
                           "mobile-nav-link block rounded-md px-3 py-2.5 font-serif text-xl transition-colors",
-                          currentPath === subItem.href ? "text-gold-light font-semibold" : "text-white/80 hover:text-gold-light"
+                          currentPath === subItem.href ? "text-gold-light font-semibold" : "text-white/90 hover:text-gold-light"
                         ]}
                         aria-current={currentPath === subItem.href ? "page" : undefined}
                       >
@@ -164,7 +164,7 @@ const { navigation, currentPath } = Astro.props;
     visibility: visible;
     clip-path: inset(0 0 0 0);
     opacity: 1;
-    transition: clip-path 250ms ease-out, opacity 250ms ease-out, visibility 0s 0s;
+    transition: clip-path 180ms ease-out, opacity 180ms ease-out, visibility 0s 0s;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -250,9 +250,13 @@ const { navigation, currentPath } = Astro.props;
     function closeMenu() {
       isOpen = false;
 
-      // Collapse all open details elements before closing to prevent visual artifacts
+      // Collapse all open details elements and reset arrows before closing
       panelEl.querySelectorAll('details[open]').forEach((details) => {
         details.removeAttribute('open');
+        const arrow = details.querySelector('.mobile-nav-arrow');
+        const wrapper = details.querySelector('.mobile-nav-submenu-wrapper') as HTMLElement;
+        arrow?.classList.remove('rotate-180');
+        if (wrapper) wrapper.style.gridTemplateRows = '0fr';
       });
 
       // Lock header position during close to prevent flash
