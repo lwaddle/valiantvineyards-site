@@ -18,6 +18,16 @@
   font-display: swap;
 }
 
+/* Fallback font with adjusted metrics to minimize FOUT */
+@font-face {
+  font-family: "Source Serif Fallback";
+  src: local("Times New Roman");
+  size-adjust: 104%;
+  ascent-override: 97%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+
 /* Valiant Vineyards Design Tokens */
 @theme {
   /* Colors - Minimal Black & White with Gold Accent */
@@ -53,7 +63,7 @@
   --color-destructive-foreground: #ffffff;
 
   /* Typography */
-  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-serif: "Source Serif 4", "Source Serif Fallback", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
 
   /* Spacing */
