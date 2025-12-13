@@ -76,7 +76,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    overflow-y: scroll; /* Always show scrollbar to prevent layout shift between pages */
+    scrollbar-gutter: stable; /* Reserve scrollbar space to prevent layout shift */
   }
 
   body {
