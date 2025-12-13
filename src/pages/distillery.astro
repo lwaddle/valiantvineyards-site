@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import Button from "../components/Button.astro";
 import HeroImage from "../components/HeroImage.astro";
-import heroImage from "../assets/images/commercial-still.webp";
+import heroImage from "../assets/images/grains.webp";
 
 // Spirit label images
 import vodka from "../assets/images/spirits/vodka.webp";
@@ -59,15 +59,15 @@ const spirits = [
     <div class="relative min-h-[50vh] lg:min-h-[60vh] flex items-center justify-center py-24 bg-neutral-900">
       <HeroImage
         src={heroImage}
-        alt="Copper pot stills at Stone Faces Distillery"
-        position="center"
+        alt="Golden barley grains"
+        position="top"
       />
       <div class="container relative mx-auto px-4 lg:px-8 text-center">
         <div class="inline-block bg-black/50 px-8 py-6">
           <h1 class="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Craft Spirits
           </h1>
-          <p class="mt-4 font-serif text-xl text-white font-medium max-w-2xl mx-auto">
+          <p class="mt-4 font-serif text-xl text-white font-medium max-w-2xl mx-auto lg:text-2xl">
             Handcrafted spirits from grain to glass
           </p>
         </div>
@@ -135,3 +135,4 @@ const spirits = [
     </div>
   </section>
 </BaseLayout>
+
