@@ -97,21 +97,21 @@ const tastingRoom = [
       <div class="space-y-20 lg:space-y-32">
         <!-- Eldon -->
         <div class="max-w-5xl mx-auto">
-          <div class="grid gap-8 lg:gap-12 lg:grid-cols-5 items-center">
+          <div class="grid gap-8 md:gap-10 lg:gap-12 md:grid-cols-5 items-center">
             <!-- Image -->
-            <div class="lg:col-span-2 overflow-hidden shadow-lg">
+            <div class="md:col-span-2 overflow-hidden shadow-lg">
               <Image
                 src={leadership[0].image}
                 alt={leadership[0].name}
                 class="w-full h-auto object-cover"
                 widths={[400, 600]}
-                sizes="(max-width: 1024px) 100vw, 400px"
+                sizes="(max-width: 768px) 100vw, 400px"
                 quality={85}
               />
             </div>
 
             <!-- Bio -->
-            <div class="lg:col-span-3">
+            <div class="md:col-span-3">
               <p class="text-sm font-medium text-gold uppercase tracking-wide mb-2">
                 {leadership[0].title}
               </p>
@@ -127,21 +127,21 @@ const tastingRoom = [
 
         <!-- Sherry -->
         <div class="max-w-5xl mx-auto">
-          <div class="grid gap-8 lg:gap-12 lg:grid-cols-5 items-center">
+          <div class="grid gap-8 md:gap-10 lg:gap-12 md:grid-cols-5 items-center">
             <!-- Image -->
-            <div class="lg:col-span-2 lg:order-last overflow-hidden shadow-lg">
+            <div class="md:col-span-2 md:order-last overflow-hidden shadow-lg">
               <Image
                 src={sherry}
                 alt="Sherry Nygaard in the tasting room"
                 class="w-full h-auto object-cover"
                 widths={[400, 600]}
-                sizes="(max-width: 1024px) 100vw, 400px"
+                sizes="(max-width: 768px) 100vw, 400px"
                 quality={85}
               />
             </div>
 
             <!-- Bio -->
-            <div class="lg:col-span-3">
+            <div class="md:col-span-3">
               <p class="text-sm font-medium text-gold uppercase tracking-wide mb-2">
                 {leadership[1].title}
               </p>
@@ -168,24 +168,24 @@ const tastingRoom = [
 
       <div class="space-y-20 lg:space-y-32 max-w-5xl mx-auto">
         {productionTeam.map((member, index) => (
-          <div class="grid gap-8 lg:gap-12 lg:grid-cols-5 items-center">
+          <div class="grid gap-8 md:gap-10 lg:gap-12 md:grid-cols-5 items-center">
             <!-- Image -->
             <div class:list={[
-              "lg:col-span-2 overflow-hidden shadow-lg",
-              index % 2 === 1 ? "lg:order-last" : ""
+              "md:col-span-2 overflow-hidden shadow-lg",
+              index % 2 === 1 ? "md:order-last" : ""
             ]}>
               <Image
                 src={member.image}
                 alt={member.name}
                 class="w-full h-auto object-cover"
                 widths={[400, 600]}
-                sizes="(max-width: 1024px) 100vw, 400px"
+                sizes="(max-width: 768px) 100vw, 400px"
                 quality={85}
               />
             </div>
 
             <!-- Bio -->
-            <div class="lg:col-span-3">
+            <div class="md:col-span-3">
               <p class="text-sm font-medium text-gold uppercase tracking-wide mb-2">
                 {member.title}
               </p>
@@ -212,21 +212,21 @@ const tastingRoom = [
 
       <div class="max-w-5xl mx-auto">
         {tastingRoom.map((member) => (
-          <div class="grid gap-8 lg:gap-12 lg:grid-cols-5 items-center">
+          <div class="grid gap-8 md:gap-10 lg:gap-12 md:grid-cols-5 items-center">
             <!-- Image -->
-            <div class="lg:col-span-2 overflow-hidden shadow-lg">
+            <div class="md:col-span-2 overflow-hidden shadow-lg">
               <Image
                 src={member.image}
                 alt={member.name}
                 class="w-full h-auto object-cover"
                 widths={[400, 600]}
-                sizes="(max-width: 1024px) 100vw, 400px"
+                sizes="(max-width: 768px) 100vw, 400px"
                 quality={85}
               />
             </div>
 
             <!-- Bio -->
-            <div class="lg:col-span-3">
+            <div class="md:col-span-3">
               <p class="text-sm font-medium text-gold uppercase tracking-wide mb-2">
                 {member.title}
               </p>
@@ -247,21 +247,21 @@ const tastingRoom = [
   <section class="bg-neutral-900 py-16 lg:py-20">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="max-w-5xl mx-auto">
-        <div class="grid gap-8 lg:gap-12 lg:grid-cols-5 items-center">
+        <div class="grid gap-8 md:gap-10 lg:gap-12 md:grid-cols-5 items-center">
           <!-- Image -->
-          <div class="lg:col-span-2 lg:order-last overflow-hidden shadow-lg">
+          <div class="md:col-span-2 md:order-last overflow-hidden shadow-lg">
             <Image
               src={wineryDogs}
               alt="Flora and Dellingr, our certified winery dogs"
               class="w-full h-auto object-cover"
               widths={[400, 600]}
-              sizes="(max-width: 1024px) 100vw, 400px"
+              sizes="(max-width: 768px) 100vw, 400px"
               quality={85}
             />
           </div>
 
           <!-- Bio -->
-          <div class="lg:col-span-3">
+          <div class="md:col-span-3">
             <p class="text-sm font-medium text-gold uppercase tracking-wide mb-2">
               Certified Winery Dogs
             </p>
