@@ -309,6 +309,21 @@ const { navigation, currentPath } = Astro.props;
       }
     });
 
+    // Close menu on back/forward navigation (bfcache restore)
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted && isOpen) {
+        closeMenu();
+      }
+    });
+
+    // Close menu when viewport crosses to desktop breakpoint
+    const lgBreakpoint = window.matchMedia('(min-width: 1024px)');
+    lgBreakpoint.addEventListener('change', (event) => {
+      if (event.matches && isOpen) {
+        closeMenu();
+      }
+    });
+
     // Handle submenu toggle with JS to ensure animation works in Chrome
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
