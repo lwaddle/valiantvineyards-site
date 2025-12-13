@@ -25,6 +25,8 @@
     <img
       src={heroSrc}
       alt={heroAlt}
+      width="400"
+      height="300"
       class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 bg-neutral-200"
       on:error={(e) => {
         const img = e.currentTarget as HTMLImageElement;

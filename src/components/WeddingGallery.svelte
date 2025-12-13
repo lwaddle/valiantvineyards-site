@@ -27,6 +27,8 @@
       <img
         src={image.src}
         alt={image.alt}
+        width="400"
+        height="256"
         class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105 bg-neutral-200"
         loading="lazy"
         onerror={(e) => {
