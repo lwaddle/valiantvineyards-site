@@ -26,6 +26,7 @@ const imageAlt = featuredImageAlt ?? title;
           alt={imageAlt}
           widths={[640, 800, 1024]}
           sizes="(max-width: 768px) 100vw, 768px"
+          quality={70}
           class="h-full w-full object-cover"
         />
       </div>
@@ -142,8 +143,12 @@ const imageAlt = featuredImageAlt ?? title;
 
   .prose iframe {
     max-width: 100%;
+    margin: 2rem 0;
+  }
+
+  .prose iframe[src*="youtube"],
+  .prose iframe[src*="vimeo"] {
     height: auto;
     aspect-ratio: 16 / 9;
-    margin: 2rem 0;
   }
 </style>
