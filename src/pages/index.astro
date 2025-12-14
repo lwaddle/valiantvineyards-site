@@ -12,8 +12,8 @@ import defaultNewsImage from "../assets/images/wine-bottles-with-medals-landscap
 import ourStoryBg from "../assets/images/red-grapes-vineyard-sunrise.webp";
 import { hours, address, contact } from "../data/site-info";
 
-// Fetch news posts: pinned first, then by date, limited to 3
-const allPosts = await getCollection("news", ({ data }) => !data.draft);
+// Fetch events: pinned first, then by date, limited to 3
+const allPosts = await getCollection("events", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort((a, b) => {
   if (a.data.pinned && !b.data.pinned) return -1;
   if (!a.data.pinned && b.data.pinned) return 1;
@@ -120,7 +120,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
                   isLastOfThree && "sm:col-span-2 sm:max-w-xl sm:mx-auto lg:col-span-1 lg:max-w-none"
                 ]}
               >
-                <a href={`/news/post/${post.id}/`} class="block">
+                <a href={`/events/${post.id}/`} class="block">
                   <div class="aspect-3/2 overflow-hidden">
                     <Image
                       src={image}
@@ -145,7 +145,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
         </div>
       )}
       <div class="mt-10 text-center">
-        <Button href="/news/" variant="gold-outline" size="lg">
+        <Button href="/events/" variant="gold-outline" size="lg">
           Explore Upcoming Events
         </Button>
       </div>

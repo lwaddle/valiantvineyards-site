@@ -8,7 +8,7 @@ import heroImage from "../../assets/images/casks-in-cellar.webp";
 
 const POSTS_PER_PAGE = 9;
 
-const allPosts = await getCollection("news", ({ data }) => !data.draft);
+const allPosts = await getCollection("events", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
@@ -19,8 +19,8 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
 ---
 
 <BaseLayout
-  title="News & Events"
-  description="Stay up to date with the latest news, events, and happenings at Valiant Vineyards Winery & Distillery."
+  title="Events"
+  description="Stay up to date with the latest events and happenings at Valiant Vineyards Winery & Distillery."
 >
   <!-- Hero Section -->
   <section class="relative">
@@ -35,7 +35,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
       <div class="container relative mx-auto px-4 lg:px-8 text-center">
         <div class="inline-block bg-black/50 px-8 py-6">
           <h1 class="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            News & Events
+            Events
           </h1>
           <p class="mt-4 font-serif text-xl text-white font-medium max-w-2xl mx-auto lg:text-2xl">
             Stay up to date with the latest happenings at Valiant Vineyards.
@@ -57,7 +57,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
 
               return (
                 <a
-                  href={`/news/post/${post.id}/`}
+                  href={`/events/${post.id}/`}
                   class="group block bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
                 >
                   <div class="aspect-16/10 overflow-hidden">
@@ -84,7 +84,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
         ) : (
           <div class="text-center py-16">
             <p class="text-lg text-muted-foreground">
-              No posts yet. Check back soon!
+              No events yet. Check back soon!
             </p>
           </div>
         )
@@ -100,7 +100,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
 
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <a
-                href={page === 1 ? "/news/" : `/news/page/${page}/`}
+                href={page === 1 ? "/events/" : `/events/page/${page}/`}
                 class:list={[
                   "px-4 py-2 text-sm font-medium rounded transition-colors",
                   page === currentPage
@@ -115,7 +115,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
 
             {currentPage < totalPages ? (
               <a
-                href={`/news/page/${currentPage + 1}/`}
+                href={`/events/page/${currentPage + 1}/`}
                 class="px-4 py-2 text-sm font-medium bg-neutral-100 text-foreground hover:bg-neutral-200 rounded transition-colors"
               >
                 Next
