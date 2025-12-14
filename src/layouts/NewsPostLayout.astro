@@ -7,13 +7,19 @@ import defaultImage from "../assets/images/wine-bottles-with-medals-landscape.we
 interface Props {
   title: string;
   description: string;
+  date: Date;
   featuredImage?: ImageMetadata;
   featuredImageAlt?: string;
 }
 
-const { title, description, featuredImage, featuredImageAlt } = Astro.props;
+const { title, description, date, featuredImage, featuredImageAlt } = Astro.props;
 const image = featuredImage ?? defaultImage;
 const imageAlt = featuredImageAlt ?? title;
+const formattedDate = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
 ---
 
 <BaseLayout title={title} description={description} image={image.src} type="article">
@@ -36,6 +42,9 @@ const imageAlt = featuredImageAlt ?? title;
         <h1 class="font-serif text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
           {title}
         </h1>
+        <p class="mt-4 text-sm text-muted-foreground">
+          Posted {formattedDate}
+        </p>
       </header>
 
       <div class="prose prose-lg max-w-none">
