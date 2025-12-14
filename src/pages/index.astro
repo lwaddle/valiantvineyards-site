@@ -9,6 +9,7 @@ import wineImage from "../assets/images/wine-pouring-into-glass.webp";
 import spiritsImage from "../assets/images/clay-turner-bottles-in-sunlight.jpg";
 import stayImage from "../assets/images/wine-glass-next-to-bed-with-lamp.webp";
 import defaultNewsImage from "../assets/images/wine-bottles-with-medals-landscape.webp";
+import ourStoryBg from "../assets/images/red-grapes-vineyard-sunrise.webp";
 import { hours, address, contact } from "../data/site-info";
 
 // Fetch news posts: pinned first, then by date, limited to 3
@@ -152,11 +153,23 @@ const featuredPosts = sortedPosts.slice(0, 3);
   </section>
 
   <!-- Our Story Teaser -->
-  <section class="bg-neutral-100 py-24 lg:py-34">
-    <div class="container mx-auto px-4 lg:px-8">
+  <section class="relative py-24 lg:py-34">
+    <!-- Background Image -->
+    <Image
+      src={ourStoryBg}
+      alt=""
+      widths={[640, 1024, 1536, 2048]}
+      sizes="100vw"
+      quality={80}
+      class="absolute inset-0 h-full w-full object-cover object-left-top opacity-30"
+    />
+    <!-- White overlay -->
+    <div class="absolute inset-0 bg-linear-to-bl from-white/20 to-white/80"></div>
+    <!-- Content -->
+    <div class="container relative mx-auto px-4 lg:px-8">
       <div class="mx-auto max-w-3xl text-center">
         <h2 class="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">Pioneers of South Dakota Wine</h2>
-        <p class="mt-6 text-lg leading-relaxed text-muted-foreground">
+        <p class="mt-6 text-lg leading-relaxed">
           In 1996, Eldon Nygaard fermented South Dakota's first commercial wine after drafting the legislation that made it possible.
           Today, his family continues the tradition — with son Leif, a sixth-generation American winemaker, now leading Stone Faces Distillery.
           What began with a mulberry wine on a Turner County farm has grown into a 15,000-square-foot destination where visitors can taste, celebrate, and stay.
