@@ -1,12 +1,24 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/Button.astro";
+import { Image } from "astro:assets";
+import cocktailImage from "../../assets/images/cocktail-cherry-bourbon-sour.webp";
 ---
 
 <BaseLayout title="Cherry Bourbon Sour Cocktail" description="A sophisticated bourbon sour featuring Clay Turner 5 Year Bourbon, bourbon-marinated cherries, and a silky egg white finish.">
   <section class="py-16 lg:py-24">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="mx-auto max-w-2xl">
+        <div class="mb-8 overflow-hidden">
+          <Image
+            src={cocktailImage}
+            alt="Cherry Bourbon Sour cocktail with egg white foam and cherry garnish"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 672px) 100vw, 672px"
+            quality={80}
+            class="w-full h-auto"
+          />
+        </div>
         <p class="text-gold font-semibold tracking-widest uppercase mb-3">Cocktail Recipe</p>
         <h1 class="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl mb-6">
           Cherry Bourbon Sour
