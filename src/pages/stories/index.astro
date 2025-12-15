@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import HeroImage from "../../components/HeroImage.astro";
 import defaultImage from "../../assets/images/wine-bottles-with-medals-landscape.webp";
-import heroImage from "../../assets/images/casks-in-cellar.webp";
+import heroImage from "../../assets/images/aerial-view-of-winery.webp";
 
 const POSTS_PER_PAGE = 9;
 
@@ -27,10 +27,11 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
     <div class="relative min-h-[50vh] flex items-center justify-center py-24 bg-neutral-900">
       <HeroImage
         src={heroImage}
-        alt="Oak casks aging in the wine cellar at Valiant Vineyards"
+        alt="Aerial view of Valiant Vineyards surrounded by green fields with Missouri River in background"
         widths={[640, 1024, 1536, 2048]}
         sizes="100vw"
-        quality={30}
+        quality={50}
+        position="bottom"
       />
       <div class="container relative mx-auto px-4 lg:px-8 text-center">
         <div class="inline-block bg-black/50 px-8 py-6">
