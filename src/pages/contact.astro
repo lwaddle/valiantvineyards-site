@@ -45,7 +45,8 @@ import { contact, address, hours } from "../data/site-info";
             </p>
 
             <form
-              action="https://usebasin.com/f/5c8715be7ba0"
+              id="contact-form"
+              action="/api/contact"
               method="POST"
               class="space-y-6"
             >
@@ -280,24 +281,57 @@ import { contact, address, hours } from "../data/site-info";
       });
     }
 
-    // Contact form - validate Turnstile before allowing native submission
-    const form = document.querySelector('form[action*="usebasin"]') as HTMLFormElement;
+    // Contact form handler
+    const form = document.getElementById('contact-form') as HTMLFormElement;
     const messageContainer = document.getElementById('contact-message') as HTMLElement;
     const messageText = document.getElementById('contact-message-text') as HTMLElement;
+    const submitButton = document.getElementById('contact-submit') as HTMLButtonElement;
 
-    if (form && messageContainer && messageText) {
-      form.addEventListener('submit', (e) => {
-        // Validate Turnstile CAPTCHA before allowing submission
+    if (form && messageContainer && messageText && submitButton) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Client-side Turnstile check
         const turnstileResponse = form.querySelector('[name="cf-turnstile-response"]') as HTMLInputElement;
         if (!turnstileResponse || !turnstileResponse.value) {
-          e.preventDefault();
-          messageContainer.classList.remove('hidden', 'bg-green-50', 'text-green-700');
-          messageContainer.classList.add('bg-red-50', 'text-red-700');
-          messageText.textContent = 'Please complete the security check before submitting.';
+          showError('Please complete the security check before submitting.');
           return;
         }
-        // Allow native form submission - Basin will handle the redirect
+
+        // Disable button and show loading state
+        const originalText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+
+        try {
+          const formData = new FormData(form);
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Redirect to thank you page
+            window.location.href = '/thank-you';
+          } else {
+            showError(result.error || 'Something went wrong. Please try again.');
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+          }
+        } catch (error) {
+          showError('Failed to send message. Please try again.');
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+        }
       });
+
+      function showError(message: string) {
+        messageContainer.classList.remove('hidden', 'bg-green-50', 'text-green-700');
+        messageContainer.classList.add('bg-red-50', 'text-red-700');
+        messageText.textContent = message;
+      }
     }
   </script>
 </BaseLayout>
