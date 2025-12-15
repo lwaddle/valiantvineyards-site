@@ -44,6 +44,11 @@ const past = allPosts
   });
 
 const featuredPosts = [...upcoming, ...past].slice(0, 3);
+
+// Fetch pinned stories for announcements section
+const pinnedStories = await getCollection("stories", ({ data }) =>
+  !data.draft && data.pinned
+);
 ---
 
 <BaseLayout title="Home" description="Valiant Vineyards Winery & Distillery - Experience award-winning wines, craft spirits, and warm hospitality in the heart of South Dakota.">
@@ -120,6 +125,44 @@ const featuredPosts = [...upcoming, ...past].slice(0, 3);
       </div>
     </div>
   </section>
+
+  <!-- Pinned Stories / Announcements Section -->
+  {pinnedStories.length > 0 && (
+    <section class="py-16 lg:py-20 bg-neutral-50">
+      <div class="mx-auto max-w-5xl px-4 lg:px-8">
+        <div class="space-y-8">
+          {pinnedStories.map((story) => {
+            const image = story.data.featuredImage ?? defaultNewsImage;
+            const imageAlt = story.data.featuredImageAlt ?? story.data.title;
+
+            return (
+              <article class="group max-w-xl mx-auto lg:max-w-none lg:grid lg:grid-cols-5 bg-white border border-border overflow-hidden hover:border-gold hover:shadow-lg transition-all">
+                <div class="lg:col-span-2 aspect-video lg:aspect-auto overflow-hidden">
+                  <Image
+                    src={image}
+                    alt={imageAlt}
+                    widths={[400, 600, 800]}
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <div class="lg:col-span-3 p-6 lg:p-8 flex flex-col justify-center">
+                  <h2 class="font-serif text-2xl font-semibold group-hover:text-gold transition-colors">{story.data.title}</h2>
+                  <p class="mt-3 text-muted-foreground leading-relaxed">{story.data.description}</p>
+                  <a href={`/stories/${story.id}/`} class="mt-4 inline-flex items-center text-gold font-medium hover:underline">
+                    Read More
+                    <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- News & Events Section -->
   <section class="py-24 lg:py-34">
