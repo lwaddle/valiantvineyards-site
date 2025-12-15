@@ -9,9 +9,16 @@ import heroImage from "../../assets/images/casks-in-cellar.webp";
 const POSTS_PER_PAGE = 9;
 
 const allPosts = await getCollection("events", ({ data }) => !data.draft);
-const sortedPosts = allPosts.sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+const sortedPosts = allPosts.sort((a, b) => {
+  // Pinned events first
+  if (a.data.pinned && !b.data.pinned) return -1;
+  if (!a.data.pinned && b.data.pinned) return 1;
+
+  // Then by eventDate (or fall back to date)
+  const dateA = a.data.eventDate ?? a.data.date;
+  const dateB = b.data.eventDate ?? b.data.date;
+  return dateB.valueOf() - dateA.valueOf();
+});
 
 const currentPage = 1;
 const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
@@ -54,13 +61,18 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
             {posts.map((post) => {
               const image = post.data.featuredImage ?? defaultImage;
               const imageAlt = post.data.featuredImageAlt ?? post.data.title;
+              const eventDate = post.data.eventDate;
+              const formattedEventDate = eventDate
+                ? new Date(eventDate.getUTCFullYear(), eventDate.getUTCMonth(), eventDate.getUTCDate())
+                    .toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+                : undefined;
 
               return (
                 <a
                   href={`/events/${post.id}/`}
                   class="group block bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
                 >
-                  <div class="aspect-16/10 overflow-hidden">
+                  <div class="aspect-16/10 overflow-hidden relative">
                     <Image
                       src={image}
                       alt={imageAlt}
@@ -68,6 +80,11 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
+                    {formattedEventDate && (
+                      <span class="absolute top-3 right-3 bg-gold text-white text-sm font-medium px-3 py-1">
+                        {formattedEventDate}
+                      </span>
+                    )}
                   </div>
                   <div class="p-6">
                     <h2 class="font-serif text-xl font-semibold text-foreground group-hover:text-gold transition-colors">

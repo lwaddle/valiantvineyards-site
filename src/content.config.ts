@@ -8,6 +8,7 @@ const events = defineCollection({
       title: z.string(),
       description: z.string(),
       date: z.coerce.date(),
+      eventDate: z.coerce.date().optional(),
       featuredImage: image().optional(),
       featuredImageAlt: z.string().optional(),
       pinned: z.boolean().optional().default(false),

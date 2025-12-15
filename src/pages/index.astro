@@ -12,12 +12,14 @@ import defaultNewsImage from "../assets/images/wine-bottles-with-medals-landscap
 import ourStoryBg from "../assets/images/red-grapes-vineyard-sunrise.webp";
 import { hours, address, contact } from "../data/site-info";
 
-// Fetch events: pinned first, then by date, limited to 3
+// Fetch events: pinned first, then by eventDate (or date), limited to 3
 const allPosts = await getCollection("events", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort((a, b) => {
   if (a.data.pinned && !b.data.pinned) return -1;
   if (!a.data.pinned && b.data.pinned) return 1;
-  return b.data.date.valueOf() - a.data.date.valueOf();
+  const dateA = a.data.eventDate ?? a.data.date;
+  const dateB = b.data.eventDate ?? b.data.date;
+  return dateB.valueOf() - dateA.valueOf();
 });
 const featuredPosts = sortedPosts.slice(0, 3);
 ---
@@ -112,6 +114,11 @@ const featuredPosts = sortedPosts.slice(0, 3);
             const image = post.data.featuredImage ?? defaultNewsImage;
             const imageAlt = post.data.featuredImageAlt ?? post.data.title;
             const isLastOfThree = featuredPosts.length === 3 && index === 2;
+            const eventDate = post.data.eventDate;
+            const formattedEventDate = eventDate
+              ? new Date(eventDate.getUTCFullYear(), eventDate.getUTCMonth(), eventDate.getUTCDate())
+                  .toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+              : undefined;
 
             return (
               <article
@@ -121,7 +128,7 @@ const featuredPosts = sortedPosts.slice(0, 3);
                 ]}
               >
                 <a href={`/events/${post.id}/`} class="block">
-                  <div class="aspect-3/2 overflow-hidden">
+                  <div class="aspect-3/2 overflow-hidden relative">
                     <Image
                       src={image}
                       alt={imageAlt}
@@ -129,6 +136,11 @@ const featuredPosts = sortedPosts.slice(0, 3);
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
+                    {formattedEventDate && (
+                      <span class="absolute top-3 right-3 bg-gold text-white text-sm font-medium px-3 py-1">
+                        {formattedEventDate}
+                      </span>
+                    )}
                   </div>
                   <div class="p-6">
                     <h3 class="font-serif text-xl font-semibold group-hover:text-gold line-clamp-2">{post.data.title}</h3>
