@@ -45,9 +45,10 @@ const past = allPosts
 
 const featuredPosts = [...upcoming, ...past].slice(0, 3);
 
-// Fetch pinned stories for announcements section
-const pinnedStories = await getCollection("stories", ({ data }) =>
+// Fetch pinned stories for announcements section (newest first)
+const pinnedStories = (await getCollection("stories", ({ data }) =>
   !data.draft && data.pinned
+)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 ---
 
