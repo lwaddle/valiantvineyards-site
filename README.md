@@ -36,17 +36,45 @@ src/
   lib/           # Utilities and UI components
   pages/         # Route pages
   styles/        # Global CSS
+functions/
+  api/           # Cloudflare Pages Functions (serverless)
 public/
   _redirects     # Cloudflare redirects
+  _headers       # Security headers
 ```
 
 ## Contact Form & Newsletter Integration
 
 The contact form uses:
-- **Basin Forms** for form submissions with built-in Mailchimp integration
-- **Cloudflare Turnstile** for spam protection
+- **Cloudflare Pages Function** (`functions/api/contact.ts`) for form handling
+- **Resend** for transactional email delivery (template: `contact-form-submission`)
+- **Cloudflare Turnstile** for spam protection (server-side validation)
+- **Mailchimp API** for newsletter subscriptions
 
-When users check "Sign me up for news and updates", Basin automatically adds them to the Mailchimp audience.
+When users check "Sign me up for news and updates", the Worker adds them to the Mailchimp audience.
+
+### Email Configuration
+
+Edit `functions/api/contact.ts` to update recipients:
+
+```javascript
+const EMAIL_CONFIG = {
+  from: "Valiant Vineyards Winery & Distillery <noreply@valiantvineyards.us>",
+  to: ["wine@valiantvineyards.us"],
+  cc: ["sherry@valiantvineyards.us", "adrienne@valiantvineyards.us", "valiantvineyards@proton.me"],
+  subject: "Valiant Vineyards website message",
+};
+```
+
+### Environment Variables (Cloudflare Pages)
+
+- `RESEND_API_KEY` — Resend API key
+- `MAILCHIMP_API_KEY` — Mailchimp API key
+- `TURNSTILE_SECRET_KEY` — Cloudflare Turnstile secret key
+
+### Microsoft 365 Spam Filter
+
+Contact form emails may be flagged as spam due to the Reply-To mismatch pattern. Add `noreply@valiantvineyards.us` to the safe senders list or create a mail flow rule in Exchange admin.
 
 ## Updating Business Hours & Contact Info
 
