@@ -165,17 +165,6 @@ async function sendEmail(
   data: FormData,
   apiKey: string
 ): Promise<{ success: boolean; error?: string }> {
-  // Build email HTML
-  const html = `
-    <h2>New Contact Form Submission</h2>
-    <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
-    <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
-    ${data.phone ? `<p><strong>Phone:</strong> ${escapeHtml(data.phone)}</p>` : ""}
-    <p><strong>Message:</strong></p>
-    <p>${escapeHtml(data.message).replace(/\n/g, "<br>")}</p>
-    ${data.subscribe === "yes" ? "<p><em>This person opted in to the newsletter.</em></p>" : ""}
-  `;
-
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -188,7 +177,13 @@ async function sendEmail(
       cc: EMAIL_CONFIG.cc,
       reply_to: data.email,
       subject: EMAIL_CONFIG.subject,
-      html: html,
+      template_alias: "contact-form-submission",
+      template_data: {
+        name: data.name,
+        email: data.email,
+        phone: data.phone || "Not provided",
+        message: data.message,
+      },
     }),
   });
 
@@ -230,13 +225,3 @@ async function subscribeToMailchimp(
   return { success: true };
 }
 
-function escapeHtml(text: string): string {
-  const htmlEntities: Record<string, string> = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  };
-  return text.replace(/[&<>"']/g, (char) => htmlEntities[char]);
-}
