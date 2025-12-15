@@ -20,14 +20,9 @@ import logo from "../assets/logos/logo-dark.svg";
     <!-- CookieYes Banner -->
     <script is:inline id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/6ba0fbf3ca0655582cd3cb4e/script.js"></script>
 
-    <!-- Google Analytics - blocked until consent -->
-    <script
-      is:inline
-      type="text/plain"
-      data-cookieyes="cookieyes-analytics"
-      src="https://www.googletagmanager.com/gtag/js?id=G-PVVXRK70TC"
-      async></script>
-    <script is:inline type="text/plain" data-cookieyes="cookieyes-analytics">
+    <!-- Google Analytics - consent managed by CookieYes GCM -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-PVVXRK70TC"></script>
+    <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
