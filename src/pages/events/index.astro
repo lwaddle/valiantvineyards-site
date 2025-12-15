@@ -8,17 +8,38 @@ import heroImage from "../../assets/images/casks-in-cellar.webp";
 
 const POSTS_PER_PAGE = 9;
 
+// Fetch events: upcoming first (soonest first), then past events to fill remaining slots
 const allPosts = await getCollection("events", ({ data }) => !data.draft);
-const sortedPosts = allPosts.sort((a, b) => {
-  // Pinned events first
-  if (a.data.pinned && !b.data.pinned) return -1;
-  if (!a.data.pinned && b.data.pinned) return 1;
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Then by eventDate (or fall back to date)
-  const dateA = a.data.eventDate ?? a.data.date;
-  const dateB = b.data.eventDate ?? b.data.date;
-  return dateB.valueOf() - dateA.valueOf();
-});
+const upcoming = allPosts
+  .filter((post) => {
+    const eventDate = post.data.eventDate ?? post.data.date;
+    return eventDate >= today;
+  })
+  .sort((a, b) => {
+    if (a.data.pinned && !b.data.pinned) return -1;
+    if (!a.data.pinned && b.data.pinned) return 1;
+    const dateA = a.data.eventDate ?? a.data.date;
+    const dateB = b.data.eventDate ?? b.data.date;
+    return dateA.valueOf() - dateB.valueOf();
+  });
+
+const past = allPosts
+  .filter((post) => {
+    const eventDate = post.data.eventDate ?? post.data.date;
+    return eventDate < today;
+  })
+  .sort((a, b) => {
+    if (a.data.pinned && !b.data.pinned) return -1;
+    if (!a.data.pinned && b.data.pinned) return 1;
+    const dateA = a.data.eventDate ?? a.data.date;
+    const dateB = b.data.eventDate ?? b.data.date;
+    return dateB.valueOf() - dateA.valueOf();
+  });
+
+const sortedPosts = [...upcoming, ...past];
 
 const currentPage = 1;
 const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
@@ -61,7 +82,8 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
             {posts.map((post) => {
               const image = post.data.featuredImage ?? defaultImage;
               const imageAlt = post.data.featuredImageAlt ?? post.data.title;
-              const eventDate = post.data.eventDate;
+              const eventDate = post.data.eventDate ?? post.data.date;
+              const isPastEvent = eventDate < today;
               const formattedEventDate = eventDate
                 ? new Date(eventDate.getUTCFullYear(), eventDate.getUTCMonth(), eventDate.getUTCDate())
                     .toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
@@ -80,7 +102,11 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    {formattedEventDate && (
+                    {isPastEvent ? (
+                      <span class="absolute top-3 right-3 bg-neutral-500 text-white text-sm font-medium px-3 py-1">
+                        Past Event
+                      </span>
+                    ) : formattedEventDate && (
                       <span class="absolute top-3 right-3 bg-gold text-white text-sm font-medium px-3 py-1">
                         {formattedEventDate}
                       </span>

@@ -12,16 +12,38 @@ import defaultNewsImage from "../assets/images/wine-bottles-with-medals-landscap
 import ourStoryBg from "../assets/images/red-grapes-vineyard-sunrise.webp";
 import { hours, address, contact } from "../data/site-info";
 
-// Fetch events: pinned first, then by eventDate (or date), limited to 3
+// Fetch events: upcoming first (soonest first), then past events to fill remaining slots
 const allPosts = await getCollection("events", ({ data }) => !data.draft);
-const sortedPosts = allPosts.sort((a, b) => {
-  if (a.data.pinned && !b.data.pinned) return -1;
-  if (!a.data.pinned && b.data.pinned) return 1;
-  const dateA = a.data.eventDate ?? a.data.date;
-  const dateB = b.data.eventDate ?? b.data.date;
-  return dateB.valueOf() - dateA.valueOf();
-});
-const featuredPosts = sortedPosts.slice(0, 3);
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+const upcoming = allPosts
+  .filter((post) => {
+    const eventDate = post.data.eventDate ?? post.data.date;
+    return eventDate >= today;
+  })
+  .sort((a, b) => {
+    if (a.data.pinned && !b.data.pinned) return -1;
+    if (!a.data.pinned && b.data.pinned) return 1;
+    const dateA = a.data.eventDate ?? a.data.date;
+    const dateB = b.data.eventDate ?? b.data.date;
+    return dateA.valueOf() - dateB.valueOf();
+  });
+
+const past = allPosts
+  .filter((post) => {
+    const eventDate = post.data.eventDate ?? post.data.date;
+    return eventDate < today;
+  })
+  .sort((a, b) => {
+    if (a.data.pinned && !b.data.pinned) return -1;
+    if (!a.data.pinned && b.data.pinned) return 1;
+    const dateA = a.data.eventDate ?? a.data.date;
+    const dateB = b.data.eventDate ?? b.data.date;
+    return dateB.valueOf() - dateA.valueOf();
+  });
+
+const featuredPosts = [...upcoming, ...past].slice(0, 3);
 ---
 
 <BaseLayout title="Home" description="Valiant Vineyards Winery & Distillery - Experience award-winning wines, craft spirits, and warm hospitality in the heart of South Dakota.">
@@ -114,7 +136,8 @@ const featuredPosts = sortedPosts.slice(0, 3);
             const image = post.data.featuredImage ?? defaultNewsImage;
             const imageAlt = post.data.featuredImageAlt ?? post.data.title;
             const isLastOfThree = featuredPosts.length === 3 && index === 2;
-            const eventDate = post.data.eventDate;
+            const eventDate = post.data.eventDate ?? post.data.date;
+            const isPastEvent = eventDate < today;
             const formattedEventDate = eventDate
               ? new Date(eventDate.getUTCFullYear(), eventDate.getUTCMonth(), eventDate.getUTCDate())
                   .toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
@@ -136,7 +159,11 @@ const featuredPosts = sortedPosts.slice(0, 3);
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
-                    {formattedEventDate && (
+                    {isPastEvent ? (
+                      <span class="absolute top-3 right-3 bg-neutral-500 text-white text-sm font-medium px-3 py-1">
+                        Past Event
+                      </span>
+                    ) : formattedEventDate && (
                       <span class="absolute top-3 right-3 bg-gold text-white text-sm font-medium px-3 py-1">
                         {formattedEventDate}
                       </span>
