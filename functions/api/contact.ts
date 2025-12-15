@@ -177,12 +177,14 @@ async function sendEmail(
       cc: EMAIL_CONFIG.cc,
       reply_to: data.email,
       subject: EMAIL_CONFIG.subject,
-      template_alias: "contact-form-submission",
-      template_data: {
-        name: data.name,
-        email: data.email,
-        phone: data.phone || "Not provided",
-        message: data.message,
+      template: {
+        id: "contact-form-submission",
+        variables: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone || "Not provided",
+          message: data.message,
+        },
       },
     }),
   });
