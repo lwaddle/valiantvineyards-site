@@ -4,11 +4,11 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import HeroImage from "../../components/HeroImage.astro";
 import defaultImage from "../../assets/images/wine-bottles-with-medals-landscape.webp";
-import heroImage from "../../assets/images/casks-in-cellar.webp";
+import heroImage from "../../assets/images/aerial-view-of-winery.webp";
 
 const POSTS_PER_PAGE = 9;
 
-const allPosts = await getCollection("news", ({ data }) => !data.draft);
+const allPosts = await getCollection("stories", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
@@ -19,26 +19,27 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
 ---
 
 <BaseLayout
-  title="News & Events"
-  description="Stay up to date with the latest news, events, and happenings at Valiant Vineyards Winery & Distillery."
+  title="Stories"
+  description="Discover recipes, behind-the-scenes stories, and insights from Valiant Vineyards Winery & Distillery."
 >
   <!-- Hero Section -->
   <section class="relative">
     <div class="relative min-h-[50vh] flex items-center justify-center py-24 bg-neutral-900">
       <HeroImage
         src={heroImage}
-        alt="Oak casks aging in the wine cellar at Valiant Vineyards"
+        alt="Aerial view of Valiant Vineyards surrounded by green fields with Missouri River in background"
         widths={[640, 1024, 1536, 2048]}
         sizes="100vw"
-        quality={30}
+        quality={50}
+        position="bottom"
       />
       <div class="container relative mx-auto px-4 lg:px-8 text-center">
         <div class="inline-block bg-black/50 px-8 py-6">
           <h1 class="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            News & Events
+            Stories
           </h1>
           <p class="mt-4 font-serif text-xl text-white font-medium max-w-2xl mx-auto lg:text-2xl">
-            Stay up to date with the latest happenings at Valiant Vineyards.
+            Recipes, insights, and tales from the vineyard.
           </p>
         </div>
       </div>
@@ -57,7 +58,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
 
               return (
                 <a
-                  href={`/news/post/${post.id}/`}
+                  href={`/stories/${post.id}/`}
                   class="group block bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
                 >
                   <div class="aspect-16/10 overflow-hidden">
@@ -84,7 +85,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
         ) : (
           <div class="text-center py-16">
             <p class="text-lg text-muted-foreground">
-              No posts yet. Check back soon!
+              No stories yet. Check back soon!
             </p>
           </div>
         )
@@ -100,7 +101,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
 
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <a
-                href={page === 1 ? "/news/" : `/news/page/${page}/`}
+                href={page === 1 ? "/stories/" : `/stories/page/${page}/`}
                 class:list={[
                   "px-4 py-2 text-sm font-medium rounded transition-colors",
                   page === currentPage
@@ -115,7 +116,7 @@ const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
 
             {currentPage < totalPages ? (
               <a
-                href={`/news/page/${currentPage + 1}/`}
+                href={`/stories/page/${currentPage + 1}/`}
                 class="px-4 py-2 text-sm font-medium bg-neutral-100 text-foreground hover:bg-neutral-200 rounded transition-colors"
               >
                 Next

@@ -1,12 +1,24 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/Button.astro";
+import { Image } from "astro:assets";
+import cocktailImage from "../../assets/images/cocktail-sd-gold-rush.jpg";
 ---
 
 <BaseLayout title="South Dakota Gold Rush Cocktail" description="A refreshing bourbon cocktail made with Clay Turner Bourbon, South Dakota honey, and fresh lemon juice.">
   <section class="py-16 lg:py-24">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="mx-auto max-w-2xl">
+        <div class="mb-8 overflow-hidden">
+          <Image
+            src={cocktailImage}
+            alt="South Dakota Gold Rush cocktail in crystal glasses with orange garnish"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 672px) 100vw, 672px"
+            quality={80}
+            class="w-full h-auto"
+          />
+        </div>
         <p class="text-gold font-semibold tracking-widest uppercase mb-3">Cocktail Recipe</p>
         <h1 class="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl mb-6">
           South Dakota Gold Rush
@@ -62,7 +74,7 @@ import Button from "../../components/Button.astro";
           <p class="text-sm text-muted-foreground mb-6">
             Made with Clay Turner Bourbon, crafted at Stone Faces Distillery in Vermillion, South Dakota.
           </p>
-          <Button href="/distillery" variant="outline">
+          <Button href="/distillery" variant="gold-outline">
             Explore Our Spirits
           </Button>
         </div>

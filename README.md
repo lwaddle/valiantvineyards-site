@@ -59,16 +59,19 @@ All business hours, contact details, and address information are centralized in 
 
 Changes will automatically propagate to the homepage, tasting room page, and contact page.
 
-## Adding a News Post
+## Adding an Event
 
-1. Copy the template: `src/content/news/0-TEMPLATE.mdx`
-2. Rename it with a descriptive slug (e.g., `summer-wine-tasting-event.mdx`)
+1. Copy the template: `src/content/events/0-TEMPLATE.mdx`
+2. Rename it with a descriptive slug (e.g., `summer-wine-tasting-2025.mdx`)
 3. Update the frontmatter:
-   - `title` — The post headline
+   - `title` — The event headline
    - `description` — Short summary for SEO/previews
-   - `date` — Publication date (YYYY-MM-DD)
+   - `date` — Post/publish date (YYYY-MM-DD)
+   - `eventDate` — When the event happens (YYYY-MM-DD). Omit if TBD. Displays as a badge on event cards.
    - `featuredImage` — Path to image in `_images/` folder
    - `featuredImageAlt` — Alt text for accessibility
-   - `pinned` — Set `true` to feature at top of news list
+   - `pinned` — Set `true` to feature at top of event listings
    - `draft` — Set `false` when ready to publish
 4. Write content in Markdown/MDX below the frontmatter
+
+**Sorting:** Events are sorted by pinned status first, then by `eventDate` (falling back to `date` if no `eventDate` is set).
