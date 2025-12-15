@@ -103,3 +103,21 @@ Changes will automatically propagate to the homepage, tasting room page, and con
 4. Write content in Markdown/MDX below the frontmatter
 
 **Sorting:** Events are sorted by pinned status first, then by `eventDate` (falling back to `date` if no `eventDate` is set).
+
+## Adding a Featured Story / Announcement
+
+Pinned stories appear in the announcements section at the top of the homepage.
+
+1. Copy the template: `src/content/stories/0-TEMPLATE.mdx`
+2. Rename it with a descriptive slug (e.g., `new-wine-release-2025.mdx`)
+3. Update the frontmatter:
+   - `title` — Story headline
+   - `description` — Short summary for SEO/previews
+   - `date` — Publish date (YYYY-MM-DD)
+   - `featuredImage` — Path to image in `_images/` folder
+   - `featuredImageAlt` — Alt text for accessibility
+   - `pinned` — Set `true` to feature on homepage
+   - `draft` — Set `false` when ready to publish
+4. Write content in Markdown/MDX below the frontmatter
+
+**Sorting:** Pinned stories are sorted by date (newest first).
