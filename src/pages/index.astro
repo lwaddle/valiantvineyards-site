@@ -137,7 +137,7 @@ const pinnedStories = (await getCollection("stories", ({ data }) =>
             const imageAlt = story.data.featuredImageAlt ?? story.data.title;
 
             return (
-              <article class="group max-w-xl mx-auto lg:max-w-none lg:grid lg:grid-cols-5 bg-white border border-border overflow-hidden hover:border-gold hover:shadow-lg transition-all">
+              <a href={`/stories/${story.id}/`} class="group block max-w-xl mx-auto lg:max-w-none lg:grid lg:grid-cols-5 bg-white border border-border overflow-hidden hover:border-gold hover:shadow-lg transition-all">
                 <div class="lg:col-span-2 aspect-video lg:aspect-auto overflow-hidden">
                   <Image
                     src={image}
@@ -150,14 +150,14 @@ const pinnedStories = (await getCollection("stories", ({ data }) =>
                 <div class="lg:col-span-3 p-6 lg:p-8 flex flex-col justify-center">
                   <h2 class="font-serif text-2xl font-semibold group-hover:text-gold transition-colors">{story.data.title}</h2>
                   <p class="mt-3 text-muted-foreground leading-relaxed">{story.data.description}</p>
-                  <a href={`/stories/${story.id}/`} class="mt-4 inline-flex items-center text-gold font-medium hover:underline">
+                  <span class="mt-4 inline-flex items-center text-gold font-medium group-hover:underline">
                     Read More
                     <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
-                  </a>
+                  </span>
                 </div>
-              </article>
+              </a>
             );
           })}
         </div>
