@@ -60,8 +60,8 @@ Edit `functions/api/contact.ts` to update recipients:
 ```javascript
 const EMAIL_CONFIG = {
   from: "Valiant Vineyards Winery & Distillery <noreply@valiantvineyards.us>",
-  to: ["wine@valiantvineyards.us"],
-  cc: ["sherry@valiantvineyards.us", "adrienne@valiantvineyards.us", "valiantvineyards@proton.me"],
+  to: ["PRIMARY_ADDRESS@valiantvineyards.us"],
+  cc: ["CC_1@valiantvineyards.us", "CC_2@valiantvineyards.us", "CC_3@valiantvineyards.us"],
   subject: "Valiant Vineyards website message",
 };
 ```
