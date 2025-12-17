@@ -1,3 +1,5 @@
+import { francAll } from "franc-min";
+
 interface Env {
   RESEND_API_KEY: string;
   MAILCHIMP_API_KEY: string;
@@ -100,6 +102,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return Response.json(
         { success: false, error: "Security verification failed. Please try again." },
         { status: 400, headers: corsHeaders }
+      );
+    }
+
+    // Language detection - filter non-English submissions
+    const langResult = detectLanguage(data.message);
+
+    if (!langResult.isEnglish) {
+      console.log(JSON.stringify({
+        event: "non_english_filtered",
+        detected_language: langResult.detectedLang,
+        message_length: data.message.length,
+      }));
+
+      // Send to owner only for review (not staff), skip Mailchimp
+      await sendEmailToOwner(data, env.RESEND_API_KEY, langResult.detectedLang);
+
+      return Response.json(
+        { success: true, message: "Message sent successfully!" },
+        { status: 200, headers: corsHeaders }
       );
     }
 
@@ -225,5 +246,52 @@ async function subscribeToMailchimp(
   }
 
   return { success: true };
+}
+
+function detectLanguage(text: string): { isEnglish: boolean; detectedLang: string } {
+  // Skip detection for very short messages (< 50 chars)
+  if (text.length < 50) {
+    return { isEnglish: true, detectedLang: "und" };
+  }
+
+  try {
+    const results = francAll(text, { minLength: 10 });
+    if (!results.length || results[0][0] === "und") {
+      return { isEnglish: true, detectedLang: "und" };
+    }
+
+    const [topLang, topDistance] = results[0];
+    const isEnglish = topLang === "eng" && topDistance < 0.5;
+
+    // Also check if English is in top 3 (handles mixed language)
+    const englishInTop3 = results.slice(0, 3).some(
+      ([lang, dist]) => lang === "eng" && dist < 0.5
+    );
+
+    return { isEnglish: isEnglish || englishInTop3, detectedLang: topLang };
+  } catch {
+    return { isEnglish: true, detectedLang: "error" }; // Fail open
+  }
+}
+
+async function sendEmailToOwner(
+  data: FormData,
+  apiKey: string,
+  detectedLang: string
+): Promise<void> {
+  await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: EMAIL_CONFIG.from,
+      to: ["valiantvineyards@proton.me"],
+      reply_to: data.email,
+      subject: `[Filtered: ${detectedLang}] ${EMAIL_CONFIG.subject}`,
+      text: `This message was filtered as non-English (detected: ${detectedLang}).\n\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || "Not provided"}\n\nMessage:\n${data.message}`,
+    }),
+  });
 }
 
