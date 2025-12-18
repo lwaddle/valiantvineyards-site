@@ -16,30 +16,6 @@ import logo from "../assets/logos/logo-dark.svg";
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
     <title>Newsletter Sign Up | Valiant Vineyards</title>
-
-    <!-- CookieYes Banner -->
-    <script is:inline id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/6ba0fbf3ca0655582cd3cb4e/script.js"></script>
-
-    <!-- Google Analytics - consent managed by CookieYes GCM -->
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('consent', 'default', {
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied',
-        'analytics_storage': 'denied',
-        'functionality_storage': 'denied',
-        'personalization_storage': 'denied',
-        'security_storage': 'granted',
-        'wait_for_update': 500
-      });
-    </script>
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-PVVXRK70TC"></script>
-    <script is:inline>
-      gtag('js', new Date());
-      gtag('config', 'G-PVVXRK70TC');
-    </script>
   </head>
   <body class="min-h-screen flex flex-col bg-secondary text-secondary-foreground">
     <main class="flex-1 flex items-center justify-center p-6">
@@ -55,7 +31,7 @@ import logo from "../assets/logos/logo-dark.svg";
 
         <form
           id="signup-form"
-          action="https://valiantvineyards.us21.list-manage.com/subscribe/post?u=b8ceeae30d01efc23353fa0ae&id=b25550092c&f_id=006bb0e6f0"
+          action="/api/subscribe"
           method="POST"
           class="space-y-4"
         >
@@ -109,61 +85,46 @@ import logo from "../assets/logos/logo-dark.svg";
     button.disabled = true;
     button.textContent = 'Subscribing...';
 
-    // Convert URL to JSONP endpoint
-    const url = form.action.replace('/post?', '/post-json?') + `&EMAIL=${encodeURIComponent(email)}`;
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
 
-    // Create unique callback name
-    const callbackName = 'mc_callback_' + Date.now();
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        body: formData,
+      });
 
-    // Create promise for JSONP response
-    const response = await new Promise<{result: string; msg: string}>((resolve) => {
-      // Set up callback
-      (window as any)[callbackName] = (data: {result: string; msg: string}) => {
-        resolve(data);
-        delete (window as any)[callbackName];
-        document.body.removeChild(script);
-      };
+      const result = await response.json();
 
-      // Create script tag for JSONP
-      const script = document.createElement('script');
-      script.src = url + `&c=${callbackName}`;
-      document.body.appendChild(script);
+      // Show message
+      messageContainer.classList.remove('hidden');
+      messageText.classList.remove('text-green-400', 'text-red-400');
 
-      // Timeout after 10 seconds
-      setTimeout(() => {
-        if ((window as any)[callbackName]) {
-          resolve({ result: 'error', msg: 'Request timed out. Please try again.' });
-          delete (window as any)[callbackName];
-        }
-      }, 10000);
-    });
+      if (result.success) {
+        messageText.classList.add('text-green-400');
+        messageText.textContent = 'Thank you for subscribing!';
+        form.reset();
 
-    // Show message
-    messageContainer.classList.remove('hidden');
-    messageText.classList.remove('text-green-400', 'text-red-400');
+        // Auto-reset page after 3 seconds for next person
+        setTimeout(() => {
+          messageContainer.classList.add('hidden');
+          emailInput.focus();
+        }, 3000);
+      } else {
+        messageText.classList.add('text-red-400');
+        messageText.textContent = result.error || 'Something went wrong. Please try again.';
 
-    if (response.result === 'success') {
-      messageText.classList.add('text-green-400');
-      messageText.textContent = 'Thank you for subscribing!';
-      form.reset();
-
-      // Auto-reset page after 3 seconds for next person
-      setTimeout(() => {
-        messageContainer.classList.add('hidden');
-        emailInput.focus();
-      }, 3000);
-    } else {
-      messageText.classList.add('text-red-400');
-      // Clean up Mailchimp's error messages
-      let errorMsg = response.msg || 'Something went wrong. Please try again.';
-      if (errorMsg.includes('already subscribed')) {
-        errorMsg = 'This email is already subscribed.';
-      } else if (errorMsg.includes('<')) {
-        errorMsg = errorMsg.split('<')[0].trim() || 'Something went wrong. Please try again.';
+        // Auto-hide error after 4 seconds
+        setTimeout(() => {
+          messageContainer.classList.add('hidden');
+        }, 4000);
       }
-      messageText.textContent = errorMsg;
+    } catch (error) {
+      messageContainer.classList.remove('hidden');
+      messageText.classList.remove('text-green-400', 'text-red-400');
+      messageText.classList.add('text-red-400');
+      messageText.textContent = 'Something went wrong. Please try again.';
 
-      // Auto-hide error after 4 seconds
       setTimeout(() => {
         messageContainer.classList.add('hidden');
       }, 4000);

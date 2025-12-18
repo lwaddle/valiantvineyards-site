@@ -13,7 +13,7 @@ export const hours = {
     { days: "Sunday", hours: "11am - 4pm" },
   ],
   // Optional: Add seasonal notes or closures
-  note: "The tasting room will be open by appointment only in January. The Bed & Breakfast will remain open.", // e.g., "Closed Thanksgiving & Christmas"
+  note: "Closed Christmas Eve, Christmas Day, New Year's Eve, and New Year's Day.", // e.g., "Closed Thanksgiving & Christmas"
 };
 
 export const contact = {
@@ -28,6 +28,10 @@ export const address = {
   zip: "57069",
   full: "1500 W. Main St, Vermillion, SD 57069",
   googleMapsUrl: "https://maps.google.com/?q=Valiant+Vineyards+Vermillion+SD",
+  coordinates: {
+    lat: 42.78164954978507,
+    lon: -96.95279070399366,
+  },
 };
 
 export const social = {

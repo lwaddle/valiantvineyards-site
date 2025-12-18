@@ -4,6 +4,12 @@ import Button from "../components/Button.astro";
 import HeroImage from "../components/HeroImage.astro";
 import heroImage from "../assets/images/dogs-in-cellar.webp";
 import { contact, address, hours } from "../data/site-info";
+
+// Mapbox Static Map configuration
+const MAPBOX_TOKEN = import.meta.env.MAPBOX_ACCESS_TOKEN;
+const mapboxUrl = MAPBOX_TOKEN
+  ? `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l+996F00(${address.coordinates.lon},${address.coordinates.lat})/${address.coordinates.lon},${address.coordinates.lat},14,0/600x400@2x?access_token=${MAPBOX_TOKEN}`
+  : null;
 ---
 
 <BaseLayout title="Contact" description="Get in touch with Valiant Vineyards. We'd love to hear from you about visits, events, or any questions.">
@@ -132,7 +138,8 @@ import { contact, address, hours } from "../data/site-info";
                   class="mt-0.5 h-5 w-5 rounded border-neutral-300 accent-gold focus:ring-gold/20"
                 />
                 <label for="subscribe" class="text-sm text-muted-foreground">
-                  Sign me up for news and updates from Valiant Vineyards Winery & Distillery
+                  Sign me up for news and updates from Valiant Vineyards Winery & Distillery.
+                  You can unsubscribe at any time. View our <a href="/privacy-policy/" class="text-gold hover:underline">Privacy Policy</a>.
                 </label>
               </div>
 
@@ -216,36 +223,40 @@ import { contact, address, hours } from "../data/site-info";
               )}
             </div>
 
-            <!-- Map -->
-            <div class="rounded-lg overflow-hidden shadow-md border border-neutral-200 relative" id="map-container">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.3149839770444!2d-96.95530832322022!3d42.78169057115689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x878e4fb0f48b9aad%3A0x57bf31cf907162f8!2sValiant%20Vineyards%20Winery%20%26%20Distillery!5e0!3m2!1sen!2sus!4v1764961367261!5m2!1sen!2sus"
-                width="100%"
-                height="250"
-                style="border:0;"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                title="Valiant Vineyards location on Google Maps"
-                class="w-full"
-                id="google-map"
-              ></iframe>
-              <!-- Fallback for when Google Maps fails to load -->
-              <div id="map-fallback" class="hidden absolute inset-0 bg-neutral-100 items-center justify-center p-6 text-center flex-col">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-neutral-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <p class="text-sm text-muted-foreground mb-3">Map couldn't be loaded</p>
+            <!-- Map Section -->
+            <div class="overflow-hidden shadow-md border border-neutral-200">
+              {mapboxUrl ? (
                 <a
                   href={address.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-sm font-medium text-gold hover:underline"
+                  class="block relative group transform-none"
                 >
-                  Open in Google Maps
+                  <img
+                    src={mapboxUrl}
+                    alt={`Map showing Valiant Vineyards location at ${address.street}, ${address.city}, ${address.state}`}
+                    width="600"
+                    height="400"
+                    class="w-full h-auto"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/20 transition-colors flex items-center justify-center">
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity bg-gold text-white px-4 py-2 rounded-md text-sm font-medium">
+                      Open in Google Maps
+                    </span>
+                  </div>
                 </a>
-              </div>
+              ) : (
+                <div class="flex flex-col items-center justify-center p-8 text-center bg-neutral-100" style="min-height: 250px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gold mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <p class="text-sm text-muted-foreground mb-1">{address.street}</p>
+                  <p class="text-sm text-muted-foreground">{address.city}, {address.state} {address.zip}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -257,30 +268,6 @@ import { contact, address, hours } from "../data/site-info";
   <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <script>
-    // Google Maps iframe fallback detection
-    const mapIframe = document.getElementById('google-map') as HTMLIFrameElement;
-    const mapFallback = document.getElementById('map-fallback') as HTMLElement;
-
-    if (mapIframe && mapFallback) {
-      // Set a timeout to show fallback if iframe doesn't load
-      const mapTimeout = setTimeout(() => {
-        mapIframe.classList.add('hidden');
-        mapFallback.classList.remove('hidden');
-        mapFallback.classList.add('flex');
-      }, 5000);
-
-      mapIframe.addEventListener('load', () => {
-        clearTimeout(mapTimeout);
-      });
-
-      mapIframe.addEventListener('error', () => {
-        clearTimeout(mapTimeout);
-        mapIframe.classList.add('hidden');
-        mapFallback.classList.remove('hidden');
-        mapFallback.classList.add('flex');
-      });
-    }
-
     // Contact form handler
     const form = document.getElementById('contact-form') as HTMLFormElement;
     const messageContainer = document.getElementById('contact-message') as HTMLElement;
