@@ -261,11 +261,11 @@ function detectLanguage(text: string): { isEnglish: boolean; detectedLang: strin
     }
 
     const [topLang, topDistance] = results[0];
-    const isEnglish = topLang === "eng" && topDistance < 0.5;
+    const isEnglish = topLang === "eng" && topDistance > 0.5;
 
     // Also check if English is in top 3 (handles mixed language)
     const englishInTop3 = results.slice(0, 3).some(
-      ([lang, dist]) => lang === "eng" && dist < 0.5
+      ([lang, dist]) => lang === "eng" && dist > 0.5
     );
 
     return { isEnglish: isEnglish || englishInTop3, detectedLang: topLang };
