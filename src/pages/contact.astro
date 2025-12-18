@@ -4,6 +4,12 @@ import Button from "../components/Button.astro";
 import HeroImage from "../components/HeroImage.astro";
 import heroImage from "../assets/images/dogs-in-cellar.webp";
 import { contact, address, hours } from "../data/site-info";
+
+// Mapbox Static Map configuration
+const MAPBOX_TOKEN = import.meta.env.MAPBOX_ACCESS_TOKEN;
+const mapboxUrl = MAPBOX_TOKEN
+  ? `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l+996F00(${address.coordinates.lon},${address.coordinates.lat})/${address.coordinates.lon},${address.coordinates.lat},14,0/600x400@2x?access_token=${MAPBOX_TOKEN}`
+  : null;
 ---
 
 <BaseLayout title="Contact" description="Get in touch with Valiant Vineyards. We'd love to hear from you about visits, events, or any questions.">
@@ -216,39 +222,63 @@ import { contact, address, hours } from "../data/site-info";
               )}
             </div>
 
-            <!-- Map Placeholder -->
-            <div class="rounded-lg overflow-hidden shadow-md border border-neutral-200 bg-neutral-100">
-              <div class="flex flex-col items-center justify-center p-8 text-center" style="min-height: 250px;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gold mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <p class="text-sm text-muted-foreground mb-1">{address.street}</p>
-                <p class="text-sm text-muted-foreground mb-4">{address.city}, {address.state} {address.zip}</p>
-                <div class="flex flex-col sm:flex-row gap-3">
-                  <a
-                    href={address.googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center justify-center gap-2 rounded-md bg-gold px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gold-dark"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    Google Maps
-                  </a>
-                  <a
-                    href={`https://maps.apple.com/?q=${encodeURIComponent(address.street + ', ' + address.city + ', ' + address.state + ' ' + address.zip)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center justify-center gap-2 rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    Apple Maps
-                  </a>
+            <!-- Map Section -->
+            <div class="rounded-lg overflow-hidden shadow-md border border-neutral-200">
+              {mapboxUrl ? (
+                <a
+                  href={address.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block relative group"
+                >
+                  <img
+                    src={mapboxUrl}
+                    alt={`Map showing Valiant Vineyards location at ${address.street}, ${address.city}, ${address.state}`}
+                    width="600"
+                    height="400"
+                    class="w-full h-auto"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/20 transition-colors flex items-center justify-center">
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity bg-gold text-white px-4 py-2 rounded-md text-sm font-medium">
+                      Open in Google Maps
+                    </span>
+                  </div>
+                </a>
+              ) : (
+                <div class="flex flex-col items-center justify-center p-8 text-center bg-neutral-100" style="min-height: 250px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gold mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <p class="text-sm text-muted-foreground mb-1">{address.street}</p>
+                  <p class="text-sm text-muted-foreground">{address.city}, {address.state} {address.zip}</p>
                 </div>
+              )}
+              <div class="bg-white p-4 flex flex-col sm:flex-row gap-3 justify-center border-t border-neutral-200">
+                <a
+                  href={address.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center gap-2 rounded-md bg-gold px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gold-dark"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                  Google Maps
+                </a>
+                <a
+                  href={`https://maps.apple.com/?q=${encodeURIComponent(address.street + ', ' + address.city + ', ' + address.state + ' ' + address.zip)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center gap-2 rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                  Apple Maps
+                </a>
               </div>
             </div>
           </div>

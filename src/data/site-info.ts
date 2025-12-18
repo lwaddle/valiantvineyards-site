@@ -28,6 +28,10 @@ export const address = {
   zip: "57069",
   full: "1500 W. Main St, Vermillion, SD 57069",
   googleMapsUrl: "https://maps.google.com/?q=Valiant+Vineyards+Vermillion+SD",
+  coordinates: {
+    lat: 42.78164954978507,
+    lon: -96.95279070399366,
+  },
 };
 
 export const social = {
