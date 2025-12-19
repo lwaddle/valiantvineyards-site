@@ -71,6 +71,7 @@ const EMAIL_CONFIG = {
 - `RESEND_API_KEY` — Resend API key
 - `MAILCHIMP_API_KEY` — Mailchimp API key
 - `TURNSTILE_SECRET_KEY` — Cloudflare Turnstile secret key
+- `MAPBOX_ACCESS_TOKEN` — Mapbox access token for the static map on the contact page (optional; falls back to a text-only address display)
 
 ### Microsoft 365 Spam Filter
 
